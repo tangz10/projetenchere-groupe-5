@@ -25,4 +25,10 @@ public class EnchereController {
         return "enchere_win";
     }
 
+    @GetMapping("/enchere/delete")
+    public String enchereDelete(Model model) {
+        model.addAttribute("message", "Suppression de l'enchère");
+        return "enchere_delete";
+    }
+
 }
