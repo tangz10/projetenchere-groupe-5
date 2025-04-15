@@ -19,4 +19,10 @@ public class EnchereController {
         return "enchere_vente";
     }
 
+    @GetMapping("/enchere/win")
+    public String enchereWin(Model model) {
+        model.addAttribute("message", "Vous avez remporté l'enchère");
+        return "enchere_win";
+    }
+
 }
