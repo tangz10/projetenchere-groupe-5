@@ -13,37 +13,38 @@
 
 <div class="header container mt-5 mb-5">
   <p>ENI Enchères</p>
-  <a href="">S'inscrire / Se connecter</a>
 </div>
 
-<div class="container">
-  <div style="grid-template-columns: 1fr 1fr;" class="d-grid gap-3">
-    <div class="p-2">Identifiant :</div>
-    <input type="text" class="form-control p-2 border-black" aria-label="Username">
-    <div class="p-2">Mot de passe :</div>
-    <input type="password" class="form-control p-2 border-black" aria-label="password">
-  </div>
-</div>
-
-<div class="container mt-5">
-  <div class="row">
-    <div class="col d-flex align-items-center">
-      <button type="button" class="btn btn-outline-dark w-100">Connexion</button>
-    </div>
-
-    <div class="col fs-7">
-      <input class="form-check-input" type="checkbox" value="" id="checkChecked" checked>
-      <label class="form-check-label" for="checkChecked">
-        Se souvenir de moi
-      </label>
-      <br>
-      <a href="">Mot de passe oublié</a>
+<form th:action="@{/login}" method="post">
+  <div class="container">
+    <div style="grid-template-columns: 1fr 1fr;" class="d-grid gap-3">
+      <div class="p-2">Identifiant :</div>
+      <input type="text" class="form-control p-2 border-black" aria-label="Username" name="username">
+      <div class="p-2">Mot de passe :</div>
+      <input type="password" class="form-control p-2 border-black" aria-label="password" name="password">
     </div>
   </div>
-</div>
+
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col d-flex align-items-center">
+        <button type="submit" class="btn btn-outline-dark w-100">Connexion</button>
+      </div>
+
+      <div class="col fs-7">
+        <input class="form-check-input" type="checkbox" value="" id="checkChecked" checked>
+        <label class="form-check-label" for="checkChecked">
+          Se souvenir de moi
+        </label>
+        <br>
+        <a href="">Mot de passe oublié</a>
+      </div>
+    </div>
+  </div>
+</form>
 
 <div class="container mt-3">
-  <button type="button" class="btn btn-outline-dark w-100" style="height: 100px">Créer un compte</button>
+  <a th:href="@{/register}" class="btn btn-outline-dark w-100" style="height: 100px">Créer un compte</a>
 </div>
 
 <!-- Bootstrap JS (optionnel) -->

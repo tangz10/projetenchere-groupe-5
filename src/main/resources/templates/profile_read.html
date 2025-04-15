@@ -25,7 +25,7 @@
             Pseudo:
         </div>
         <div class="col">
-            <input type="text" disabled class="form-control p-2 border-black" aria-label="pseudo">
+            <input type="text" disabled class="form-control p-2 border-black" aria-label="pseudo" th:value="${utilisateur.getPseudo()}">
         </div>
     </div>
 
@@ -34,7 +34,7 @@
             Nom:
         </div>
         <div class="col">
-            <input type="text" disabled class="form-control p-2 border-black" aria-label="lastname">
+            <input type="text" disabled class="form-control p-2 border-black" aria-label="lastname" th:value="${utilisateur.getNom()}">
         </div>
     </div>
 
@@ -43,7 +43,7 @@
             Prénom:
         </div>
         <div class="col">
-            <input type="text" disabled class="form-control p-2 border-black" aria-label="name">
+            <input type="text" disabled class="form-control p-2 border-black" aria-label="name" th:value="${utilisateur.getPrenom()}">
         </div>
     </div>
 
@@ -52,7 +52,7 @@
             Email:
         </div>
         <div class="col">
-            <input type="text" disabled class="form-control p-2 border-black" aria-label="mail">
+            <input type="text" disabled class="form-control p-2 border-black" aria-label="mail" th:value="${utilisateur.getEmail()}">
         </div>
     </div>
 
@@ -61,7 +61,7 @@
             Téléphone:
         </div>
         <div class="col">
-            <input type="text" disabled class="form-control p-2 border-black" aria-label="phone">
+            <input type="text" disabled class="form-control p-2 border-black" aria-label="phone" th:value="${utilisateur.getTelephone()}">
         </div>
     </div>
 
@@ -70,7 +70,7 @@
             Rue:
         </div>
         <div class="col">
-            <input type="text" disabled class="form-control p-2 border-black" aria-label="street">
+            <input type="text" disabled class="form-control p-2 border-black" aria-label="street" th:value="${utilisateur.getRue()}">
         </div>
     </div>
 
@@ -79,7 +79,7 @@
             Code postal:
         </div>
         <div class="col">
-            <input type="text" disabled class="form-control p-2 border-black" aria-label="zipcode">
+            <input type="text" disabled class="form-control p-2 border-black" aria-label="zipcode" th:value="${utilisateur.getCodePostal()}">
         </div>
     </div>
 
@@ -88,13 +88,13 @@
             Ville:
         </div>
         <div class="col">
-            <input type="text" disabled class="form-control p-2 border-black" aria-label="city">
+            <input type="text" disabled class="form-control p-2 border-black" aria-label="city" th:value="${utilisateur.getVille()}">
         </div>
     </div>
 </div>
 
 <div class="container mt-3">
-    <button type="button" class="btn btn-outline-dark w-100" style="height: 70px">Enregistrer</button>
+    <a th:href="@{/profile/${utilisateur.getNoUtilisateur()}/edit}" class="btn btn-outline-dark w-100" style="height: 70px">Modifier</a>
 </div>
 
 
