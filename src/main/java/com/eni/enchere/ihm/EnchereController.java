@@ -31,4 +31,10 @@ public class EnchereController {
         return "enchere_delete";
     }
 
+    @GetMapping("/enchere/product")
+    public String enchereProduct(Model model) {
+        model.addAttribute("message", "Details de votre enchère");
+        return "enchere_product";
+    }
+
 }
