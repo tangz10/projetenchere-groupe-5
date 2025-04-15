@@ -6,9 +6,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class ProfileController {
-    @GetMapping("/profile")
-    public String login(Model model) {
-        model.addAttribute("message", "Veuillez vous connecter");
+
+    @GetMapping("/profile/edit")
+    public String profileEdit(Model model) {
+        model.addAttribute("message", "Editez votre profile");
         return "profile"; // Retourne "login.html" depuis /templates
     }
+
+    @GetMapping("/profile/read")
+    public String profileRead(Model model) {
+        model.addAttribute("message", "Voici votre profile");
+        return "profile"; // Retourne "login.html" depuis /templates
+    }
+
+
 }

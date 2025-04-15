@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class RegisterController {
 
     @GetMapping("/register")
-    public String login(Model model) {
+    public String register(Model model) {
         model.addAttribute("message", "Veuillez vous enregistrer");
         return "register";
     }
