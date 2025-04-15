@@ -12,7 +12,7 @@ public class Utilisateur {
     private String codePostal;
     private String motDePasse;
     private long credit;
-    private boolean isadmin;
+    private boolean admin;
 
 
     public Utilisateur() {
@@ -39,12 +39,12 @@ public class Utilisateur {
         this.noUtilisateur = noUtilisateur;
     }
 
-    public boolean isIsadmin() {
-        return isadmin;
+    public boolean getAdmin() {
+        return admin;
     }
 
-    public void setIsadmin(boolean isadmin) {
-        this.isadmin = isadmin;
+    public void setAdmin(boolean isadmin) {
+        this.admin = isadmin;
     }
 
     public long getCredit() {

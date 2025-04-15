@@ -1,29 +1,36 @@
 package com.eni.enchere.dao.Categorie;
 
 import com.eni.enchere.bo.Categorie;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
-import java.util.*;
+import java.util.List;
 
+@Repository
 public class CategorieDAOImpl implements CategorieDAO {
-    private final Map<Long, Categorie> categories = new HashMap<>();
 
-    public CategorieDAOImpl() {
-        Categorie c1 = new Categorie(1, "Informatique");
-        Categorie c2 = new Categorie(2, "Meubles");
-        Categorie c3 = new Categorie(3, "Sport");
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
-        categories.put(c1.getNoCategorie(), c1);
-        categories.put(c2.getNoCategorie(), c2);
-        categories.put(c3.getNoCategorie(), c3);
-    }
+    private final RowMapper<Categorie> categorieRowMapper = (rs, rowNum) -> {
+        Categorie c = new Categorie();
+        c.setNoCategorie(rs.getLong("no_categorie"));
+        c.setLibelle(rs.getString("libelle"));
+        return c;
+    };
 
     @Override
     public List<Categorie> selectAll() {
-        return new ArrayList<>(categories.values());
+        String sql = "SELECT * FROM Categories ORDER BY no_categorie";
+        return jdbcTemplate.query(sql, categorieRowMapper);
     }
 
     @Override
     public Categorie selectById(long id) {
-        return categories.get(id);
+        String sql = "SELECT * FROM Categories WHERE no_categorie = ?";
+        List<Categorie> result = jdbcTemplate.query(sql, categorieRowMapper, id);
+        return result.isEmpty() ? null : result.get(0);
     }
 }
