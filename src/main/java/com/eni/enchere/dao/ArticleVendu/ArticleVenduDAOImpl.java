@@ -3,65 +3,73 @@ package com.eni.enchere.dao.ArticleVendu;
 import com.eni.enchere.bo.ArticleVendu;
 import com.eni.enchere.bo.Categorie;
 import com.eni.enchere.bo.Utilisateur;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.sql.Date;
 import java.util.List;
-import java.util.Map;
 
+@Repository
 public class ArticleVenduDAOImpl implements ArticleVenduDAO {
-    private final Map<Long, ArticleVendu> articles = new HashMap<>();
-    private long currentId = 1;
 
-    public ArticleVenduDAOImpl() {
-        // Données fictives
-        Utilisateur u1 = new Utilisateur();
-        u1.setnoUtilisateur(1);
-        u1.setPseudo("Jean75");
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
-        Categorie c1 = new Categorie();
-        c1.setNoCategorie(1);
-        c1.setLibelle("Informatique");
+    private final RowMapper<ArticleVendu> articleRowMapper = (rs, rowNum) -> {
+        ArticleVendu article = new ArticleVendu();
+        article.setNoArticle(rs.getInt("no_article"));
+        article.setNom_article(rs.getString("nom_article"));
+        article.setDescription(rs.getString("description"));
+        article.setDebut_encheres(rs.getDate("date_debut_encheres").toLocalDate());
+        article.setFin_encheres(rs.getDate("date_fin_encheres").toLocalDate());
+        article.setPrixInitial(rs.getInt("prix_initial"));
+        article.setPrixVente(rs.getInt("prix_vente"));
 
-        ArticleVendu a1 = new ArticleVendu();
-        a1.setNoArticle(currentId++);
-        a1.setNom_article("Ordinateur Portable");
-        a1.setDescription("En parfait état");
-        a1.setDebut_encheres(LocalDate.of(2025, 4, 1));
-        a1.setFin_encheres(LocalDate.of(2025, 4, 30));
-        a1.setPrixInitial(300);
-        a1.setPrixVente(400);
-        a1.setNoUtilisateur(u1);
-        a1.setNoCategorie(c1);
+        Utilisateur utilisateur = new Utilisateur();
+        utilisateur.setnoUtilisateur(rs.getInt("no_utilisateur"));
+        article.setNoUtilisateur(utilisateur);
 
-        articles.put(a1.getNoArticle(), a1);
-    }
+        Categorie categorie = new Categorie();
+        categorie.setNoCategorie(rs.getInt("no_categorie"));
+        article.setNoCategorie(categorie);
+
+        return article;
+    };
 
     @Override
     public void insert(ArticleVendu article) {
-        article.setNoArticle(currentId++);
-        articles.put(article.getNoArticle(), article);
+        String sql = "INSERT INTO ArticlesVendus (nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql,
+                article.getNom_article(),
+                article.getDescription(),
+                Date.valueOf(article.getDebut_encheres()),
+                Date.valueOf(article.getFin_encheres()),
+                article.getPrixInitial(),
+                article.getPrixVente(),
+                article.getNoUtilisateur().getnoUtilisateur(),
+                article.getNoCategorie().getNoCategorie()
+        );
     }
 
     @Override
     public List<ArticleVendu> selectAll() {
-        return new ArrayList<>(articles.values());
+        String sql = "SELECT * FROM ArticlesVendus";
+        return jdbcTemplate.query(sql, articleRowMapper);
     }
 
     @Override
     public ArticleVendu selectById(long id) {
-        return articles.get(id);
+        String sql = "SELECT * FROM ArticlesVendus WHERE no_article = ?";
+        List<ArticleVendu> result = jdbcTemplate.query(sql, articleRowMapper, id);
+        return result.isEmpty() ? null : result.get(0);
     }
 
     @Override
     public List<ArticleVendu> selectByUtilisateur(long noUtilisateur) {
-        List<ArticleVendu> result = new ArrayList<>();
-        for (ArticleVendu a : articles.values()) {
-            if (a.getNoUtilisateur() != null && a.getNoUtilisateur().getnoUtilisateur() == noUtilisateur) {
-                result.add(a);
-            }
-        }
-        return result;
+        String sql = "SELECT * FROM ArticlesVendus WHERE no_utilisateur = ?";
+        return jdbcTemplate.query(sql, articleRowMapper, noUtilisateur);
     }
 }

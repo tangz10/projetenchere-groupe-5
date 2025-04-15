@@ -2,36 +2,46 @@ package com.eni.enchere.dao.Retrait;
 
 import com.eni.enchere.bo.ArticleVendu;
 import com.eni.enchere.bo.Retrait;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
 
-import java.util.HashMap;
-import java.util.Map;
-
+@Repository
 public class RetraitDAOImpl implements RetraitDAO {
 
-    private final Map<Long, Retrait> retraits = new HashMap<>();
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
-    public RetraitDAOImpl() {
+    private final RowMapper<Retrait> retraitRowMapper = (rs, rowNum) -> {
+        Retrait retrait = new Retrait();
         ArticleVendu article = new ArticleVendu();
-        article.setNoArticle(1);
-        article.setNom_article("Téléviseur");
+        article.setNoArticle(rs.getInt("no_article"));
 
-        Retrait r1 = new Retrait();
-        r1.setNoArticle(article);
-        r1.setRue("10 avenue des Champs");
-        r1.setCodePostal("75008");
-        r1.setVille("Paris");
+        retrait.setNoArticle(article);
+        retrait.setRue(rs.getString("rue"));
+        retrait.setCodePostal(rs.getString("code_postal"));
+        retrait.setVille(rs.getString("ville"));
 
-        retraits.put(article.getNoArticle(), r1);
-    }
+        return retrait;
+    };
 
     @Override
     public void insert(Retrait retrait) {
-        retraits.put(retrait.getNoArticle().getNoArticle(), retrait);
+        String sql = "INSERT INTO Retraits (no_article, rue, code_postal, ville) VALUES (?, ?, ?, ?)";
+        jdbcTemplate.update(sql,
+                retrait.getNoArticle().getNoArticle(),
+                retrait.getRue(),
+                retrait.getCodePostal(),
+                retrait.getVille());
     }
 
     @Override
     public Retrait selectByArticle(long noArticle) {
-        return retraits.get(noArticle);
+        String sql = "SELECT * FROM Retraits WHERE no_article = ?";
+        List<Retrait> result = jdbcTemplate.query(sql, retraitRowMapper, noArticle);
+        return result.isEmpty() ? null : result.get(0);
     }
 }

@@ -1,68 +1,109 @@
 package com.eni.enchere.dao.Utilisateur;
 
 import com.eni.enchere.bo.Utilisateur;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 
-
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
-import java.util.Map;
 
+@Repository
 public class UtilisateurDAOImpl implements UtilisateurDAO {
 
-    private final Map<Long, Utilisateur> utilisateurs = new HashMap<>();
-    private long currentId = 1;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
-    public UtilisateurDAOImpl() {
-        // Données simulées
-        Utilisateur u1 = new Utilisateur();
-        u1.setNoutilisateur(currentId++);
-        u1.setPseudo("JeanDu75");
-        u1.setNom("Dupont");
-        u1.setPrenom("Jean");
-        u1.setEmail("jean@mail.com");
-        u1.setTelephone("0601020304");
-        u1.setRue("1 rue de Paris");
-        u1.setCodePostal("75000");
-        u1.setVille("Paris");
-        u1.setMotDePasse("mdp123");
-        u1.setCredit(100);
-        u1.setIsadmin(false);
-
-        utilisateurs.put(u1.getNoutilisateur(), u1);
-    }
+    private final RowMapper<Utilisateur> utilisateurRowMapper = (rs, rowNum) -> {
+        Utilisateur u = new Utilisateur();
+        u.setnoUtilisateur(rs.getLong("no_utilisateur"));
+        u.setPseudo(rs.getString("pseudo"));
+        u.setNom(rs.getString("nom"));
+        u.setPrenom(rs.getString("prenom"));
+        u.setEmail(rs.getString("email"));
+        u.setTelephone(rs.getString("telephone"));
+        u.setRue(rs.getString("rue"));
+        u.setCodePostal(rs.getString("code_postal"));
+        u.setVille(rs.getString("ville"));
+        u.setMotDePasse(rs.getString("mot_de_passe"));
+        u.setCredit(rs.getInt("credit"));
+        u.setAdmin(rs.getBoolean("admin"));
+        return u;
+    };
 
     @Override
     public void insert(Utilisateur utilisateur) {
-        utilisateur.setNoutilisateur(currentId++);
-        utilisateurs.put(utilisateur.getNoutilisateur(), utilisateur);
+        String sql = "INSERT INTO Utilisateurs (pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mot_de_passe, credit, admin) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, utilisateur.getPseudo());
+            ps.setString(2, utilisateur.getNom());
+            ps.setString(3, utilisateur.getPrenom());
+            ps.setString(4, utilisateur.getEmail());
+            ps.setString(5, utilisateur.getTelephone());
+            ps.setString(6, utilisateur.getRue());
+            ps.setString(7, utilisateur.getCodePostal());
+            ps.setString(8, utilisateur.getVille());
+            ps.setString(9, utilisateur.getMotDePasse());
+            ps.setLong(10, utilisateur.getCredit());
+            ps.setBoolean(11, utilisateur.getAdmin());
+            return ps;
+        }, keyHolder);
+
+        if (keyHolder.getKey() != null) {
+            utilisateur.setnoUtilisateur(keyHolder.getKey().longValue());
+        }
     }
 
     @Override
     public void update(Utilisateur utilisateur) {
-        utilisateurs.put(utilisateur.getNoutilisateur(), utilisateur);
+        String sql = "UPDATE Utilisateurs SET pseudo=?, nom=?, prenom=?, email=?, telephone=?, rue=?, code_postal=?, ville=?, mot_de_passe=?, credit=?, admin=? " +
+                "WHERE no_utilisateur=?";
+        jdbcTemplate.update(sql,
+                utilisateur.getPseudo(),
+                utilisateur.getNom(),
+                utilisateur.getPrenom(),
+                utilisateur.getEmail(),
+                utilisateur.getTelephone(),
+                utilisateur.getRue(),
+                utilisateur.getCodePostal(),
+                utilisateur.getVille(),
+                utilisateur.getMotDePasse(),
+                utilisateur.getCredit(),
+                utilisateur.getAdmin(),
+                utilisateur.getnoUtilisateur());
     }
 
     @Override
     public void delete(long id) {
-        utilisateurs.remove(id);
+        String sql = "DELETE FROM Utilisateurs WHERE no_utilisateur=?";
+        jdbcTemplate.update(sql, id);
     }
 
     @Override
     public Utilisateur selectById(long id) {
-        return utilisateurs.get(id);
+        String sql = "SELECT * FROM Utilisateurs WHERE no_utilisateur=?";
+        return jdbcTemplate.queryForObject(sql, utilisateurRowMapper, id);
     }
 
     @Override
     public List<Utilisateur> selectAll() {
-        return new ArrayList<>(utilisateurs.values());
+        String sql = "SELECT * FROM Utilisateurs";
+        return jdbcTemplate.query(sql, utilisateurRowMapper);
     }
 
     @Override
     public Utilisateur selectByPseudo(String pseudo) {
-        return utilisateurs.values().stream()
-                .filter(u -> u.getPseudo().equalsIgnoreCase(pseudo))
-                .findFirst()
-                .orElse(null);
+        String sql = "SELECT * FROM Utilisateurs WHERE pseudo=?";
+        List<Utilisateur> result = jdbcTemplate.query(sql, utilisateurRowMapper, pseudo);
+        return result.isEmpty() ? null : result.get(0);
     }
 }

@@ -3,58 +3,56 @@ package com.eni.enchere.dao.Enchere;
 import com.eni.enchere.bo.ArticleVendu;
 import com.eni.enchere.bo.Enchere;
 import com.eni.enchere.bo.Utilisateur;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
+import java.util.List;
 
-import java.time.LocalDate;
-import java.util.*;
-
+@Repository
 public class EnchereDAOImpl implements EnchereDAO {
 
-    private final List<Enchere> encheres = new ArrayList<>();
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
-    public EnchereDAOImpl() {
-        // Mock Utilisateur & Article
-        Utilisateur u1 = new Utilisateur();
-        u1.setnoUtilisateur(2);
-        u1.setPseudo("Alice44");
+    private final RowMapper<Enchere> enchereRowMapper = (rs, rowNum) -> {
+        Enchere e = new Enchere();
 
-        ArticleVendu a1 = new ArticleVendu();
-        a1.setNoArticle(1);
-        a1.setNom_article("Imprimante");
+        Utilisateur utilisateur = new Utilisateur();
+        utilisateur.setnoUtilisateur(rs.getInt("no_utilisateur"));
 
-        Enchere e1 = new Enchere();
-        e1.setNoUtilisateur(u1);
-        e1.setNoArticle(a1);
-        e1.setDateEnchere(LocalDate.now());
-        e1.setMontantEnchere(150);
+        ArticleVendu article = new ArticleVendu();
+        article.setNoArticle(rs.getInt("no_article"));
 
-        encheres.add(e1);
-    }
+        e.setNoUtilisateur(utilisateur);
+        e.setNoArticle(article);
+        e.setDateEnchere(rs.getDate("date_enchere").toLocalDate());
+        e.setMontantEnchere(rs.getInt("montant_enchere"));
+
+        return e;
+    };
 
     @Override
     public void insert(Enchere enchere) {
-        encheres.add(enchere);
+        String sql = "INSERT INTO Encheres (no_utilisateur, no_article, date_enchere, montant_enchere) VALUES (?, ?, ?, ?)";
+        jdbcTemplate.update(sql,
+                enchere.getNoUtilisateur().getnoUtilisateur(),
+                enchere.getNoArticle().getNoArticle(),
+                Date.valueOf(enchere.getDateEnchere()),
+                enchere.getMontantEnchere());
     }
 
     @Override
     public List<Enchere> selectByArticle(long noArticle) {
-        List<Enchere> result = new ArrayList<>();
-        for (Enchere e : encheres) {
-            if (e.getNoArticle() != null && e.getNoArticle().getNoArticle() == noArticle) {
-                result.add(e);
-            }
-        }
-        return result;
+        String sql = "SELECT * FROM Encheres WHERE no_article = ?";
+        return jdbcTemplate.query(sql, enchereRowMapper, noArticle);
     }
 
     @Override
     public List<Enchere> selectByUtilisateur(long noUtilisateur) {
-        List<Enchere> result = new ArrayList<>();
-        for (Enchere e : encheres) {
-            if (e.getNoUtilisateur() != null && e.getNoUtilisateur().getnoUtilisateur() == noUtilisateur) {
-                result.add(e);
-            }
-        }
-        return result;
+        String sql = "SELECT * FROM Encheres WHERE no_utilisateur = ?";
+        return jdbcTemplate.query(sql, enchereRowMapper, noUtilisateur);
     }
 }
