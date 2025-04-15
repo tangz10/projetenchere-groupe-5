@@ -9,8 +9,14 @@ public class EnchereController {
 
     @GetMapping("/enchere")
     public String enchere(Model model) {
-        model.addAttribute("message", "Editez votre profile");
+        model.addAttribute("message", "Consulter les enchères");
         return "enchere";
+    }
+
+    @GetMapping("/enchere/vente")
+    public String enchereVente(Model model) {
+        model.addAttribute("message", "Consulter une vente aux enchères");
+        return "enchere_vente";
     }
 
 }
