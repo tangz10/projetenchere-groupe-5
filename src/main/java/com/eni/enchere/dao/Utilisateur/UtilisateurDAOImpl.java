@@ -20,7 +20,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 
     private final RowMapper<Utilisateur> utilisateurRowMapper = (rs, rowNum) -> {
         Utilisateur u = new Utilisateur();
-        u.setnoUtilisateur(rs.getLong("no_utilisateur"));
+        u.setNoUtilisateur(rs.getLong("no_utilisateur"));
         u.setPseudo(rs.getString("pseudo"));
         u.setNom(rs.getString("nom"));
         u.setPrenom(rs.getString("prenom"));
@@ -31,13 +31,13 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
         u.setVille(rs.getString("ville"));
         u.setMotDePasse(rs.getString("mot_de_passe"));
         u.setCredit(rs.getInt("credit"));
-        u.setAdmin(rs.getBoolean("admin"));
+        u.setAdmin(rs.getBoolean("administrateur"));
         return u;
     };
 
     @Override
     public void insert(Utilisateur utilisateur) {
-        String sql = "INSERT INTO Utilisateurs (pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mot_de_passe, credit, admin) " +
+        String sql = "INSERT INTO Utilisateurs (pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mot_de_passe, credit, administrateur) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -59,13 +59,13 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
         }, keyHolder);
 
         if (keyHolder.getKey() != null) {
-            utilisateur.setnoUtilisateur(keyHolder.getKey().longValue());
+            utilisateur.setNoUtilisateur(keyHolder.getKey().longValue());
         }
     }
 
     @Override
     public void update(Utilisateur utilisateur) {
-        String sql = "UPDATE Utilisateurs SET pseudo=?, nom=?, prenom=?, email=?, telephone=?, rue=?, code_postal=?, ville=?, mot_de_passe=?, credit=?, admin=? " +
+        String sql = "UPDATE Utilisateurs SET pseudo=?, nom=?, prenom=?, email=?, telephone=?, rue=?, code_postal=?, ville=?, mot_de_passe=?, credit=?, administrateur=? " +
                 "WHERE no_utilisateur=?";
         jdbcTemplate.update(sql,
                 utilisateur.getPseudo(),
@@ -79,7 +79,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
                 utilisateur.getMotDePasse(),
                 utilisateur.getCredit(),
                 utilisateur.getAdmin(),
-                utilisateur.getnoUtilisateur());
+                utilisateur.getNoUtilisateur());
     }
 
     @Override

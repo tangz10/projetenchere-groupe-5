@@ -14,8 +14,10 @@
 <div class="header container mt-5 mb-5 d-flex flex-column">
   <p>ENI Enchères</p>
   <a href="#">Vendre un article</a>
-  <a href="#">Mon profil</a>
-  <a href="#">Déconnexion</a>
+  <a th:href="@{/profile}">Mon profil</a>
+  <form th:action="@{/logout}" method="post">
+    <button type="submit" class="btn btn-link p-0" style="text-decoration: underline;">Déconnexion</button>
+  </form>
 </div>
 
 <div class="main-container container">

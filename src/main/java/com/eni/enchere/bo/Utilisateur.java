@@ -31,11 +31,11 @@ public class Utilisateur {
         this.motDePasse = motDePasse;
     }
 
-    public long getnoUtilisateur() {
+    public long getNoUtilisateur() {
         return noUtilisateur;
     }
 
-    public void setnoUtilisateur(long noUtilisateur) {
+    public void setNoUtilisateur(long noUtilisateur) {
         this.noUtilisateur = noUtilisateur;
     }
 
