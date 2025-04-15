@@ -25,4 +25,22 @@ public class EnchereController {
         return "enchere_win";
     }
 
+    @GetMapping("/enchere/delete")
+    public String enchereDelete(Model model) {
+        model.addAttribute("message", "Suppression de l'enchère");
+        return "enchere_delete";
+    }
+
+    @GetMapping("/enchere/product")
+    public String enchereProduct(Model model) {
+        model.addAttribute("message", "Details de votre enchère");
+        return "enchere_product";
+    }
+
+    @GetMapping("/enchere/add")
+    public String enchereNew(Model model) {
+        model.addAttribute("message", "Nouvelle vente");
+        return "enchere_add";
+    }
+
 }

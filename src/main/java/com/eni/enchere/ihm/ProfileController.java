@@ -10,13 +10,13 @@ public class ProfileController {
     @GetMapping("/profile/edit")
     public String profileEdit(Model model) {
         model.addAttribute("message", "Editez votre profile");
-        return "profilte_edit"; // Retourne "login.html" depuis /templates
+        return "profile_edit"; // Retourne "login.html" depuis /templates
     }
 
     @GetMapping("/profile/")
     public String profileRead(Model model) {
         model.addAttribute("message", "Voici votre profile");
-        return "profilte_read"; // Retourne "login.html" depuis /templates
+        return "profile_read"; // Retourne "login.html" depuis /templates
     }
 
 
