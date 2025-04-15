@@ -37,4 +37,10 @@ public class EnchereController {
         return "enchere_product";
     }
 
+    @GetMapping("/enchere/add")
+    public String enchereNew(Model model) {
+        model.addAttribute("message", "Nouvelle vente");
+        return "enchere_add";
+    }
+
 }
