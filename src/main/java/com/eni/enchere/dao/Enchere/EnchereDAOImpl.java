@@ -21,7 +21,7 @@ public class EnchereDAOImpl implements EnchereDAO {
         Enchere e = new Enchere();
 
         Utilisateur utilisateur = new Utilisateur();
-        utilisateur.setnoUtilisateur(rs.getInt("no_utilisateur"));
+        utilisateur.setNoUtilisateur(rs.getInt("no_utilisateur"));
 
         ArticleVendu article = new ArticleVendu();
         article.setNoArticle(rs.getInt("no_article"));
@@ -38,7 +38,7 @@ public class EnchereDAOImpl implements EnchereDAO {
     public void insert(Enchere enchere) {
         String sql = "INSERT INTO Encheres (no_utilisateur, no_article, date_enchere, montant_enchere) VALUES (?, ?, ?, ?)";
         jdbcTemplate.update(sql,
-                enchere.getNoUtilisateur().getnoUtilisateur(),
+                enchere.getNoUtilisateur().getNoUtilisateur(),
                 enchere.getNoArticle().getNoArticle(),
                 Date.valueOf(enchere.getDateEnchere()),
                 enchere.getMontantEnchere());

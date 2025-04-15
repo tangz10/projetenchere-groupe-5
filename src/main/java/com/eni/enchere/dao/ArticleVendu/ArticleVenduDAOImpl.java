@@ -28,7 +28,7 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
         article.setPrixVente(rs.getInt("prix_vente"));
 
         Utilisateur utilisateur = new Utilisateur();
-        utilisateur.setnoUtilisateur(rs.getInt("no_utilisateur"));
+        utilisateur.setNoUtilisateur(rs.getInt("no_utilisateur"));
         article.setNoUtilisateur(utilisateur);
 
         Categorie categorie = new Categorie();
@@ -49,7 +49,7 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
                 Date.valueOf(article.getFin_encheres()),
                 article.getPrixInitial(),
                 article.getPrixVente(),
-                article.getNoUtilisateur().getnoUtilisateur(),
+                article.getNoUtilisateur().getNoUtilisateur(),
                 article.getNoCategorie().getNoCategorie()
         );
     }
