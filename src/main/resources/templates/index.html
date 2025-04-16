@@ -14,7 +14,7 @@
 <div class="header container mt-5 mb-5 d-md-flex flex-md-row justify-content-md-between">
 
     <div class="left-content">
-        <p>ENI Enchères</p>
+        <a th:href="@{/}" class="text-decoration-none text-dark">ENI Enchères</a>
     </div>
 
     <div class="right-content">
@@ -41,89 +41,34 @@
                 </select>
             </div>
 
-            <div class="container">
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon1">@</span>
-                    <input type="text" class="form-control" placeholder="Le nom de l'article contient" aria-label="articles" aria-describedby="basic-addon1">
+            <form th:action="@{/}" method="get">
+                <div class="container">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">@</span>
+                        <input type="text" class="form-control" placeholder="Le nom de l'article contient" name="searchQuery" aria-label="articles" aria-describedby="basic-addon1">
+                    </div>
                 </div>
-            </div>
-        </div>
-
-        <div class="right-content w-100">
-            <button type="button" class="btn btn-outline-dark w-100 h-100">Rechercher</button>
-        </div>
+                <button type="submit" class="btn btn-outline-dark w-100">Rechercher</button>
+            </form>
     </div>
 
 </div>
 
-<div class="container">
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2">
-        <div class="col p-2">
-            <div class="container border border-black p-2">
-                <div class="row">
-                    <div class="col-4">
-                        <img height="100px" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLjTMWKCHkuHLWRorwda2Pb-dK8QdTTpKhIg&s" alt="">
-                    </div>
-                    <div class="col-8" style="font-size: 12px">
-                        <p>PC Gamer pour travailler</p>
-                        <p>Prix : 210 points</p>
-                        <p>Classement : 2</p>
-                        <p>Fin de l'enchère : 10/08/2018</p>
-                        <p>Retrait: 10 allèe des Alouettes 44800 Saint Herblain</p>
-                        <p>Vendeur: Johann</p>
-                    </div>
-                </div>
+<div class="container mt-4">
+    <div th:each="article : ${articleVendus}" class="container border border-black py-2 mb-3">
+        <div class="row">
+            <div class="col-4">
+                <img th:src="'https://via.placeholder.com/150'" alt="Photo de l'article" height="100px">
             </div>
-        </div>
-        <div class="col p-2">
-            <div class="container border border-black p-2">
-                <div class="row">
-                    <div class="col-4">
-                        <img height="100px" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLjTMWKCHkuHLWRorwda2Pb-dK8QdTTpKhIg&s" alt="">
-                    </div>
-                    <div class="col-8" style="font-size: 12px">
-                        <p>PC Gamer pour travailler</p>
-                        <p>Prix : 210 points</p>
-                        <p>Classement : 2</p>
-                        <p>Fin de l'enchère : 10/08/2018</p>
-                        <p>Retrait: 10 allèe des Alouettes 44800 Saint Herblain</p>
-                        <p>Vendeur: Johann</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col p-2">
-            <div class="container border border-black p-2">
-                <div class="row">
-                    <div class="col-4">
-                        <img height="100px" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLjTMWKCHkuHLWRorwda2Pb-dK8QdTTpKhIg&s" alt="">
-                    </div>
-                    <div class="col-8" style="font-size: 12px">
-                        <p>PC Gamer pour travailler</p>
-                        <p>Prix : 210 points</p>
-                        <p>Classement : 2</p>
-                        <p>Fin de l'enchère : 10/08/2018</p>
-                        <p>Retrait: 10 allèe des Alouettes 44800 Saint Herblain</p>
-                        <p>Vendeur: Johann</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col p-2">
-            <div class="container border border-black p-2">
-                <div class="row">
-                    <div class="col-4">
-                        <img height="100px" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLjTMWKCHkuHLWRorwda2Pb-dK8QdTTpKhIg&s" alt="">
-                    </div>
-                    <div class="col-8" style="font-size: 12px">
-                        <p>PC Gamer pour travailler</p>
-                        <p>Prix : 210 points</p>
-                        <p>Classement : 2</p>
-                        <p>Fin de l'enchère : 10/08/2018</p>
-                        <p>Retrait: 10 allèe des Alouettes 44800 Saint Herblain</p>
-                        <p>Vendeur: Johann</p>
-                    </div>
-                </div>
+            <div class="col-8" style="font-size: 12px">
+                <p th:text="${article.nom_article}">Nom de l'article</p>
+                <p>Prix : <span th:text="${article.prixInitial}">0</span> points</p>
+                <p>
+                    Fin de l'enchère :
+                    <span th:text="${article.fin_encheres}"></span>
+                </p>
+                <p th:text="'Retrait : ' + ${article.noUtilisateur.rue + ' ' + article.noUtilisateur.codePostal + ' ' + article.noUtilisateur.ville}"></p>
+                <p th:text="'Vendeur : ' + ${article.noUtilisateur.pseudo}">Pseudo</p>
             </div>
         </div>
     </div>

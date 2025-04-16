@@ -29,7 +29,7 @@ public class SecurityConfig {
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/")
+                        .defaultSuccessUrl("/enchere")
                         .permitAll()
                 )
                 .logout(logout -> logout
