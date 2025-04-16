@@ -2,6 +2,7 @@ package com.eni.enchere.ihm;
 
 import com.eni.enchere.bo.Utilisateur;
 import com.eni.enchere.dao.Utilisateur.UtilisateurDAOImpl;
+import com.eni.enchere.services.UtilisateurService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -14,10 +15,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Controller
 public class AuthController {
 
-    private final UtilisateurDAOImpl utilisateurDAO;
+    private final UtilisateurService utilisateurDAO;
     private final PasswordEncoder passwordEncoder;
 
-    public AuthController(UtilisateurDAOImpl utilisateurDAO, PasswordEncoder passwordEncoder) {
+    public AuthController(UtilisateurService utilisateurDAO, PasswordEncoder passwordEncoder) {
         this.utilisateurDAO = utilisateurDAO;
         this.passwordEncoder = passwordEncoder;
     }
@@ -43,7 +44,7 @@ public class AuthController {
         utilisateur.setMotDePasse(passwordEncoder.encode(utilisateur.getMotDePasse()));
         utilisateur.setCredit(0);
         utilisateur.setAdmin(false);
-        utilisateurDAO.insert(utilisateur);
+        utilisateurDAO.insertUtilisateur(utilisateur);
 
         return "redirect:/login?registered";
     }
@@ -52,7 +53,7 @@ public class AuthController {
     public String profileRead(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        Utilisateur utilisateurConnecte = utilisateurDAO.selectByPseudo(auth.getName());
+        Utilisateur utilisateurConnecte = utilisateurDAO.getUtilisateurDAO(auth.getName());
 
         model.addAttribute("utilisateur", utilisateurConnecte);
 
