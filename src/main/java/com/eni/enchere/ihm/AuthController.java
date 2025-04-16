@@ -37,7 +37,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public String registerUser(Utilisateur utilisateur, Model model) {
-        if (utilisateurService.getUtilisateurDAO(utilisateur.getPseudo()) != null) {
+        if (utilisateurService.getUtilisateurByPseudo(utilisateur.getPseudo()) != null) {
             model.addAttribute("message", "Ce pseudo est déjà utilisé");
 
             return "register";

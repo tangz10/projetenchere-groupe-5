@@ -9,15 +9,21 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final UtilisateurDAOImpl utilisateurDAO;
+    private final UtilisateurService utilisateurService;
 
-    public CustomUserDetailsService(UtilisateurDAOImpl utilisateurDAO) {
-        this.utilisateurDAO = utilisateurDAO;
+    public CustomUserDetailsService(UtilisateurService utilisateurService) {
+        this.utilisateurService = utilisateurService;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        Utilisateur utilisateur = utilisateurDAO.selectByPseudo(username);
+        Utilisateur utilisateur;
+        
+        utilisateur = utilisateurService.getUtilisateurByPseudo(username);
+
+        if (utilisateur == null) {
+            utilisateur = utilisateurService.getUtilisateurByEmail(username);
+        }
 
         return org.springframework.security.core.userdetails.User.builder()
                 .username(utilisateur.getPseudo())

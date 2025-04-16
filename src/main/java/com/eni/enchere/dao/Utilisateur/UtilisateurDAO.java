@@ -11,5 +11,6 @@ public interface UtilisateurDAO {
     Utilisateur selectById(long id);
     List<Utilisateur> selectAll();
     Utilisateur selectByPseudo(String pseudo);
+    Utilisateur selectByEmail(String email);
 }
 
