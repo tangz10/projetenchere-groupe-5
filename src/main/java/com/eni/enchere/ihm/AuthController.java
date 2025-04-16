@@ -64,7 +64,7 @@ public class AuthController {
     public String profileEdit(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        Utilisateur utilisateurConnecte = utilisateurDAO.selectByPseudo(auth.getName());
+        Utilisateur utilisateurConnecte = utilisateurDAO.getUtilisateurDAO(auth.getName());
 
         model.addAttribute("utilisateur", utilisateurConnecte);
 
