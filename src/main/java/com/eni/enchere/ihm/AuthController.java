@@ -46,13 +46,7 @@ public class AuthController {
         utilisateurDAO.insert(utilisateur);
 
         return "redirect:/login?registered";
-    }/*
-
-    @GetMapping("/profile/edit")
-    public String profileEdit(Model model) {
-        model.addAttribute("message", "Editez votre profile");
-        return "profile_edit"; // Retourne "login.html" depuis /templates
-    }*/
+    }
 
     @GetMapping("/profile")
     public String profileRead(Model model) {
@@ -63,6 +57,17 @@ public class AuthController {
         model.addAttribute("utilisateur", utilisateurConnecte);
 
         return "profile_read";
+    }
+
+    @GetMapping("/profile/edit")
+    public String profileEdit(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        Utilisateur utilisateurConnecte = utilisateurDAO.selectByPseudo(auth.getName());
+
+        model.addAttribute("utilisateur", utilisateurConnecte);
+
+        return "profile_edit";
     }
 
 }
