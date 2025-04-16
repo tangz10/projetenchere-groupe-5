@@ -99,25 +99,28 @@
 
 
   <div class="container mt-4">
-    <div th:each="article : ${articleVendus}" class="container border border-black py-2 mb-3">
-      <div class="row">
-        <div class="col-4">
-          <img th:src="'https://via.placeholder.com/150'" alt="Photo de l'article" height="100px">
+    <div th:each="article : ${articleVendus}">
+      <a th:href="@{/enchere/vente(id=${article.getNoArticle()})}" class="text-decoration-none text-dark">
+        <div class="container border border-black py-2 mb-3">
+          <div class="row">
+            <div class="col-4">
+              <img th:src="'https://via.placeholder.com/150'" alt="Photo de l'article" height="100px">
+            </div>
+            <div class="col-8" style="font-size: 12px">
+              <p th:text="${article.nom_article}">Nom de l'article</p>
+              <p>Prix : <span th:text="${article.prixInitial}">0</span> points</p>
+              <p>
+                Fin de l'enchère :
+                <span th:text="${#temporals.format(article.fin_encheres, 'dd/MM/yyyy')}"></span>
+              </p>
+              <p th:text="'Retrait : ' + ${article.noUtilisateur.rue + ' ' + article.noUtilisateur.codePostal + ' ' + article.noUtilisateur.ville}"></p>
+              <p th:text="'Vendeur : ' + ${article.noUtilisateur.pseudo}">Pseudo</p>
+            </div>
+          </div>
         </div>
-        <div class="col-8" style="font-size: 12px">
-          <p th:text="${article.nom_article}">Nom de l'article</p>
-          <p>Prix : <span th:text="${article.prixInitial}">0</span> points</p>
-          <p>
-            Fin de l'enchère :
-            <span th:text="${article.fin_encheres}"></span>
-          </p>
-          <p th:text="'Retrait : ' + ${article.noUtilisateur.rue + ' ' + article.noUtilisateur.codePostal + ' ' + article.noUtilisateur.ville}"></p>
-          <p th:text="'Vendeur : ' + ${article.noUtilisateur.pseudo}">Pseudo</p>
-        </div>
-      </div>
+      </a>
     </div>
   </div>
-
 
 </div>
 

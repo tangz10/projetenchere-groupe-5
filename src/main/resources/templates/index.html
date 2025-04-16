@@ -31,15 +31,17 @@
     <div class="d-md-flex flex-md-row">
 
         <div class="left-content w-100">
-            <div class="container d-flex flex-row gap-2 align-items-baseline">
-                <p>Catégories</p>
-                <select class="form-select" aria-label="Default select example">
-                    <option selected value="0">Toutes</option>
-                    <th:block th:each="categorie : ${categories}">
-                        <option th:value="${categorie.noCategorie}" th:text="${categorie.libelle}"></option>
-                    </th:block>
-                </select>
-            </div>
+            <form th:action="@{/}" method="get">
+                <div class="container d-flex flex-row gap-2 align-items-baseline">
+                    <p>Categories</p>
+                    <select class="form-select" name="categorie" aria-label="Default select example" onchange="this.form.submit()">
+                        <option th:value="0" th:text="'Toutes'" th:selected="${categorieId == 0}"></option> <!-- Si categorieId == 0, on sélectionne "Toutes" -->
+                        <th:block th:each="categorie : ${categories}">
+                            <option th:value="${categorie.noCategorie}" th:text="${categorie.libelle}" th:selected="${categorie.noCategorie == categorieId}"></option>
+                        </th:block>
+                    </select>
+                </div>
+            </form>
 
             <form th:action="@{/}" method="get">
                 <div class="container">
