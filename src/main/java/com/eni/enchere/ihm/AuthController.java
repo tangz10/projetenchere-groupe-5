@@ -7,7 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -48,8 +48,8 @@ public class AuthController {
         return "redirect:/login?registered";
     }
 
-    @GetMapping("/profile")
-    public String profileRead(Model model) {
+    @GetMapping("/my_profile")
+    public String myProfile(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         Utilisateur utilisateurConnecte = utilisateurDAO.selectByPseudo(auth.getName());
@@ -59,7 +59,7 @@ public class AuthController {
         return "profile_read";
     }
 
-    @GetMapping("/profile/edit")
+    @GetMapping("/my_profile/edit")
     public String profileEdit(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -68,6 +68,15 @@ public class AuthController {
         model.addAttribute("utilisateur", utilisateurConnecte);
 
         return "profile_edit";
+    }
+
+    @GetMapping("/user/{pseudo}")
+    public String user(@PathVariable String pseudo, Model model) {
+        Utilisateur utilisateur = utilisateurDAO.selectByPseudo(pseudo);
+
+        model.addAttribute("utilisateur", utilisateur);
+
+        return "profile_read";
     }
 
 }

@@ -19,118 +19,119 @@
     <p class="fs-4">Mon Profil</p>
 </div>
 
-<div class="container text-center mt-3">
-    <div class="row">
-        <div class="col d-flex align-items-center">
-            Pseudo:
+<form th:action="@{/my_profile/edit}" method="post">
+    <div class="container text-center mt-3">
+        <div class="row">
+            <div class="col d-flex align-items-center">
+                Pseudo:
+            </div>
+            <div class="col">
+                <input type="text" class="form-control p-2 border-black" aria-label="pseudo" th:value="${utilisateur.getPseudo()}">
+            </div>
         </div>
-        <div class="col">
-            <input type="text" class="form-control p-2 border-black" aria-label="pseudo">
+
+        <div class="row mt-2">
+            <div class="col d-flex align-items-center">
+                Nom:
+            </div>
+            <div class="col">
+                <input type="text" class="form-control p-2 border-black" aria-label="lastname" th:value="${utilisateur.getNom()}">
+            </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col d-flex align-items-center">
+                Prénom:
+            </div>
+            <div class="col">
+                <input type="text" class="form-control p-2 border-black" aria-label="name" th:value="${utilisateur.getPrenom()}">
+            </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col d-flex align-items-center">
+                Email:
+            </div>
+            <div class="col">
+                <input type="text" class="form-control p-2 border-black" aria-label="mail" th:value="${utilisateur.getEmail()}">
+            </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col d-flex align-items-center">
+                Téléphone:
+            </div>
+            <div class="col">
+                <input type="text" class="form-control p-2 border-black" aria-label="phone" th:value="${utilisateur.getTelephone()}">
+            </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col d-flex align-items-center">
+                Rue:
+            </div>
+            <div class="col">
+                <input type="text" class="form-control p-2 border-black" aria-label="street" th:value="${utilisateur.getRue()}">
+            </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col d-flex align-items-center">
+                Code postal:
+            </div>
+            <div class="col">
+                <input type="text" class="form-control p-2 border-black" aria-label="zipcode" th:value="${utilisateur.getCodePostal()}">
+            </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col d-flex align-items-center">
+                Ville:
+            </div>
+            <div class="col">
+                <input type="text" class="form-control p-2 border-black" aria-label="city" th:value="${utilisateur.getVille()}">
+            </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col d-flex align-items-center">
+                Mot de passe:
+            </div>
+            <div class="col">
+                <input type="password" class="form-control p-2 border-black" aria-label="password">
+            </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col d-flex align-items-center">
+                Confirmation:
+            </div>
+            <div class="col">
+                <input type="password" class="form-control p-2 border-black" aria-label="password-confirmation">
+            </div>
         </div>
     </div>
 
-    <div class="row mt-2">
-        <div class="col d-flex align-items-center">
-            Nom:
-        </div>
-        <div class="col">
-            <input type="text" class="form-control p-2 border-black" aria-label="lastname">
-        </div>
+    <div class="container mt-3">
+        <p>Crédit: 0</p>
     </div>
 
-    <div class="row mt-2">
-        <div class="col d-flex align-items-center">
-            Prénom:
-        </div>
-        <div class="col">
-            <input type="text" class="form-control p-2 border-black" aria-label="name">
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col p-1">
+                <button type="submit" class="btn btn-outline-dark w-100" style="height: 70px">Enregistrer</button>
+            </div>
+
+            <div class="col p-1">
+                <button type="button" class="btn btn-outline-dark w-100" style="height: 70px">Supprimer mon compte</button>
+            </div>
+
+            <div class="col p-1">
+                <button type="button" class="btn btn-outline-dark w-100" style="height: 70px">Retour</button>
+            </div>
         </div>
     </div>
-
-    <div class="row mt-2">
-        <div class="col d-flex align-items-center">
-            Email:
-        </div>
-        <div class="col">
-            <input type="text" class="form-control p-2 border-black" aria-label="mail">
-        </div>
-    </div>
-
-    <div class="row mt-2">
-        <div class="col d-flex align-items-center">
-            Téléphone:
-        </div>
-        <div class="col">
-            <input type="text" class="form-control p-2 border-black" aria-label="phone">
-        </div>
-    </div>
-
-    <div class="row mt-2">
-        <div class="col d-flex align-items-center">
-            Rue:
-        </div>
-        <div class="col">
-            <input type="text" class="form-control p-2 border-black" aria-label="street">
-        </div>
-    </div>
-
-    <div class="row mt-2">
-        <div class="col d-flex align-items-center">
-            Code postal:
-        </div>
-        <div class="col">
-            <input type="text" class="form-control p-2 border-black" aria-label="zipcode">
-        </div>
-    </div>
-
-    <div class="row mt-2">
-        <div class="col d-flex align-items-center">
-            Ville:
-        </div>
-        <div class="col">
-            <input type="text" class="form-control p-2 border-black" aria-label="city">
-        </div>
-    </div>
-
-    <div class="row mt-2">
-        <div class="col d-flex align-items-center">
-            Mot de passe:
-        </div>
-        <div class="col">
-            <input type="password" class="form-control p-2 border-black" aria-label="password">
-        </div>
-    </div>
-
-    <div class="row mt-2">
-        <div class="col d-flex align-items-center">
-            Confirmation:
-        </div>
-        <div class="col">
-            <input type="password" class="form-control p-2 border-black" aria-label="password-confirmation">
-        </div>
-    </div>
-</div>
-
-<div class="container mt-3">
-    <p>Crédit: 0</p>
-</div>
-
-<div class="container mt-3">
-    <div class="row">
-        <div class="col p-1">
-            <button type="button" class="btn btn-outline-dark w-100" style="height: 70px">Enregistrer</button>
-        </div>
-
-        <div class="col p-1">
-            <button type="button" class="btn btn-outline-dark w-100" style="height: 70px">Supprimer mon compte</button>
-        </div>
-
-        <div class="col p-1">
-            <button type="button" class="btn btn-outline-dark w-100" style="height: 70px">Retour</button>
-        </div>
-    </div>
-</div>
-
+</form>
 
 <!-- Bootstrap JS (optionnel) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
