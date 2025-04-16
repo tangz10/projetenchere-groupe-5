@@ -1,7 +1,6 @@
 package com.eni.enchere.ihm;
 
 import com.eni.enchere.bo.Utilisateur;
-import com.eni.enchere.dao.Utilisateur.UtilisateurDAOImpl;
 import com.eni.enchere.services.UtilisateurService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -73,7 +72,7 @@ public class AuthController {
 
     @GetMapping("/user/{pseudo}")
     public String user(@PathVariable String pseudo, Model model) {
-        Utilisateur utilisateur = utilisateurDAO.selectByPseudo(pseudo);
+        Utilisateur utilisateur = utilisateurDAO.getUtilisateurDAO(pseudo);
 
         model.addAttribute("utilisateur", utilisateur);
 
