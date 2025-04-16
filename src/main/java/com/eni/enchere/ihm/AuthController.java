@@ -14,11 +14,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Controller
 public class AuthController {
 
-    private final UtilisateurService utilisateurDAO;
+    private final UtilisateurService utilisateurService;
     private final PasswordEncoder passwordEncoder;
 
-    public AuthController(UtilisateurService utilisateurDAO, PasswordEncoder passwordEncoder) {
-        this.utilisateurDAO = utilisateurDAO;
+    public AuthController(UtilisateurService utilisateurService, PasswordEncoder passwordEncoder) {
+        this.utilisateurService = utilisateurService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -43,7 +43,7 @@ public class AuthController {
         utilisateur.setMotDePasse(passwordEncoder.encode(utilisateur.getMotDePasse()));
         utilisateur.setCredit(0);
         utilisateur.setAdmin(false);
-        utilisateurDAO.insertUtilisateur(utilisateur);
+        utilisateurService.insertUtilisateur(utilisateur);
 
         return "redirect:/login?registered";
     }
@@ -52,7 +52,7 @@ public class AuthController {
     public String myProfile(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        Utilisateur utilisateurConnecte = utilisateurDAO.getUtilisateurDAO(auth.getName());
+        Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurDAO(auth.getName());
 
         model.addAttribute("utilisateur", utilisateurConnecte);
 
@@ -63,7 +63,7 @@ public class AuthController {
     public String profileEdit(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        Utilisateur utilisateurConnecte = utilisateurDAO.getUtilisateurDAO(auth.getName());
+        Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurDAO(auth.getName());
 
         model.addAttribute("utilisateur", utilisateurConnecte);
 
@@ -72,7 +72,7 @@ public class AuthController {
 
     @GetMapping("/user/{pseudo}")
     public String user(@PathVariable String pseudo, Model model) {
-        Utilisateur utilisateur = utilisateurDAO.getUtilisateurDAO(pseudo);
+        Utilisateur utilisateur = utilisateurService.getUtilisateurDAO(pseudo);
 
         model.addAttribute("utilisateur", utilisateur);
 
