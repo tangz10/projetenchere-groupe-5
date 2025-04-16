@@ -15,36 +15,45 @@
   <p>ENI Enchères</p>
 </div>
 
-<form th:action="@{/login}" method="post">
-  <div class="container">
-    <div style="grid-template-columns: 1fr 1fr;" class="d-grid gap-3">
-      <div class="p-2">Identifiant :</div>
-      <input type="text" class="form-control p-2 border-black" aria-label="Username" name="username">
-      <div class="p-2">Mot de passe :</div>
-      <input type="password" class="form-control p-2 border-black" aria-label="password" name="password">
-    </div>
-  </div>
+<div class="container-form w-100">
+  <form th:action="@{/login}" method="post" class="w-100">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-6 mx-auto">
+        <div class="container">
+          <div style="grid-template-columns: 1fr 1fr;" class="d-grid gap-3">
+            <div class="p-2">Identifiant :</div>
+            <input type="text" class="form-control p-2 border-black" aria-label="Username" name="username">
+            <div class="p-2">Mot de passe :</div>
+            <input type="password" class="form-control p-2 border-black" aria-label="password" name="password">
+          </div>
+        </div>
 
-  <div class="container mt-5">
-    <div class="row">
-      <div class="col d-flex align-items-center">
-        <button type="submit" class="btn btn-outline-dark w-100">Connexion</button>
+        <div class="container mt-5">
+          <div class="row">
+            <div class="col d-flex align-items-center">
+              <button type="submit" class="btn btn-outline-dark w-100">Connexion</button>
+            </div>
+
+            <div class="col fs-7">
+              <input class="form-check-input" type="checkbox" value="" id="checkChecked" checked>
+              <label class="form-check-label" for="checkChecked">
+                Se souvenir de moi
+              </label>
+              <br>
+              <a href="">Mot de passe oublié</a>
+            </div>
+          </div>
+        </div>
       </div>
-
-      <div class="col fs-7">
-        <input class="form-check-input" type="checkbox" value="" id="checkChecked" checked>
-        <label class="form-check-label" for="checkChecked">
-          Se souvenir de moi
-        </label>
-        <br>
-        <a href="">Mot de passe oublié</a>
-      </div>
     </div>
-  </div>
-</form>
+  </form>
+</div>
 
-<div class="container mt-3">
-  <a th:href="@{/register}" class="btn btn-outline-dark w-100" style="height: 100px">Créer un compte</a>
+
+<div class="container mt-3 w-100">
+  <div class="col-12 col-md-6 mx-auto">
+    <a th:href="@{/register}" class="btn btn-outline-dark w-100 d-flex align-items-center justify-content-center" style="height: 100px">Créer un compte</a>
+  </div>
 </div>
 
 <!-- Bootstrap JS (optionnel) -->
