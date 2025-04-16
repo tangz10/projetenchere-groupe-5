@@ -3,6 +3,8 @@ package com.eni.enchere.dao.ArticleVendu;
 import com.eni.enchere.bo.ArticleVendu;
 import com.eni.enchere.bo.Categorie;
 import com.eni.enchere.bo.Utilisateur;
+import com.eni.enchere.dao.Categorie.CategorieDAO;
+import com.eni.enchere.dao.Utilisateur.UtilisateurDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -16,6 +18,12 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private UtilisateurDAO utilisateurDAO;
+
+    @Autowired
+    private CategorieDAO categorieDAO;
 
     private final RowMapper<ArticleVendu> articleRowMapper = (rs, rowNum) -> {
         ArticleVendu article = new ArticleVendu();
@@ -72,20 +80,114 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 
     @Override
     public List<ArticleVendu> selectAll() {
-        String sql = "SELECT * FROM ArticlesVendus";
-        return jdbcTemplate.query(sql, articleRowMapper);
+        String sql = "SELECT * FROM articles_vendus";
+
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            ArticleVendu article = new ArticleVendu();
+            article.setNom_article(rs.getString("nom_article"));
+            article.setDescription(rs.getString("description"));
+            article.setDebut_encheres(rs.getDate("date_debut_encheres").toLocalDate());
+            article.setFin_encheres(rs.getDate("date_fin_encheres").toLocalDate());
+            article.setPrixInitial(rs.getLong("prix_initial"));
+            article.setPrixVente(rs.getLong("prix_vente"));
+
+            int idUtilisateur = rs.getInt("no_utilisateur");
+            Utilisateur utilisateur = utilisateurDAO.selectById(idUtilisateur);
+            article.setNoUtilisateur(utilisateur);
+
+            int idCategorie = rs.getInt("no_categorie");
+            Categorie categorie = categorieDAO.selectById(idCategorie);
+            article.setNoCategorie(categorie);
+
+            return article;
+        });
     }
 
     @Override
     public ArticleVendu selectById(long id) {
-        String sql = "SELECT * FROM ArticlesVendus WHERE no_article = ?";
+        String sql = "SELECT * FROM articles_vendus WHERE no_article = ?";
         List<ArticleVendu> result = jdbcTemplate.query(sql, articleRowMapper, id);
         return result.isEmpty() ? null : result.get(0);
     }
 
     @Override
     public List<ArticleVendu> selectByUtilisateur(long noUtilisateur) {
-        String sql = "SELECT * FROM ArticlesVendus WHERE no_utilisateur = ?";
-        return jdbcTemplate.query(sql, articleRowMapper, noUtilisateur);
+        String sql = "SELECT * FROM articles_vendus WHERE no_utilisateur = ?";
+        return jdbcTemplate.query(sql, new Object[]{noUtilisateur}, (rs, rowNum) -> {
+            ArticleVendu article = new ArticleVendu();
+            article.setNom_article(rs.getString("nom_article"));
+            article.setDescription(rs.getString("description"));
+            article.setDebut_encheres(rs.getDate("date_debut_encheres").toLocalDate());
+            article.setFin_encheres(rs.getDate("date_fin_encheres").toLocalDate());
+            article.setPrixInitial(rs.getLong("prix_initial"));
+            article.setPrixVente(rs.getLong("prix_vente"));
+
+            int idUtilisateur = rs.getInt("no_utilisateur");
+            Utilisateur utilisateur = utilisateurDAO.selectById(idUtilisateur);
+            article.setNoUtilisateur(utilisateur);
+
+            int idCategorie = rs.getInt("no_categorie");
+            Categorie categorie = categorieDAO.selectById(idCategorie);
+            article.setNoCategorie(categorie);
+
+            return article;
+        });
     }
+
+
+    @Override
+    public List<ArticleVendu> selectByCategorie(long noCategorie) {
+        String sql = "SELECT * FROM articles_vendus WHERE no_categorie = ?";
+        return jdbcTemplate.query(sql, new Object[]{noCategorie}, (rs, rowNum) -> {
+            // Récupération des informations de l'article
+            ArticleVendu article = new ArticleVendu();
+            article.setNom_article(rs.getString("nom_article"));
+            article.setDescription(rs.getString("description"));
+            article.setDebut_encheres(rs.getDate("date_debut_encheres").toLocalDate());
+            article.setFin_encheres(rs.getDate("date_fin_encheres").toLocalDate());
+            article.setPrixInitial(rs.getLong("prix_initial"));
+            article.setPrixVente(rs.getLong("prix_vente"));
+
+            // Récupération des informations de l'utilisateur
+            int idUtilisateur = rs.getInt("no_utilisateur");
+            Utilisateur utilisateur = utilisateurDAO.selectById(idUtilisateur); // Assurez-vous que cette méthode existe dans UtilisateurDAO
+            article.setNoUtilisateur(utilisateur);
+
+            // Récupération des informations de la catégorie
+            int idCategorie = rs.getInt("no_categorie");
+            Categorie categorie = categorieDAO.selectById(idCategorie); // Assurez-vous que cette méthode existe dans CategorieDAO
+            article.setNoCategorie(categorie);
+
+            return article;
+        });
+    }
+
+
+    @Override
+    public List<ArticleVendu> selectByName(String Name) {
+        String sql = "SELECT * FROM articles_vendus WHERE nom_article LIKE ?";
+        return jdbcTemplate.query(sql, new Object[]{"%" + Name + "%"}, (rs, rowNum) -> {
+            // Récupération des informations de l'article
+            ArticleVendu article = new ArticleVendu();
+            article.setNom_article(rs.getString("nom_article"));
+            article.setDescription(rs.getString("description"));
+            article.setDebut_encheres(rs.getDate("date_debut_encheres").toLocalDate());
+            article.setFin_encheres(rs.getDate("date_fin_encheres").toLocalDate());
+            article.setPrixInitial(rs.getLong("prix_initial"));
+            article.setPrixVente(rs.getLong("prix_vente"));
+
+            // Récupération des informations de l'utilisateur
+            int idUtilisateur = rs.getInt("no_utilisateur");
+            Utilisateur utilisateur = utilisateurDAO.selectById(idUtilisateur); // Assurez-vous que cette méthode existe dans UtilisateurDAO
+            article.setNoUtilisateur(utilisateur);
+
+            // Récupération des informations de la catégorie
+            int idCategorie = rs.getInt("no_categorie");
+            Categorie categorie = categorieDAO.selectById(idCategorie); // Assurez-vous que cette méthode existe dans CategorieDAO
+            article.setNoCategorie(categorie);
+
+            return article;
+        });
+    }
+
 }
