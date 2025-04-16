@@ -13,9 +13,17 @@ public class UtilisateurService {
     private UtilisateurDAO utilisateurDAO;
 
 
-    public Utilisateur getUtilisateurDAO(String pseudo) {
+    public Utilisateur getUtilisateurByPseudo(String pseudo) {
         try {
             return utilisateurDAO.selectByPseudo(pseudo);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    public Utilisateur getUtilisateurByEmail(String email) {
+        try {
+            return utilisateurDAO.selectByEmail(email);
         } catch (EmptyResultDataAccessException e) {
             return null;
         }

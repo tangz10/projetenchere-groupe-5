@@ -106,4 +106,11 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
         List<Utilisateur> result = jdbcTemplate.query(sql, utilisateurRowMapper, pseudo);
         return result.isEmpty() ? null : result.get(0);
     }
+
+    @Override
+    public Utilisateur selectByEmail(String email) {
+        String sql = "SELECT * FROM Utilisateurs WHERE email=?";
+        List<Utilisateur> result = jdbcTemplate.query(sql, utilisateurRowMapper, email);
+        return result.isEmpty() ? null : result.get(0);
+    }
 }

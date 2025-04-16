@@ -78,7 +78,7 @@ public class EnchereController {
             Model model) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurDAO(auth.getName());
+        Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurByPseudo(auth.getName());
 
         if (utilisateurConnecte == null) {
             return "redirect:/login";
@@ -151,7 +151,7 @@ public class EnchereController {
         model.addAttribute("categories", categories);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurDAO(auth.getName());
+        Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurByPseudo(auth.getName());
 
         model.addAttribute("utilisateur", utilisateurConnecte);
 
@@ -167,7 +167,7 @@ public class EnchereController {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurDAO(auth.getName());
+        Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurByPseudo(auth.getName());
         article.setNoUtilisateur(utilisateurConnecte);
         article.setPrixVente(article.getPrixInitial());
 

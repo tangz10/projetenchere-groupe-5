@@ -31,7 +31,7 @@ public class ProfileController {
     public String myProfile(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurDAO(auth.getName());
+        Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurByPseudo(auth.getName());
 
         model.addAttribute("utilisateur", utilisateurConnecte);
 
@@ -42,7 +42,7 @@ public class ProfileController {
     public String myProfileEdit(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurDAO(auth.getName());
+        Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurByPseudo(auth.getName());
 
         model.addAttribute("utilisateur", utilisateurConnecte);
 
@@ -51,7 +51,7 @@ public class ProfileController {
 
     @GetMapping("/user/{pseudo}")
     public String user(@PathVariable String pseudo, Model model) {
-        Utilisateur utilisateur = utilisateurService.getUtilisateurDAO(pseudo);
+        Utilisateur utilisateur = utilisateurService.getUtilisateurByPseudo(pseudo);
 
         model.addAttribute("utilisateur", utilisateur);
 
@@ -62,7 +62,7 @@ public class ProfileController {
     public String editMyProfile(Utilisateur utilisateur) {
         Authentication currentAuth = SecurityContextHolder.getContext().getAuthentication();
 
-        Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurDAO(currentAuth.getName());
+        Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurByPseudo(currentAuth.getName());
 
         utilisateur.setNoUtilisateur(utilisateurConnecte.getNoUtilisateur());
 
@@ -86,7 +86,7 @@ public class ProfileController {
     public String deleteMyProfile(Utilisateur utilisateur) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurDAO(auth.getName());
+        Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurByPseudo(auth.getName());
 
         utilisateurService.deleteUtilisateur(utilisateurConnecte.getNoUtilisateur());
 
