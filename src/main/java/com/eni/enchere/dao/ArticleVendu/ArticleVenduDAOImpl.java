@@ -84,6 +84,7 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
             ArticleVendu article = new ArticleVendu();
+            article.setNoArticle(rs.getInt("no_article"));
             article.setNom_article(rs.getString("nom_article"));
             article.setDescription(rs.getString("description"));
             article.setDebut_encheres(rs.getDate("date_debut_encheres").toLocalDate());
@@ -106,9 +107,31 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
     @Override
     public ArticleVendu selectById(long id) {
         String sql = "SELECT * FROM articles_vendus WHERE no_article = ?";
-        List<ArticleVendu> result = jdbcTemplate.query(sql, articleRowMapper, id);
+
+        List<ArticleVendu> result = jdbcTemplate.query(sql, (rs, rowNum) -> {
+            ArticleVendu article = new ArticleVendu();
+            article.setNoArticle(rs.getInt("no_article"));
+            article.setNom_article(rs.getString("nom_article"));
+            article.setDescription(rs.getString("description"));
+            article.setDebut_encheres(rs.getDate("date_debut_encheres").toLocalDate());
+            article.setFin_encheres(rs.getDate("date_fin_encheres").toLocalDate());
+            article.setPrixInitial(rs.getLong("prix_initial"));
+            article.setPrixVente(rs.getLong("prix_vente"));
+
+            int idUtilisateur = rs.getInt("no_utilisateur");
+            Utilisateur utilisateur = utilisateurDAO.selectById(idUtilisateur);
+            article.setNoUtilisateur(utilisateur);
+
+            int idCategorie = rs.getInt("no_categorie");
+            Categorie categorie = categorieDAO.selectById(idCategorie);
+            article.setNoCategorie(categorie);
+
+            return article;
+        }, id);
+
         return result.isEmpty() ? null : result.get(0);
     }
+
 
     @Override
     public List<ArticleVendu> selectByUtilisateur(long noUtilisateur) {

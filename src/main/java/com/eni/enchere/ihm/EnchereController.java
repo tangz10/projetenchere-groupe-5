@@ -122,10 +122,20 @@ public class EnchereController {
     }
 
     @GetMapping("/enchere/vente")
-    public String enchereVente(Model model) {
-        model.addAttribute("message", "Consulter une vente aux enchères");
-        return "enchere_vente";
+    public String afficherDetailArticle(@RequestParam("id") int id, Model model) {
+        ArticleVendu article = ArticleVenduService.getArticleVenduById(id);
+
+        if (article == null) {
+            model.addAttribute("message", "Article introuvable");
+            return "redirect:/enchere";
+        }
+
+        model.addAttribute("article", article);
+        model.addAttribute("message", "Détails de l'enchère");
+
+        return "enchere_vente"; // La page des détails d’un article
     }
+
 
     @GetMapping("/enchere/win")
     public String enchereWin(Model model) {

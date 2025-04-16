@@ -25,23 +25,30 @@ public class HomeController {
     @GetMapping("/")
     public String index(
             @RequestParam(value = "searchQuery", required = false) String searchQuery,
+            @RequestParam(value = "categorie", required = false, defaultValue = "0") Long categorieId,
             Model model
     ) {
         List<ArticleVendu> articleVendus;
 
         if (searchQuery != null && !searchQuery.isBlank()) {
+            // Recherche par nom uniquement
             articleVendus = ArticleVenduService.getAllArticleVenduByName(searchQuery);
             model.addAttribute("message", "Résultats pour : " + searchQuery);
+        } else if (categorieId != null && categorieId != 0) {
+            // Filtrage par catégorie
+            articleVendus = ArticleVenduService.getArticleVenduByCategorie(categorieId);
+            model.addAttribute("message", "Articles de la catégorie sélectionnée");
         } else {
+            // Tous les articles
             articleVendus = ArticleVenduService.getAllArticleVendu();
             model.addAttribute("message", "Bienvenue sur mon site Spring Boot + Bootstrap !");
         }
 
-        List<Categorie> categories = categorieService.getAllCategories();
-        model.addAttribute("categories", categories);
         model.addAttribute("articleVendus", articleVendus);
+        model.addAttribute("categories", categorieService.getAllCategories());
+        model.addAttribute("categorieId", categorieId); // Pour garder la sélection côté front
 
-        return "index"; // Toujours la page d'accueil
+        return "index";
     }
 
 
