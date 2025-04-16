@@ -24,4 +24,12 @@ public class UtilisateurService {
     public void insertUtilisateur(Utilisateur utilisateur) {
         utilisateurDAO.insert(utilisateur);
     }
+
+    public void updateUtilisateur(Utilisateur utilisateur) {
+        utilisateurDAO.update(utilisateur);
+    }
+
+    public void deleteUtilisateur(long id) {
+        utilisateurDAO.delete(id);
+    }
 }
