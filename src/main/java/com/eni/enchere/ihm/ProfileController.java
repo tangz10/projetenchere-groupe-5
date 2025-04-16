@@ -51,7 +51,14 @@ public class ProfileController {
 
     @GetMapping("/user/{pseudo}")
     public String user(@PathVariable String pseudo, Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
         Utilisateur utilisateur = utilisateurService.getUtilisateurByPseudo(pseudo);
+
+        if (utilisateur.getPseudo().equals(auth.getName()))
+        {
+            return "redirect:/my_profile";
+        }
 
         model.addAttribute("utilisateur", utilisateur);
 
