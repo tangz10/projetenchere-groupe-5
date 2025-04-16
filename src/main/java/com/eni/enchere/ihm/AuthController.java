@@ -43,6 +43,12 @@ public class AuthController {
             return "register";
         }
 
+        if (utilisateurService.getUtilisateurByEmail(utilisateur.getEmail()) != null) {
+            model.addAttribute("message", "Cet email est déjà utilisé");
+
+            return "register";
+        }
+
         utilisateur.setMotDePasse(passwordEncoder.encode(utilisateur.getMotDePasse()));
         utilisateur.setCredit(0);
         utilisateur.setAdmin(false);

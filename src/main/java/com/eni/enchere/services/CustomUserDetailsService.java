@@ -1,7 +1,6 @@
 package com.eni.enchere.services;
 
 import com.eni.enchere.bo.Utilisateur;
-import com.eni.enchere.dao.Utilisateur.UtilisateurDAOImpl;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) {
         Utilisateur utilisateur;
-        
+
         utilisateur = utilisateurService.getUtilisateurByPseudo(username);
 
         if (utilisateur == null) {
