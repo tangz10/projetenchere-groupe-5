@@ -7,6 +7,8 @@ import com.eni.enchere.dao.Utilisateur.UtilisateurDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ArticleVenduService {
 
@@ -16,4 +18,11 @@ public class ArticleVenduService {
     public void insertArticleVendu(ArticleVendu articleVendu) {
         articleVenduDAO.insert(articleVendu);
     }
+
+    public List<ArticleVendu> getAllArticleVendu() {return articleVenduDAO.selectAll();}
+
+    public List<ArticleVendu> getAllArticleVenduByName(String Name) {return articleVenduDAO.selectByName(Name);}
+
+    public List<ArticleVendu> getArticleVenduByCategorie(long noCategorie) {return articleVenduDAO.selectByCategorie(noCategorie);}
+    public List<ArticleVendu> getArticleVenduByUser(long noUtilisateur) {return articleVenduDAO.selectByUtilisateur(noUtilisateur);}
 }

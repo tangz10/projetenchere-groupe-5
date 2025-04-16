@@ -8,4 +8,6 @@ public interface ArticleVenduDAO {
     List<ArticleVendu> selectAll();
     ArticleVendu selectById(long id);
     List<ArticleVendu> selectByUtilisateur(long noUtilisateur);
+    List<ArticleVendu> selectByCategorie(long noCategorie);
+    List<ArticleVendu> selectByName(String Name);
 }
