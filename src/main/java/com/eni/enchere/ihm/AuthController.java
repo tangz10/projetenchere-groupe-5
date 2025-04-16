@@ -1,25 +1,28 @@
 package com.eni.enchere.ihm;
 
 import com.eni.enchere.bo.Utilisateur;
+import com.eni.enchere.services.CustomUserDetailsService;
 import com.eni.enchere.services.UtilisateurService;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Controller
 public class AuthController {
 
     private final UtilisateurService utilisateurService;
     private final PasswordEncoder passwordEncoder;
+    private final CustomUserDetailsService userDetailsService;
 
-    public AuthController(UtilisateurService utilisateurService, PasswordEncoder passwordEncoder) {
+    public AuthController(UtilisateurService utilisateurService, PasswordEncoder passwordEncoder, CustomUserDetailsService userDetailsService) {
         this.utilisateurService = utilisateurService;
         this.passwordEncoder = passwordEncoder;
+        this.userDetailsService = userDetailsService;
     }
 
     @GetMapping("/login")
@@ -33,50 +36,27 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String registerUser(Utilisateur utilisateur, Model model) {/*
-        // vérifier que l'utilisateur n'existe pas déjà
-        if (utilisateurDAO.selectByPseudo(utilisateur.getPseudo())) {
-            model.addAttribute("error", "Ce nom d'utilisateur existe déjà.");
+    public String registerUser(Utilisateur utilisateur, Model model) {
+        if (utilisateurService.getUtilisateurDAO(utilisateur.getPseudo()) != null) {
+            model.addAttribute("message", "Ce pseudo est déjà utilisé");
+
             return "register";
-        }*/
+        }
 
         utilisateur.setMotDePasse(passwordEncoder.encode(utilisateur.getMotDePasse()));
         utilisateur.setCredit(0);
         utilisateur.setAdmin(false);
         utilisateurService.insertUtilisateur(utilisateur);
 
+        /*
+        UserDetails userDetails = userDetailsService.loadUserByUsername(utilisateur.getPseudo());
+        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
+        auth.setAuthenticated(true);
+
+        SecurityContextHolder.getContext().setAuthentication(auth);
+        */
+
         return "redirect:/login?registered";
-    }
-
-    @GetMapping("/my_profile")
-    public String myProfile(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurDAO(auth.getName());
-
-        model.addAttribute("utilisateur", utilisateurConnecte);
-
-        return "profile_read";
-    }
-
-    @GetMapping("/my_profile/edit")
-    public String profileEdit(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurDAO(auth.getName());
-
-        model.addAttribute("utilisateur", utilisateurConnecte);
-
-        return "profile_edit";
-    }
-
-    @GetMapping("/user/{pseudo}")
-    public String user(@PathVariable String pseudo, Model model) {
-        Utilisateur utilisateur = utilisateurService.getUtilisateurDAO(pseudo);
-
-        model.addAttribute("utilisateur", utilisateur);
-
-        return "profile_read";
     }
 
 }
