@@ -22,6 +22,7 @@ public class ArticleVenduService {
     public List<ArticleVendu> getAllArticleVendu() {return articleVenduDAO.selectAll();}
 
     public List<ArticleVendu> getAllArticleVenduByName(String Name) {return articleVenduDAO.selectByName(Name);}
+    public ArticleVendu getArticleVenduById(int id) {return articleVenduDAO.selectById(id);}
 
     public List<ArticleVendu> getArticleVenduByCategorie(long noCategorie) {return articleVenduDAO.selectByCategorie(noCategorie);}
     public List<ArticleVendu> getArticleVenduByUser(long noUtilisateur) {return articleVenduDAO.selectByUtilisateur(noUtilisateur);}
