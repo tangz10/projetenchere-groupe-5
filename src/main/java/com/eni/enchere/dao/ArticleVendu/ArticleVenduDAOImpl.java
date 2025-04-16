@@ -40,19 +40,35 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 
     @Override
     public void insert(ArticleVendu article) {
-        String sql = "INSERT INTO ArticlesVendus (nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie) " +
+        if (article == null || article.getNom_article() == null || article.getNom_article().isEmpty()) {
+            throw new IllegalArgumentException("Le nom de l'article est obligatoire");
+        }
+        if (article.getNoUtilisateur() == null) {
+            throw new IllegalArgumentException("L'utilisateur connecté est obligatoire");
+        }
+        if (article.getNoCategorie() == null) {
+            throw new IllegalArgumentException("La catégorie est obligatoire");
+        }
+
+        // Vérification des dates, si elles sont null, on les met à null pour les insérer dans la base de données
+        java.sql.Date dateDebut = (article.getDebut_encheres() != null) ? java.sql.Date.valueOf(article.getDebut_encheres()) : null;
+        java.sql.Date dateFin = (article.getFin_encheres() != null) ? java.sql.Date.valueOf(article.getFin_encheres()) : null;
+
+        String sql = "INSERT INTO articles_vendus(nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
         jdbcTemplate.update(sql,
                 article.getNom_article(),
                 article.getDescription(),
-                Date.valueOf(article.getDebut_encheres()),
-                Date.valueOf(article.getFin_encheres()),
+                dateDebut,  // Si null, la base de données devrait accepter
+                dateFin,    // Idem
                 article.getPrixInitial(),
                 article.getPrixVente(),
-                article.getNoUtilisateur().getNoUtilisateur(),
-                article.getNoCategorie().getNoCategorie()
+                article.getNoUtilisateur() != null ? article.getNoUtilisateur().getNoUtilisateur() : null, // Assure que ce n'est pas null
+                article.getNoCategorie() != null ? article.getNoCategorie().getNoCategorie() : null // Idem pour la catégorie
         );
     }
+
 
     @Override
     public List<ArticleVendu> selectAll() {
