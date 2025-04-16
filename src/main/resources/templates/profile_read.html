@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Votre profile</title>
+    <title>Utilisateur</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -13,10 +13,6 @@
 
 <div class="header container mt-5 mb-3">
     <p>ENI Enchères</p>
-</div>
-
-<div class="container text-center">
-    <p class="fs-4">Mon Profil</p>
 </div>
 
 <div class="container text-center mt-3">
@@ -94,7 +90,7 @@
 </div>
 
 <div class="container mt-3">
-    <a th:href="@{/profile/${utilisateur.getNoUtilisateur()}/edit}" class="btn btn-outline-dark w-100" style="height: 70px">Modifier</a>
+    <a th:href="@{/profile/edit}" class="btn btn-outline-dark w-100" style="height: 70px">Modifier</a>
 </div>
 
 
