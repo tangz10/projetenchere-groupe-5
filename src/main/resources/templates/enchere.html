@@ -86,10 +86,10 @@
   <div class="container d-flex flex-row gap-2 align-items-baseline">
     <p>Categories</p>
     <select class="form-select" aria-label="Default select example">
-      <option selected>Toutes</option>
-      <option value="1">One</option>
-      <option value="2">Two</option>
-      <option value="3">Three</option>
+      <option selected value="0">Toutes</option>
+      <th:block th:each="categorie : ${categories}">
+        <option th:value="${categorie.noCategorie}" th:text="${categorie.libelle}"></option>
+      </th:block>
     </select>
   </div>
 
