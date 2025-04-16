@@ -1,4 +1,4 @@
-package com.eni.enchere;
+package com.eni.enchere.security;
 
 import com.eni.enchere.services.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
