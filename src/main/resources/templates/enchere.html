@@ -104,7 +104,7 @@
 
   <div class="container mt-4">
     <div th:each="article : ${articleVendus}">
-      <div th:href="@{/enchere/vente(id=${article.getNoArticle()})}" class="text-decoration-none text-dark">
+      <a th:href="@{/enchere/vente/{id}(id=${article.getNoArticle()})}" class="text-decoration-none text-dark">
         <div class="container border border-black py-2 mb-3">
           <div class="row">
             <div class="col-4">
@@ -129,11 +129,11 @@
                 <span th:text="${#temporals.format(article.fin_encheres, 'dd/MM/yyyy')}"></span>
               </p>
               <p th:text="'Retrait : ' + ${article.noUtilisateur.rue + ' ' + article.noUtilisateur.codePostal + ' ' + article.noUtilisateur.ville}"></p>
-              <p>Vendeur : <a th:href="@{/user/{pseudo}(pseudo=${article.noUtilisateur.pseudo})}" th:text="${article.noUtilisateur.pseudo}">Pseudo</a></p>
+              <p th:text="'Vendeur : ' + ${article.noUtilisateur.pseudo}">Pseudo</p>
             </div>
           </div>
         </div>
-      </div>
+      </a>
     </div>
   </div>
 </div>
