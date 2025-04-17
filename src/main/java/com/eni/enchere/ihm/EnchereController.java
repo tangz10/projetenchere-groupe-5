@@ -282,6 +282,7 @@ public class EnchereController {
             return "redirect:/enchere";
         }
 
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurByPseudo(auth.getName());
 
@@ -301,6 +302,7 @@ public class EnchereController {
         Enchere meilleureEnchere = enchereService.getMeilleureEnchereParArticleId(id);
         model.addAttribute("article", article);
         model.addAttribute("meilleureEnchere", meilleureEnchere);
+
         model.addAttribute("utilisateurConnecte", utilisateurConnecte);
 
         boolean venteCommencee = !article.getDebut_encheres().isAfter(today);
@@ -308,7 +310,6 @@ public class EnchereController {
 
         return "enchere_vente";
     }
-
 
 
     @PostMapping("/encherir")
@@ -335,7 +336,6 @@ public class EnchereController {
 
 
 
-
     @GetMapping("/enchere/win")
     public String enchereWin(@RequestParam("id") long id, Model model) {
         ArticleVendu article = ArticleVenduService.getArticleVenduById(id);
@@ -354,7 +354,6 @@ public class EnchereController {
 
         return "enchere_win";
     }
-
 
     @GetMapping("/enchere/delete")
     public String enchereDelete(Model model) {
@@ -377,7 +376,6 @@ public class EnchereController {
 
         return "enchere_product";
     }
-
 
     @GetMapping("/enchere/add")
     public String enchereNew(Model model) {
