@@ -4,7 +4,6 @@ import com.eni.enchere.bo.ArticleVendu;
 import com.eni.enchere.bo.Categorie;
 import com.eni.enchere.bo.Enchere;
 import com.eni.enchere.bo.Utilisateur;
-import com.eni.enchere.dao.Utilisateur.UtilisateurDAOImpl;
 import com.eni.enchere.services.ArticleVenduService;
 import com.eni.enchere.services.CategorieService;
 import com.eni.enchere.services.*;
@@ -15,20 +14,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.chrono.ChronoLocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Controller
 public class EnchereController {
@@ -273,16 +266,14 @@ public class EnchereController {
         return "enchere";
     }
 
-    @GetMapping("/enchere/vente")
-    public String afficherDetailArticle(@RequestParam("id") long id, Model model) {
+    @GetMapping("/enchere/vente/{id}")
+    public String afficherDetailArticle(@PathVariable long id, Model model) {
         ArticleVendu article = ArticleVenduService.getArticleVenduById(id);
 
         if (article == null) {
             model.addAttribute("message", "Article introuvable");
             return "redirect:/enchere";
         }
-
-
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurByPseudo(auth.getName());
@@ -310,6 +301,7 @@ public class EnchereController {
 
         return "enchere_vente";
     }
+
 
 
     @PostMapping("/encherir")
@@ -378,6 +370,7 @@ public class EnchereController {
 
         return "enchere_product";
     }
+
 
     @GetMapping("/enchere/add")
     public String enchereNew(Model model) {

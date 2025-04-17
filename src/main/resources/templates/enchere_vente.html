@@ -46,7 +46,7 @@
     <span th:text="${article.noUtilisateur.codePostal}">Code Postal</span>
     <span th:text="${article.noUtilisateur.ville}">Ville</span>
   </p>
-  <p>Vendeur: <span th:text="${article.noUtilisateur.pseudo}">Pseudo</span></p>
+  <p>Vendeur: <a th:href="@{/user/{pseudo}(pseudo=${article.noUtilisateur.pseudo})}" th:text="${article.noUtilisateur.pseudo}">Pseudo</a></p>
 
   <div th:if="${article.noUtilisateur.noUtilisateur == utilisateurConnecte.noUtilisateur}">
     <!-- Si l'utilisateur est le VENDEUR -->
