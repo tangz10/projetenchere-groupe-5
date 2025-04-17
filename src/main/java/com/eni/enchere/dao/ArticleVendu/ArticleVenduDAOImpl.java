@@ -138,6 +138,7 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
         String sql = "SELECT * FROM articles_vendus WHERE no_utilisateur = ?";
         return jdbcTemplate.query(sql, new Object[]{noUtilisateur}, (rs, rowNum) -> {
             ArticleVendu article = new ArticleVendu();
+            article.setNoArticle(rs.getLong("no_article"));
             article.setNom_article(rs.getString("nom_article"));
             article.setDescription(rs.getString("description"));
             article.setDebut_encheres(rs.getDate("date_debut_encheres").toLocalDate());
