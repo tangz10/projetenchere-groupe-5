@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface EnchereDAO {
     void insert(Enchere enchere);
+    void update(Enchere enchere);
+    boolean enchereExiste(long noUtilisateur, long noArticle);
 
     List<Enchere> selectByArticle(long noArticle);
 
