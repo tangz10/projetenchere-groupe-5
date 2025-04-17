@@ -1,26 +1,27 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Enchere</title>
+    <meta charset="UTF-8">
+    <title>Enchere</title>
 
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 
 <div class="header container mt-5 mb-5 d-flex flex-column">
-  <a th:href="@{/enchere}" class="text-decoration-none text-dark">ENI Enchères</a>
-  <a th:href="@{/enchere/add}">Vendre un article</a>
-  <a th:href="@{/my_profile}">Mon profil</a>
-  <form th:action="@{/logout}" method="post">
-    <button type="submit" class="btn btn-link p-0" style="text-decoration: underline;">Déconnexion</button>
-  </form>
+    <a th:href="@{/enchere}" class="text-decoration-none text-dark">ENI Enchères</a>
+    <a th:href="@{/enchere/add}">Vendre un article</a>
+    <a th:href="@{/my_profile}">Mon profil</a>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit" class="btn btn-link p-0" style="text-decoration: underline;">Déconnexion</button>
+    </form>
 </div>
 
 <div class="main-container container">
+
   <p>Filtres :</p>
   <form id="filterForm" method="get">
     <div class="container">
@@ -58,50 +59,51 @@
              th:checked="${activeFilter != null && activeFilter == 'ventes'}">
       <label class="form-check-label" for="radioDefault1">Mes ventes</label>
 
-      <ul>
-        <li style="list-style: none">
-          <input class="form-check-input" type="checkbox" id="checkVente1" name="enCours"
-                 onchange="document.getElementById('filterForm').submit();"
-                 th:checked="${param.enCours != null}">
-          <label class="form-check-label" for="checkVente1">mes ventes en cours</label>
-        </li>
-        <li style="list-style: none">
-          <input class="form-check-input" type="checkbox" id="checkVente2" name="nonDebutees"
-                 onchange="document.getElementById('filterForm').submit();"
-                 th:checked="${param.nonDebutees != null}">
-          <label class="form-check-label" for="checkVente2">ventes non débutées</label>
-        </li>
-        <li style="list-style: none">
-          <input class="form-check-input" type="checkbox" id="checkVente3" name="terminees"
-                 onchange="document.getElementById('filterForm').submit();"
-                 th:checked="${param.terminees != null}">
-          <label class="form-check-label" for="checkVente3">ventes terminées</label>
-        </li>
-      </ul>
-    </div>
-  </form>
+            <ul>
+                <li style="list-style: none">
+                    <input class="form-check-input" type="checkbox" id="checkVente1" name="enCours"
+                           onchange="document.getElementById('filterForm').submit();"
+                           th:checked="${param.enCours != null}">
+                    <label class="form-check-label" for="checkVente1">mes ventes en cours</label>
+                </li>
+                <li style="list-style: none">
+                    <input class="form-check-input" type="checkbox" id="checkVente2" name="nonDebutees"
+                           onchange="document.getElementById('filterForm').submit();"
+                           th:checked="${param.nonDebutees != null}">
+                    <label class="form-check-label" for="checkVente2">ventes non débutées</label>
+                </li>
+                <li style="list-style: none">
+                    <input class="form-check-input" type="checkbox" id="checkVente3" name="terminees"
+                           onchange="document.getElementById('filterForm').submit();"
+                           th:checked="${param.terminees != null}">
+                    <label class="form-check-label" for="checkVente3">ventes terminées</label>
+                </li>
+            </ul>
+        </div>
+    </form>
 
-  <form th:action="@{/enchere/filtrerParCategorie}" method="get">
-    <div class="container d-flex flex-row gap-2 align-items-baseline">
-      <p>Categories</p>
-      <select class="form-select" name="categorie" aria-label="Default select example" onchange="this.form.submit()">
-        <option th:value="0" th:text="'Toutes'" th:selected="${categorieId == 0}"></option> <!-- Si categorieId == 0, on sélectionne "Toutes" -->
-        <th:block th:each="categorie : ${categories}">
-          <option th:value="${categorie.noCategorie}" th:text="${categorie.libelle}" th:selected="${categorie.noCategorie == categorieId}"></option>
-        </th:block>
-      </select>
-    </div>
-  </form>
+    <form th:action="@{/enchere/filtrerParCategorie}" method="get">
+        <div class="container d-flex flex-row gap-2 align-items-baseline">
+            <p>Categories</p>
+            <select class="form-select" name="categorie" aria-label="Default select example" onchange="this.form.submit()">
+                <option th:value="0" th:text="'Toutes'" th:selected="${categorieId == 0}"></option> <!-- Si categorieId == 0, on sélectionne "Toutes" -->
+                <th:block th:each="categorie : ${categories}">
+                    <option th:value="${categorie.noCategorie}" th:text="${categorie.libelle}" th:selected="${categorie.noCategorie == categorieId}"></option>
+                </th:block>
+            </select>
+        </div>
+    </form>
 
-  <form th:action="@{/enchere/recherche}" method="get">
-    <div class="container">
-      <div class="input-group mb-3">
-        <span class="input-group-text" id="basic-addon1">@</span>
-        <input type="text" class="form-control" placeholder="Le nom de l'article contient" name="searchQuery" aria-label="articles" aria-describedby="basic-addon1">
-      </div>
-    </div>
-    <button type="submit" class="btn btn-outline-dark w-100">Rechercher</button>
-  </form>
+    <form th:action="@{/enchere/recherche}" method="get">
+        <div class="container">
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">@</span>
+                <input type="text" class="form-control" placeholder="Le nom de l'article contient" name="searchQuery" aria-label="articles" aria-describedby="basic-addon1">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-outline-dark w-100">Rechercher</button>
+    </form>
+
 
 
   <div class="container mt-4">
@@ -134,10 +136,9 @@
               <p th:text="'Vendeur : ' + ${article.noUtilisateur.pseudo}">Pseudo</p>
             </div>
           </div>
+
         </div>
-      </a>
     </div>
-  </div>
 
 
 </div>
