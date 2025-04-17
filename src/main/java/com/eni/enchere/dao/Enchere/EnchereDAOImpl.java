@@ -53,6 +53,26 @@ public class EnchereDAOImpl implements EnchereDAO {
     }
 
     @Override
+    public void update(Enchere enchere) {
+        String sql = "UPDATE encheres SET montant_enchere = ?, date_enchere = ? WHERE no_utilisateur = ? AND no_article = ?";
+        jdbcTemplate.update(sql,
+                enchere.getMontantEnchere(),
+                Date.valueOf(enchere.getDateEnchere()),
+                enchere.getNoUtilisateur().getNoUtilisateur(),
+                enchere.getNoArticle().getNoArticle()
+        );
+    }
+
+    @Override
+    public boolean enchereExiste(long noUtilisateur, long noArticle) {
+        String sql = "SELECT COUNT(*) FROM encheres WHERE no_utilisateur = ? AND no_article = ?";
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, noUtilisateur, noArticle);
+        return count != null && count > 0;
+    }
+
+
+
+    @Override
     public List<Enchere> selectByArticle(long noArticle) {
         String sql = "SELECT * FROM encheres WHERE no_article = ?";
         return jdbcTemplate.query(sql, enchereRowMapper, noArticle);
