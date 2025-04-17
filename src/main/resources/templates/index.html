@@ -71,7 +71,7 @@
                     <span th:text="${article.fin_encheres}"></span>
                 </p>
                 <p th:text="'Retrait : ' + ${article.noUtilisateur.rue + ' ' + article.noUtilisateur.codePostal + ' ' + article.noUtilisateur.ville}"></p>
-                <p th:text="'Vendeur : ' + ${article.noUtilisateur.pseudo}">Pseudo</p>
+                <p>Vendeur : <a th:href="@{/user/{pseudo}(pseudo=${article.noUtilisateur.pseudo})}" th:text="${article.noUtilisateur.pseudo}">Pseudo</a></p>
             </div>
         </div>
     </div>
