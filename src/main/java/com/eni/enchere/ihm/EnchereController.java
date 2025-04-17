@@ -266,8 +266,8 @@ public class EnchereController {
         return "enchere";
     }
 
-    @GetMapping("/enchere/vente/{id}")
-    public String afficherDetailArticle(@PathVariable long id, Model model) {
+    @GetMapping("/enchere/vente")
+    public String afficherDetailArticle(@RequestParam("id") long id, Model model) {
         ArticleVendu article = ArticleVenduService.getArticleVenduById(id);
 
         if (article == null) {
