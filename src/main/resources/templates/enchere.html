@@ -21,36 +21,43 @@
 </div>
 
 <div class="main-container container">
-    <p>Filtres :</p>
-    <form id="filterForm" method="get">
-        <div class="container">
-            <input class="form-check-input" type="radio" name="radioDefault" id="radioDefault2"
-                   onchange="window.location.href='/enchere';"
-                   th:checked="${activeFilter != 'ventes'}">
-            <label class="form-check-label" for="radioDefault2">
-                Achats
-            </label>
-            <ul>
-                <li style="list-style: none">
-                    <input class="form-check-input" type="checkbox" id="checkDefault1">
-                    <label class="form-check-label" for="checkDefault1">enchères ouvertes</label>
-                </li>
-                <li style="list-style: none">
-                    <input class="form-check-input" type="checkbox" id="checkDefault2">
-                    <label class="form-check-label" for="checkDefault2">mes enchères en cours</label>
-                </li>
-                <li style="list-style: none">
-                    <input class="form-check-input" type="checkbox" id="checkDefault3">
-                    <label class="form-check-label" for="checkDefault3">mes enchères remportées</label>
-                </li>
-            </ul>
-        </div>
 
-        <div class="container mt-3">
-            <input class="form-check-input" type="radio" name="radioDefault" id="radioDefault1"
-                   onchange="window.location.href='/enchere/mes-ventes';"
-                   th:checked="${activeFilter == 'ventes'}">
-            <label class="form-check-label" for="radioDefault1">Mes ventes</label>
+  <p>Filtres :</p>
+  <form id="filterForm" method="get">
+    <div class="container">
+      <input class="form-check-input" type="radio" name="radioDefault" id="radioDefault2"
+             onchange="window.location.href='/enchere/achats';"
+             th:checked="${activeFilter == 'achats'}">
+      <label class="form-check-label" for="radioDefault2">
+        Achats
+      </label>
+      <ul>
+        <li style="list-style: none">
+          <input class="form-check-input" type="checkbox" id="checkDefault1" name="ouvertes"
+                 onchange="document.getElementById('filterForm').submit();"
+                 th:checked="${param.ouvertes != null}">
+          <label class="form-check-label" for="checkDefault1">enchères ouvertes</label>
+        </li>
+        <li style="list-style: none">
+          <input class="form-check-input" type="checkbox" id="checkDefault2" name="AenCours"
+                 onchange="document.getElementById('filterForm').submit();"
+                 th:checked="${param.AenCours != null}">
+          <label class="form-check-label" for="checkDefault2">mes enchères en cours</label>
+        </li>
+        <li style="list-style: none">
+          <input class="form-check-input" type="checkbox" id="checkDefault3" name="remportees"
+                 onchange="document.getElementById('filterForm').submit();"
+                 th:checked="${param.remportees != null}">
+          <label class="form-check-label" for="checkDefault3">mes enchères remportées</label>
+        </li>
+      </ul>
+    </div>
+
+    <div class="container mt-3">
+      <input class="form-check-input" type="radio" name="radioDefault" id="radioDefault1"
+             onchange="window.location.href='/enchere/mes-ventes';"
+             th:checked="${activeFilter != null && activeFilter == 'ventes'}">
+      <label class="form-check-label" for="radioDefault1">Mes ventes</label>
 
             <ul>
                 <li style="list-style: none">
@@ -98,29 +105,41 @@
     </form>
 
 
-    <div class="container mt-4">
-        <div th:each="article : ${articleVendus}">
-            <a th:href="@{/enchere/vente/{id}(id=${article.getNoArticle()})}" class="text-decoration-none text-dark">
-                <div class="container border border-black py-2 mb-3">
-                    <div class="row">
-                        <div class="col-4">
-                            <img th:src="'https://via.placeholder.com/150'" alt="Photo de l'article" height="100px">
-                        </div>
-                        <div class="col-8" style="font-size: 12px">
-                            <p th:text="${article.nom_article}">Nom de l'article</p>
-                            <p>Prix : <span th:text="${article.prixInitial}">0</span> points</p>
-                            <p>
-                                Fin de l'enchère :
-                                <span th:text="${#temporals.format(article.fin_encheres, 'dd/MM/yyyy')}"></span>
-                            </p>
-                            <p th:text="'Retrait : ' + ${article.noUtilisateur.rue + ' ' + article.noUtilisateur.codePostal + ' ' + article.noUtilisateur.ville}"></p>
-                            <p th:text="'Vendeur : ' + ${article.noUtilisateur.pseudo}">Pseudo</p>
-                        </div>
-                    </div>
-                </div>
-            </a>
+
+  <div class="container mt-4">
+    <div th:each="article : ${articleVendus}">
+      <a th:href="@{/enchere/vente(id=${article.getNoArticle()})}" class="text-decoration-none text-dark">
+        <div class="container border border-black py-2 mb-3">
+          <div class="row">
+            <div class="col-4">
+              <img th:src="'https://via.placeholder.com/150'" alt="Photo de l'article" height="100px">
+            </div>
+            <div class="col-8" style="font-size: 12px">
+              <p th:text="${article.nom_article}">Nom de l'article</p>
+              <p>
+                Prix :
+                <span th:if="${meilleuresEncheres[article.noArticle] != null}"
+                      th:text="${meilleuresEncheres[article.noArticle].montantEnchere}">0</span>
+                <span th:if="${meilleuresEncheres[article.noArticle] == null}"
+                      th:text="${article.prixInitial}">0</span>
+                points
+                <!-- 🎯 Ajout du classement utilisateur -->
+                <span th:if="${classements[article.noArticle] != null}"
+                      class="ms-2 text-muted"
+                      th:text="'Classement : ' + ${classements[article.noArticle]}"></span>
+              </p>
+              <p>
+                Fin de l'enchère :
+                <span th:text="${#temporals.format(article.fin_encheres, 'dd/MM/yyyy')}"></span>
+              </p>
+              <p th:text="'Retrait : ' + ${article.noUtilisateur.rue + ' ' + article.noUtilisateur.codePostal + ' ' + article.noUtilisateur.ville}"></p>
+              <p th:text="'Vendeur : ' + ${article.noUtilisateur.pseudo}">Pseudo</p>
+            </div>
+          </div>
+
         </div>
     </div>
+
 
 </div>
 
