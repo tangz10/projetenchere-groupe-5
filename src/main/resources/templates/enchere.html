@@ -114,7 +114,7 @@
                                 <span th:text="${#temporals.format(article.fin_encheres, 'dd/MM/yyyy')}"></span>
                             </p>
                             <p th:text="'Retrait : ' + ${article.noUtilisateur.rue + ' ' + article.noUtilisateur.codePostal + ' ' + article.noUtilisateur.ville}"></p>
-                            <p th:text="'Vendeur : ' + ${article.noUtilisateur.pseudo}">Pseudo</p>
+                            <p>Vendeur : <a th:href="@{/user/{pseudo}(pseudo=${article.noUtilisateur.pseudo})}" th:text="${article.noUtilisateur.pseudo}">Pseudo</a></p>
                         </div>
                     </div>
                 </div>
