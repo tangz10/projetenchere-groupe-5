@@ -266,14 +266,16 @@ public class EnchereController {
         return "enchere";
     }
 
-    @GetMapping("/enchere/vente/{id}")
-    public String afficherDetailArticle(@PathVariable long id, Model model) {
+    @GetMapping("/enchere/vente")
+    public String afficherDetailArticle(@RequestParam("id") long id, Model model) {
         ArticleVendu article = ArticleVenduService.getArticleVenduById(id);
 
         if (article == null) {
             model.addAttribute("message", "Article introuvable");
             return "redirect:/enchere";
         }
+
+
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurByPseudo(auth.getName());
@@ -301,7 +303,6 @@ public class EnchereController {
 
         return "enchere_vente";
     }
-
 
 
     @PostMapping("/encherir")
@@ -370,7 +371,6 @@ public class EnchereController {
 
         return "enchere_product";
     }
-
 
     @GetMapping("/enchere/add")
     public String enchereNew(Model model) {
