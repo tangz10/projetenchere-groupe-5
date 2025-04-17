@@ -282,19 +282,25 @@ public class EnchereController {
             return "redirect:/enchere";
         }
 
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurByPseudo(auth.getName());
+
         // Vérifie si l’enchère est terminée
         LocalDate dateFin = article.getFin_encheres();
         LocalDate today = LocalDate.now();
-        if (dateFin.isBefore(today) || dateFin.isEqual(today)) {
-            return "redirect:/enchere/win?id=" + article.getNoArticle();
+
+        if (!dateFin.isAfter(today)) {
+            // Si c'est le vendeur
+            if (article.getNoUtilisateur().getNoUtilisateur() == utilisateurConnecte.getNoUtilisateur()) {
+                return "redirect:/enchere/product?id=" + article.getNoArticle();
+            } else {
+                return "redirect:/enchere/win?id=" + article.getNoArticle();
+            }
         }
 
         Enchere meilleureEnchere = enchereService.getMeilleureEnchereParArticleId(id);
         model.addAttribute("article", article);
         model.addAttribute("meilleureEnchere", meilleureEnchere);
-
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurByPseudo(auth.getName());
         model.addAttribute("utilisateurConnecte", utilisateurConnecte);
 
         boolean venteCommencee = !article.getDebut_encheres().isAfter(today);
@@ -302,6 +308,7 @@ public class EnchereController {
 
         return "enchere_vente";
     }
+
 
 
     @PostMapping("/encherir")
@@ -356,10 +363,21 @@ public class EnchereController {
     }
 
     @GetMapping("/enchere/product")
-    public String enchereProduct(Model model) {
-        model.addAttribute("message", "Details de votre enchère");
+    public String enchereProduct(@RequestParam("id") long id, Model model) {
+        ArticleVendu article = ArticleVenduService.getArticleVenduById(id);
+        if (article == null) {
+            model.addAttribute("message", "Article introuvable");
+            return "redirect:/enchere";
+        }
+
+        Enchere meilleureEnchere = enchereService.getMeilleureEnchereParArticleId(id);
+
+        model.addAttribute("article", article);
+        model.addAttribute("meilleureEnchere", meilleureEnchere);
+
         return "enchere_product";
     }
+
 
     @GetMapping("/enchere/add")
     public String enchereNew(Model model) {
