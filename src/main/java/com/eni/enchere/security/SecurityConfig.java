@@ -33,6 +33,11 @@ public class SecurityConfig {
                         .defaultSuccessUrl("/enchere")
                         .permitAll()
                 )
+                .rememberMe(remember -> remember
+                        .key("remember-me")
+                        .tokenValiditySeconds(1209600)
+                        .userDetailsService(userDetailsService)
+                )
                 .logout(logout -> logout
                         .logoutSuccessUrl("/")
                         .permitAll()
