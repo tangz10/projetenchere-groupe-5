@@ -164,6 +164,7 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
         return jdbcTemplate.query(sql, new Object[]{noCategorie}, (rs, rowNum) -> {
             // Récupération des informations de l'article
             ArticleVendu article = new ArticleVendu();
+            article.setNoArticle(rs.getLong("no_article"));
             article.setNom_article(rs.getString("nom_article"));
             article.setDescription(rs.getString("description"));
             article.setDebut_encheres(rs.getDate("date_debut_encheres").toLocalDate());
@@ -192,6 +193,7 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
         return jdbcTemplate.query(sql, new Object[]{"%" + Name + "%"}, (rs, rowNum) -> {
             // Récupération des informations de l'article
             ArticleVendu article = new ArticleVendu();
+            article.setNoArticle(rs.getLong("no_article"));
             article.setNom_article(rs.getString("nom_article"));
             article.setDescription(rs.getString("description"));
             article.setDebut_encheres(rs.getDate("date_debut_encheres").toLocalDate());
