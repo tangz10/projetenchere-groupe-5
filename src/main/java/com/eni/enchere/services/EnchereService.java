@@ -32,26 +32,36 @@ public class EnchereService {
         // Récupération de l’ancienne meilleure enchère
         Enchere ancienneMeilleure = enchereDAO.findBestOfferByArticleId(noArticle);
 
-        // ⚠️ S’il est déjà le meilleur enchérisseur, on le rembourse d’abord
+        // ✅ Vérifie que le montant proposé est suffisant
+        if (ancienneMeilleure != null && montant <= ancienneMeilleure.getMontantEnchere()) {
+            throw new IllegalArgumentException("Votre offre doit être supérieure à la meilleure offre actuelle ("
+                    + ancienneMeilleure.getMontantEnchere() + " pts).");
+        }
+
+        if (ancienneMeilleure == null && montant < article.getPrixInitial()) {
+            throw new IllegalArgumentException("Votre offre doit être au moins égale à la mise à prix ("
+                    + article.getPrixInitial() + " pts).");
+        }
+
+        // 💸 Remboursement éventuel
         if (ancienneMeilleure != null && ancienneMeilleure.getNoUtilisateur().getNoUtilisateur() == noUtilisateur) {
             nouvelEncherisseur.setCredit(nouvelEncherisseur.getCredit() + ancienneMeilleure.getMontantEnchere());
         } else if (ancienneMeilleure != null) {
-            // Sinon, on rembourse l’ancien enchérisseur
             Utilisateur ancien = ancienneMeilleure.getNoUtilisateur();
             ancien.setCredit(ancien.getCredit() + ancienneMeilleure.getMontantEnchere());
-            utilisateurDAO.update(ancien); // Mets à jour ses crédits
+            utilisateurDAO.update(ancien); // Mets à jour les crédits de l’ancien enchérisseur
         }
 
-        // Vérifie les crédits APRES remboursement éventuel
+        // 🧮 Vérifie les crédits après remboursement éventuel
         if (nouvelEncherisseur.getCredit() < montant) {
             throw new IllegalArgumentException("Crédits insuffisants pour miser.");
         }
 
-        // Déduire le nouveau montant
+        // 🔻 Déduire les crédits
         nouvelEncherisseur.setCredit(nouvelEncherisseur.getCredit() - montant);
         utilisateurDAO.update(nouvelEncherisseur);
 
-        // Enregistrer l’enchère
+        // 📝 Enregistrer l’enchère
         Enchere enchere = new Enchere();
         enchere.setNoUtilisateur(nouvelEncherisseur);
         enchere.setNoArticle(article);
