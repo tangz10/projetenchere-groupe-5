@@ -11,13 +11,14 @@ public class ArticleVendu {
     private LocalDate fin_encheres;
     private long prixInitial;
     private long prixVente;
+    private String url;
     private Utilisateur noUtilisateur;
     private Categorie noCategorie;
 
     public ArticleVendu() {
     }
 
-    public ArticleVendu(String nom_article, String description, LocalDate debut_encheres, LocalDate fin_encheres, long prixInitial, long prixVente, Utilisateur noUtilisateur, Categorie noCategorie) {
+    public ArticleVendu(String nom_article, String description, LocalDate debut_encheres, LocalDate fin_encheres, long prixInitial, long prixVente, Utilisateur noUtilisateur, Categorie noCategorie, String url) {
         this.nom_article = nom_article;
         this.description = description;
         this.debut_encheres = debut_encheres;
@@ -26,6 +27,15 @@ public class ArticleVendu {
         this.prixVente = prixVente;
         this.noUtilisateur = noUtilisateur;
         this.noCategorie = noCategorie;
+        this.url = url;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public long getNoArticle() {
