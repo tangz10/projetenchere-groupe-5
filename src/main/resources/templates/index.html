@@ -61,7 +61,7 @@
     <div th:each="article : ${articleVendus}" class="container border border-black py-2 mb-3">
         <div class="row">
             <div class="col-4">
-                <img th:src="'https://via.placeholder.com/150'" alt="Photo de l'article" height="100px">
+                <img th:src="@{${article.url}}" alt="Photo de l'article" height="100px">
             </div>
             <div class="col-8" style="font-size: 12px">
                 <p th:text="${article.nom_article}">Nom de l'article</p>

@@ -15,8 +15,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -350,11 +356,12 @@ public class EnchereController {
     }
 
 
-    @GetMapping("/enchere/delete")
-    public String enchereDelete(Model model) {
-        model.addAttribute("message", "Suppression de l'enchère");
-        return "enchere_delete";
+    @PostMapping("/enchere/delete")
+    public String deleteArticle(@RequestParam("id") long id) {
+        enchereService.deleteEnchere(id);
+        return "redirect:/enchere?success=suppression"; // Redirige avec un petit message si tu veux
     }
+
 
     @GetMapping("/enchere/product")
     public String enchereProduct(@RequestParam("id") long id, Model model) {
@@ -390,29 +397,45 @@ public class EnchereController {
 
     @PostMapping("/vente/enregistrer")
     public String enregistrerArticle(@ModelAttribute ArticleVendu article,
+                                     @RequestParam("photo") MultipartFile photo,
                                      HttpSession session) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
         Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurByPseudo(auth.getName());
+
         article.setNoUtilisateur(utilisateurConnecte);
         article.setPrixVente(article.getPrixInitial());
 
+        // 📂 Gestion du fichier photo
+        if (!photo.isEmpty()) {
+            try {
+                // Utilisation de la racine du projet + "uploads" (répertoire à côté de src)
+                String basePath = System.getProperty("user.dir");  // Obtient le répertoire de travail actuel
+                Path uploadPath = Paths.get(basePath, "src/main/resources/static/uploads");  // Crée un répertoire 'uploads' à la racine
+
+                // Vérifie si le dossier existe, sinon, crée-le
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
+
+                // Génère le nom du fichier avec un timestamp unique
+                String originalFilename = photo.getOriginalFilename();
+                Path destinationPath = uploadPath.resolve(System.currentTimeMillis() + "_" + originalFilename);
+
+                // Sauvegarde le fichier dans le dossier 'uploads'
+                photo.transferTo(destinationPath.toFile());
+
+                // Stockage de l'URL relative en BDD (accessible depuis la racine de l'application)
+                article.setUrl("/uploads/" + destinationPath.getFileName().toString());
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "redirect:/vente/enregistrer"; // Redirige ou affiche une erreur en cas d'exception
+            }
+        }
+
         ArticleVenduService.insertArticleVendu(article);
-        return "redirect:/enchere"; // ou une autre vue après succès
+        return "redirect:/enchere"; // Redirige vers la page des enchères
     }
-
-    @GetMapping("/enchere/edit")
-    public String enchereEdit(@RequestParam("id") long id, Model model) {
-
-//        if (meilleureEnchere == null || !meilleureEnchere.getNoUtilisateur().equals(utilisateurConnecte)) {
-//            return "redirect:/enchere"; // Redirige si ce n'est pas le gagnant
-//        }
-
-        model.addAttribute("message", "Modification d'une enchere");
-
-        return "enchere_edit";
-    }
-
 
 }
