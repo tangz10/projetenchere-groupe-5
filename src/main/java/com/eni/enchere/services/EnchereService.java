@@ -91,5 +91,9 @@ public class EnchereService {
         return enchereDAO.selectByUtilisateurEtArticle(noArticle,noUtilisateur);
     }
 
+    public void deleteEnchere(long noArticle) {
+        articleDAO.delete(noArticle);
+    }
+
 
 }
