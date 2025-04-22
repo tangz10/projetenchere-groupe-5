@@ -78,11 +78,23 @@ public class EnchereController {
 
 
     @GetMapping("/enchere")
-    public String enchere(Model model) {
+    public String enchere(
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "6") int size,
+            Model model) {
         List<Categorie> categories = categorieService.getAllCategories();
         model.addAttribute("categories", categories);
 
-        List<ArticleVendu> articleVendus = ArticleVenduService.getAllArticleVendu();
+        List<ArticleVendu> allArticles = ArticleVenduService.getAllArticleVendu();
+        int totalArticles = allArticles.size();
+        int totalPages = (int) Math.ceil((double) totalArticles / size);
+        
+        // Calculer les indices de début et de fin pour la page courante
+        int startIndex = (page - 1) * size;
+        int endIndex = Math.min(startIndex + size, totalArticles);
+        
+        // Extraire la sous-liste pour la page courante
+        List<ArticleVendu> articleVendus = allArticles.subList(startIndex, endIndex);
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurByPseudo(auth.getName());
@@ -90,6 +102,9 @@ public class EnchereController {
 
         model.addAttribute("articleVendus", articleVendus);
         model.addAttribute("categories", categorieService.getAllCategories());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("currentUrl", "/enchere");
 
         return "enchere";
     }
@@ -97,12 +112,29 @@ public class EnchereController {
 
 
     @GetMapping("/enchere/recherche")
-    public String rechercheArticles(@RequestParam("searchQuery") String searchQuery, Model model) {
+    public String rechercheArticles(
+            @RequestParam("searchQuery") String searchQuery,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "6") int size,
+            Model model) {
         // Effectuer la recherche dans la base de données
-        List<ArticleVendu> articlesTrouves = ArticleVenduService.getAllArticleVenduByName(searchQuery);
+        List<ArticleVendu> allArticles = ArticleVenduService.getAllArticleVenduByName(searchQuery);
+        int totalArticles = allArticles.size();
+        int totalPages = (int) Math.ceil((double) totalArticles / size);
+        
+        // Calculer les indices de début et de fin pour la page courante
+        int startIndex = (page - 1) * size;
+        int endIndex = Math.min(startIndex + size, totalArticles);
+        
+        // Extraire la sous-liste pour la page courante
+        List<ArticleVendu> articlesTrouves = allArticles.subList(startIndex, endIndex);
+
         model.addAttribute("articleVendus", articlesTrouves);
         model.addAttribute("categories", categorieService.getAllCategories());
         model.addAttribute("message", "Résultats de recherche pour : " + searchQuery);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("currentUrl", "/enchere/recherche?searchQuery=" + searchQuery);
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurByPseudo(auth.getName());
@@ -112,15 +144,32 @@ public class EnchereController {
     }
 
     @GetMapping("/enchere/filtrerParCategorie")
-    public String filtrerParCategorie(@RequestParam("categorie") long categorieId, Model model) {
-        List<ArticleVendu> articles = (categorieId == 0)
+    public String filtrerParCategorie(
+            @RequestParam("categorie") long categorieId,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "6") int size,
+            Model model) {
+        List<ArticleVendu> allArticles = (categorieId == 0)
                 ? ArticleVenduService.getAllArticleVendu()
                 : ArticleVenduService.getArticleVenduByCategorie(categorieId);
+
+        int totalArticles = allArticles.size();
+        int totalPages = (int) Math.ceil((double) totalArticles / size);
+        
+        // Calculer les indices de début et de fin pour la page courante
+        int startIndex = (page - 1) * size;
+        int endIndex = Math.min(startIndex + size, totalArticles);
+        
+        // Extraire la sous-liste pour la page courante
+        List<ArticleVendu> articles = allArticles.subList(startIndex, endIndex);
 
         // On passe les articles, les catégories, et la catégorie sélectionnée au modèle
         model.addAttribute("articleVendus", articles);
         model.addAttribute("categories", categorieService.getAllCategories());
         model.addAttribute("categorieId", categorieId);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("currentUrl", "/enchere/filtrerParCategorie?categorie=" + categorieId);
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurByPseudo(auth.getName());
@@ -150,7 +199,7 @@ public class EnchereController {
 
         LocalDate aujourdHui = LocalDate.now();
 
-        // Si aucun filtre spécifique n’est coché → on affiche tout
+        // Si aucun filtre spécifique n'est coché → on affiche tout
         if (enCours == null && nonDebutees == null && terminees == null) {
             articlesFiltres = toutesMesVentes;
         } else {
