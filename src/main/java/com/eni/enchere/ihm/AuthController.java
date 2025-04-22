@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class AuthController {
@@ -30,14 +31,30 @@ public class AuthController {
         return "login";
     }
 
+    @GetMapping("/forgotten_password")
+    public String viewForgottenPassword() {
+        return "forgotten_password";
+    }
+
     @GetMapping("/register")
     public String viewRegister() {
         return "register";
     }
 
-    @GetMapping("/forgottenPassword")
-    public String viewForgottenPassword() {
-        return "forgotten_password";
+    @PostMapping("/change_password")
+    public String changePassword(Utilisateur utilisateur, Model model) {
+        Utilisateur utilisateurToUpdate = utilisateurService.getUtilisateurByEmail(utilisateur.getEmail());
+
+        if (utilisateurToUpdate == null) {
+            model.addAttribute("message", "Email incorrect");
+
+            return "forgotten_password";
+        }
+
+        utilisateurToUpdate.setMotDePasse(passwordEncoder.encode(utilisateur.getMotDePasse()));
+        utilisateurService.updateUtilisateur(utilisateurToUpdate);
+
+        return "redirect:/login";
     }
 
     @PostMapping("/register")
@@ -45,17 +62,16 @@ public class AuthController {
         if (utilisateurService.getUtilisateurByPseudo(utilisateur.getPseudo()) != null) {
             model.addAttribute("message", "Ce pseudo est déjà utilisé");
 
-            return "register";
+            return "register?error";
         }
 
         if (utilisateurService.getUtilisateurByEmail(utilisateur.getEmail()) != null) {
             model.addAttribute("message", "Cet email est déjà utilisé");
 
-            return "register";
+            return "register?error";
         }
 
         utilisateur.setMotDePasse(passwordEncoder.encode(utilisateur.getMotDePasse()));
-        utilisateur.setCredit(0);
         utilisateurService.insertUtilisateur(utilisateur);
 
         /*
