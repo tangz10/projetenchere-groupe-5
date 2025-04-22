@@ -25,7 +25,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             utilisateur = utilisateurService.getUtilisateurByEmail(username);
         }
 
-        if (utilisateur == null) {
+        if (utilisateur == null || !utilisateur.getIsActive()) {
             throw new UsernameNotFoundException("Utilisateur introuvable : " + username);
         }
 

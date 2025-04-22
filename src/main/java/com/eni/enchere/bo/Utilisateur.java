@@ -32,23 +32,15 @@ public class Utilisateur {
         this.motDePasse = motDePasse;
     }
 
-    public long getNoUtilisateur() {
-        return noUtilisateur;
-    }
+    public long getNoUtilisateur() { return noUtilisateur; }
 
-    public void setNoUtilisateur(long noUtilisateur) {
-        this.noUtilisateur = noUtilisateur;
-    }
+    public void setNoUtilisateur(long noUtilisateur) { this.noUtilisateur = noUtilisateur; }
 
-    public boolean getIsAdmin() {
-        return isAdmin;
-    }
+    public boolean getIsAdmin() { return isAdmin; }
 
-    public void setIsAdmin(boolean isAdmin) {
-        this.isAdmin = isAdmin;
-    }
+    public void setIsAdmin(boolean isAdmin) { this.isAdmin = isAdmin; }
 
-    public boolean getIsActive() { return isAdmin; }
+    public boolean getIsActive() { return isActive; }
 
     public void setIsActive(boolean isActive) { this.isActive = isActive; }
 
