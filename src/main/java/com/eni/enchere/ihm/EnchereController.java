@@ -281,30 +281,41 @@ public class EnchereController {
             return "redirect:/enchere";
         }
 
-
-
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurByPseudo(auth.getName());
 
-        // Vérifie si l’enchère est terminée
+        // Récupérer meilleure enchère UNE SEULE FOIS
+        Enchere meilleureEnchere = enchereService.getMeilleureEnchereParArticleId(id);
+
         LocalDate dateFin = article.getFin_encheres();
         LocalDate today = LocalDate.now();
 
         if (!dateFin.isAfter(today)) {
-            // Si c'est le vendeur
+            // L'enchère est terminée
+
+            // Cas vendeur
             if (article.getNoUtilisateur().getNoUtilisateur() == utilisateurConnecte.getNoUtilisateur()) {
                 return "redirect:/enchere/product?id=" + article.getNoArticle();
-            } else {
+            }
+
+            // Cas gagnant
+            if (meilleureEnchere != null &&
+                    meilleureEnchere.getNoUtilisateur().getNoUtilisateur() == utilisateurConnecte.getNoUtilisateur()) {
                 return "redirect:/enchere/win?id=" + article.getNoArticle();
             }
+
+            // Cas perdu
+            model.addAttribute("article", article);
+            model.addAttribute("meilleureEnchere", meilleureEnchere);
+            model.addAttribute("utilisateurConnecte", utilisateurConnecte);
+            return "enchere_perdu";
         }
 
-        Enchere meilleureEnchere = enchereService.getMeilleureEnchereParArticleId(id);
+        // Enchère en cours
+        boolean venteCommencee = !article.getDebut_encheres().isAfter(today);
         model.addAttribute("article", article);
         model.addAttribute("meilleureEnchere", meilleureEnchere);
         model.addAttribute("utilisateurConnecte", utilisateurConnecte);
-
-        boolean venteCommencee = !article.getDebut_encheres().isAfter(today);
         model.addAttribute("venteCommencee", venteCommencee);
 
         return "enchere_vente";
@@ -344,7 +355,9 @@ public class EnchereController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurByPseudo(auth.getName());
 
-        if (meilleureEnchere == null || !meilleureEnchere.getNoUtilisateur().equals(utilisateurConnecte)) {
+        // Comparaison sécurisée par ID
+        if (meilleureEnchere == null ||
+                meilleureEnchere.getNoUtilisateur().getNoUtilisateur() != utilisateurConnecte.getNoUtilisateur()) {
             return "redirect:/enchere"; // Redirige si ce n'est pas le gagnant
         }
 
