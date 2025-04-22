@@ -80,6 +80,10 @@ public class EnchereService {
     public Enchere getMeilleureEnchereParArticleId(long idArticle) {
         return enchereDAO.findBestOfferByArticleId(idArticle);
     }
+    public List<Enchere> getEnchereByArticleId(long idArticle) {
+        return enchereDAO.findAllOffersByArticleId(idArticle);
+    }
+
 
     public List<Enchere> getClassementEncheres(long articleId) {
         List<Enchere> encheres = enchereDAO.selectByArticle(articleId);
