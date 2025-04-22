@@ -16,26 +16,25 @@
 </div>
 
 <div class="container text-center">
-    <p class="fs-4" th:text="${meilleureEnchere.noUtilisateur.pseudo} + ' a remporté l\'enchère'">Johann a remporté l'enchère</p>
+    <p th:if="${meilleureEnchere != null}" class="fs-4" th:text="${meilleureEnchere.noUtilisateur.pseudo} + ' a remporté l\'enchère'">Johann a remporté l'enchère</p>
+    <p th:if="${meilleureEnchere == null}" class="fs-4 text-danger">Aucune offre n'a été faite sur cet article.</p>
 </div>
 
 <div class="container">
     <p th:text="${article.nom_article}">Nom de l'article</p>
 
-    <img height="100"
-         src="https://d10mhq06fikmnr.cloudfront.net/cms-content/content/budget-pc/BudgetPCs_Mood_Nero.jpg"
-         alt="">
+    <img th:src="@{${article.url}}" alt="Photo de l'article" height="100px">
 
-    <p class="mt-3" th:text="'Meilleure offre : ' + ${meilleureEnchere.montantEnchere} + ' pts par ' + ${meilleureEnchere.noUtilisateur.pseudo}">Meilleure offre</p>
+    <p th:if="${meilleureEnchere != null}" class="mt-3" th:text="'Meilleure offre : ' + ${meilleureEnchere.montantEnchere} + ' pts par ' + ${meilleureEnchere.noUtilisateur.pseudo}">Meilleure offre</p>
     <p th:text="'Mise à prix : ' + ${article.prixInitial} + ' points'">Mise à prix</p>
     <p th:text="'Fin de l\'enchère : ' + ${#temporals.format(article.fin_encheres, 'dd/MM/yyyy')}">Fin enchère</p>
     <p th:text="'Retrait : ' + ${article.noUtilisateur.rue} + ', ' + ${article.noUtilisateur.codePostal} + ' ' + ${article.noUtilisateur.ville}">Adresse retrait</p>
-    <p th:text="'Vendeur : ' + ${article.noUtilisateur.pseudo}">Vendeur</p>
+    <p>Vendeur: <a th:href="@{/user/{pseudo}(pseudo=${article.noUtilisateur.pseudo})}" th:text="${article.noUtilisateur.pseudo}">Pseudo</a></p>
 </div>
 
 <div class="container d-flex flex-row gap-2">
     <button type="button" class="btn btn-outline-dark w-100" style="height: 70px">Retrait effectué</button>
-    <button type="button" class="btn btn-outline-dark w-100" style="height: 70px"
+    <button type="button" class="btn btn-outline-dark w-100" style="height: 70px" th:if="${meilleureEnchere != null}"
             th:text="'Contacter ' + ${meilleureEnchere.noUtilisateur.pseudo}">Contacter l'acheteur</button>
     <a th:href="@{/enchere}" class="btn btn-outline-dark w-100" style="height: 70px">Retour</a>
 </div>

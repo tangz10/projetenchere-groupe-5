@@ -28,7 +28,7 @@
 <div class="container">
   <p th:text="${article.nom_article}">Nom de l'article</p>
 
-  <img height="100" th:src="@{/images/default.jpg}" alt="Image de l'article"> <!-- À remplacer si tu as un champ d'image -->
+  <img th:src="@{${article.url}}" alt="Photo de l'article" height="100px">
 
   <p class="mt-3">Description: <span th:text="${article.description}">Description</span></p>
   <p>Catégorie: <span th:text="${article.noCategorie.libelle}">Catégorie</span></p>
@@ -38,6 +38,7 @@
     pour
     <span th:text="${meilleureEnchere.noUtilisateur.pseudo}">pseudo</span>
   </p>
+
 
   <p>Mise à prix: <span th:text="${article.prixInitial}">0</span> points</p>
   <p>Fin de l'enchère: <span th:text="${#temporals.format(article.fin_encheres, 'dd/MM/yyyy')}">Date</span></p>
@@ -55,6 +56,13 @@
       <a th:if="${!venteCommencee}" th:href="@{/enchere/modifier(id=${article.noArticle})}" class="btn btn-outline-primary w-100">
         Modifier l'article
       </a>
+      <form th:if="${!venteCommencee}" th:action="@{/enchere/delete}" method="post"
+            onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet article ?');">
+        <input type="hidden" name="id" th:value="${article.noArticle}" />
+        <button type="submit" class="btn btn-outline-danger w-100 mt-2">
+          Supprimer l'article
+        </button>
+      </form>
       <div th:if="${venteCommencee}" class="alert alert-warning mt-2" role="alert">
         La vente a déjà commencé. Vous ne pouvez plus modifier l'article.
       </div>
@@ -65,20 +73,29 @@
   <div th:if="${article.noUtilisateur.noUtilisateur != utilisateurConnecte.noUtilisateur}">
     <!-- Si l'utilisateur est un ACHETEUR -->
 
+    <!-- Alerte si la vente n'a pas encore commencé -->
+    <div th:if="${!venteCommencee}" class="alert alert-warning mt-2" role="alert">
+      La vente n'a pas encore commencé. Vous ne pouvez pas investir dessus pour l'instant.
+    </div>
+
     <form th:action="@{/encherir}" method="post">
       <input type="hidden" name="noArticle" th:value="${article.noArticle}" />
 
-      <div class="proposition-container d-flex flex-row align-items-center gap-3" style="width: max-content">
-        <p>Ma proposition</p>
-        <div class="input-group mb-3" style="width: auto">
-          <input type="number" name="montant" class="form-control" placeholder="Le montant" aria-label="Montant" aria-describedby="basic-addon1" required>
-          <span class="input-group-text" id="basic-addon1">pts</span>
+      <!-- Zone d'enchère seulement si la vente a commencé -->
+      <div th:if="${venteCommencee}">
+        <div class="proposition-container d-flex flex-row align-items-center gap-3" style="width: max-content">
+          <p>Ma proposition</p>
+          <div class="input-group mb-3" style="width: auto">
+            <input type="number" name="montant" class="form-control" placeholder="Le montant" aria-label="Montant" aria-describedby="basic-addon1" required>
+            <span class="input-group-text" id="basic-addon1">pts</span>
+          </div>
         </div>
       </div>
 
+      <!-- Bouton de retour toujours visible, bouton "Enchérir" uniquement si vente commencée -->
       <div class="container d-flex flex-row gap-2">
         <a th:href="@{/enchere}" class="btn btn-outline-dark w-100" style="height: 70px">Retour</a>
-        <button type="submit" class="btn btn-outline-dark w-100" style="height: 70px">Enchérir</button>
+        <button th:if="${venteCommencee}" type="submit" class="btn btn-outline-dark w-100" style="height: 70px">Enchérir</button>
       </div>
     </form>
   </div>
