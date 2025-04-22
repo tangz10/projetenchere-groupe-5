@@ -45,7 +45,7 @@
         </span>
         <p th:text="${article.noUtilisateur.rue}">Rue</p>
         <p th:text="${article.noUtilisateur.codePostal + ' ' + article.noUtilisateur.ville}">CP Ville</p>
-        <p th:text="'Vendeur : ' + ${article.noUtilisateur.pseudo}">Vendeur</p>
+        <p>Vendeur: <a th:href="@{/user/{pseudo}(pseudo=${article.noUtilisateur.pseudo})}" th:text="${article.noUtilisateur.pseudo}">Pseudo</a></p>
     </div>
 </div>
 
