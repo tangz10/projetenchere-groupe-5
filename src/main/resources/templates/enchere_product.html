@@ -29,7 +29,7 @@
     <p th:text="'Mise à prix : ' + ${article.prixInitial} + ' points'">Mise à prix</p>
     <p th:text="'Fin de l\'enchère : ' + ${#temporals.format(article.fin_encheres, 'dd/MM/yyyy')}">Fin enchère</p>
     <p th:text="'Retrait : ' + ${article.noUtilisateur.rue} + ', ' + ${article.noUtilisateur.codePostal} + ' ' + ${article.noUtilisateur.ville}">Adresse retrait</p>
-    <p th:text="'Vendeur : ' + ${article.noUtilisateur.pseudo}">Vendeur</p>
+    <p>Vendeur: <a th:href="@{/user/{pseudo}(pseudo=${article.noUtilisateur.pseudo})}" th:text="${article.noUtilisateur.pseudo}">Pseudo</a></p>
 </div>
 
 <div class="container d-flex flex-row gap-2">
