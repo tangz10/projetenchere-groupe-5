@@ -35,6 +35,11 @@ public class AuthController {
         return "register";
     }
 
+    @GetMapping("/forgottenPassword")
+    public String viewForgottenPassword() {
+        return "forgotten_password";
+    }
+
     @PostMapping("/register")
     public String registerUser(Utilisateur utilisateur, Model model) {
         if (utilisateurService.getUtilisateurByPseudo(utilisateur.getPseudo()) != null) {

@@ -15,13 +15,9 @@ public class AdminController {
         this.userDetailsService = userDetailsService;
     }
 
-    @GetMapping("/admin")
-    public String admin() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        System.out.println(auth.getAuthorities());
-
-        return "login";
+    @GetMapping("/admin/users")
+    public String viewUsers() {
+        return "admin_users";
     }
 
 }

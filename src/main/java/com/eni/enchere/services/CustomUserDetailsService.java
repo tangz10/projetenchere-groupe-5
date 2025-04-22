@@ -32,7 +32,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         return org.springframework.security.core.userdetails.User.builder()
                 .username(utilisateur.getPseudo())
                 .password(utilisateur.getMotDePasse())
-                .authorities(utilisateur.getIsAdmin() ? "ADMIN" : "USER")
+                .roles(utilisateur.getIsAdmin() ? "ADMIN" : "USER")
                 .build();
     }
 }
