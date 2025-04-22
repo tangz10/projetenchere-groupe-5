@@ -28,7 +28,7 @@ public class ProfileController {
     }
 
     @GetMapping("/my_profile")
-    public String myProfile(Model model) {
+    public String viewMyProfile(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurByPseudo(auth.getName());
@@ -39,7 +39,7 @@ public class ProfileController {
     }
 
     @GetMapping("/my_profile/edit")
-    public String myProfileEdit(Model model) {
+    public String viewMyProfileEdit(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurByPseudo(auth.getName());
@@ -50,7 +50,7 @@ public class ProfileController {
     }
 
     @GetMapping("/user/{pseudo}")
-    public String user(@PathVariable String pseudo, Model model) {
+    public String viewUser(@PathVariable String pseudo, Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         Utilisateur utilisateur = utilisateurService.getUtilisateurByPseudo(pseudo);
@@ -106,6 +106,6 @@ public class ProfileController {
 
         Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurByPseudo(auth.getName());
 
-        return "profile_password";
+        return "forgotten_password";
     }
 }
