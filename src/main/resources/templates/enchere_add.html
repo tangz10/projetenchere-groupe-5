@@ -118,13 +118,14 @@
     function validateForm() {
         let nom_article = document.getElementById("nom_article").value;
         let categorie = document.getElementById("categorie").value;
+        let photos = document.getElementById("photos").value;
         let description = document.getElementById("description").value;
         let prixInitial = document.getElementById("prixInitial").value;
         let debut_encheres = document.getElementById("debut_encheres").value;
         let fin_encheres = document.getElementById("fin_encheres").value;
 
         // Validation de tous les champs
-        if (nom_article === "" || categorie === "0" || description === "" || prixInitial === "" || debut_encheres === "" || fin_encheres === "") {
+        if (nom_article === "" || categorie === "0" || description === "" || prixInitial === "" || debut_encheres === "" || fin_encheres === "" || photos === "") {
             alert("Tous les champs doivent être remplis !");
             return false; // Empêche l'envoi du formulaire
         }
