@@ -320,6 +320,27 @@ public class EnchereController {
 
         return "enchere_vente";
     }
+    @GetMapping("/enchere/modifier")
+    public String modifierDetailArticle(@RequestParam("id") long id, Model model) {
+        ArticleVendu article = ArticleVenduService.getArticleVenduById(id);
+
+        if (article == null) {
+            model.addAttribute("message", "Article introuvable");
+            return "redirect:/enchere";
+        }
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurByPseudo(auth.getName());
+
+        // Récupérer meilleure enchère UNE SEULE FOIS
+        Enchere meilleureEnchere = enchereService.getMeilleureEnchereParArticleId(id);
+        model.addAttribute("article", article);
+        model.addAttribute("meilleureEnchere", meilleureEnchere);
+        model.addAttribute("categories", categorieService.getAllCategories());
+        model.addAttribute("utilisateur", utilisateurConnecte);
+
+        return "enchere_edit";
+    }
 
 
     @PostMapping("/encherir")
@@ -450,5 +471,45 @@ public class EnchereController {
         ArticleVenduService.insertArticleVendu(article);
         return "redirect:/enchere"; // Redirige vers la page des enchères
     }
+
+    @PostMapping("/vente/modifier")
+    public String modifierArticle(
+            @RequestParam("id") Long id,
+            @ModelAttribute("article") ArticleVendu articleModifie,
+            @RequestParam(value = "photo", required = false) MultipartFile photo
+    ) {
+        ArticleVendu articleExistant = ArticleVenduService.getArticleVenduById(id);
+        if (articleExistant == null) {
+            return "redirect:/enchere?erreur=articleIntrouvable";
+        }
+
+        // Champs toujours remplacés
+        articleExistant.setNom_article(articleModifie.getNom_article());
+        articleExistant.setDescription(articleModifie.getDescription());
+        articleExistant.setPrixInitial(articleModifie.getPrixInitial());
+        articleExistant.setNoCategorie(articleModifie.getNoCategorie());
+
+        // Début d'enchère seulement si renseigné
+        if (articleModifie.getDebut_encheres() != null) {
+            articleExistant.setDebut_encheres(articleModifie.getDebut_encheres());
+        }
+
+        // Fin d'enchère seulement si renseigné
+        if (articleModifie.getFin_encheres() != null) {
+            articleExistant.setFin_encheres(articleModifie.getFin_encheres());
+        }
+
+        // Photo seulement si une nouvelle est uploadée
+        if (photo != null && !photo.isEmpty()) {
+            String nomFichier = photo.getOriginalFilename();
+            articleExistant.setUrl(nomFichier);
+        }
+
+        ArticleVenduService.updateArticleVendu(articleExistant);
+
+        return "redirect:/enchere";
+    }
+
+
 
 }

@@ -81,8 +81,39 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 
     @Override
     public void update(ArticleVendu article) {
+        if (article == null || article.getNom_article() == null || article.getNom_article().isEmpty()) {
+            throw new IllegalArgumentException("Le nom de l'article est obligatoire");
+        }
+        if (article.getNoUtilisateur() == null) {
+            throw new IllegalArgumentException("L'utilisateur connecté est obligatoire");
+        }
+        if (article.getNoCategorie() == null) {
+            throw new IllegalArgumentException("La catégorie est obligatoire");
+        }
 
+        // Conversion des LocalDate vers java.sql.Date
+        java.sql.Date dateDebut = (article.getDebut_encheres() != null) ? java.sql.Date.valueOf(article.getDebut_encheres()) : null;
+        java.sql.Date dateFin = (article.getFin_encheres() != null) ? java.sql.Date.valueOf(article.getFin_encheres()) : null;
+
+        String sql = "UPDATE articles_vendus " +
+                "SET nom_article = ?, description = ?, date_debut_encheres = ?, date_fin_encheres = ?, " +
+                "prix_initial = ?, prix_vente = ?, no_utilisateur = ?, no_categorie = ?, url = ? " +
+                "WHERE no_article = ?";
+
+        jdbcTemplate.update(sql,
+                article.getNom_article(),
+                article.getDescription(),
+                dateDebut,
+                dateFin,
+                article.getPrixInitial(),
+                article.getPrixVente(),
+                article.getNoUtilisateur().getNoUtilisateur(),
+                article.getNoCategorie().getNoCategorie(),
+                article.getUrl(),
+                article.getNoArticle()
+        );
     }
+
 
     @Override
     public void delete(long id) {
