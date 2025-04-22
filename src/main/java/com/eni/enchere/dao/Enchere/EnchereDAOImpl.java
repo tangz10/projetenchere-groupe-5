@@ -114,6 +114,33 @@ public class EnchereDAOImpl implements EnchereDAO {
 
         return result.isEmpty() ? null : result.get(0);
     }
+    @Override
+    public List<Enchere> findAllOffersByArticleId(long noArticle) {
+        String sql = """
+    SELECT * FROM encheres 
+    WHERE no_article = ? 
+    ORDER BY montant_enchere DESC
+    """;
+
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            Enchere e = new Enchere();
+
+            // récupérer l'utilisateur complet
+            int idUtilisateur = rs.getInt("no_utilisateur");
+            Utilisateur utilisateur = utilisateurDAO.selectById(idUtilisateur);
+            e.setNoUtilisateur(utilisateur);
+
+            // récupérer l'article complet
+            int idArticle = rs.getInt("no_article");
+            ArticleVendu article = articleVenduDAO.selectById(idArticle);
+            e.setNoArticle(article);
+
+            e.setDateEnchere(rs.getDate("date_enchere").toLocalDate());
+            e.setMontantEnchere(rs.getInt("montant_enchere"));
+
+            return e;
+        }, noArticle);
+    }
 
     @Override
     public List<Enchere> selectByUtilisateurEtArticle(long noArticle, long noUtilisateur) {

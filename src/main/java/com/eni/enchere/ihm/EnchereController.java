@@ -321,6 +321,8 @@ public class EnchereController {
 
         // Récupérer meilleure enchère UNE SEULE FOIS
         Enchere meilleureEnchere = enchereService.getMeilleureEnchereParArticleId(id);
+        List<Enchere> enchereList = enchereService.getEnchereByArticleId(id);
+        model.addAttribute("enchereList", enchereList);
 
         LocalDate dateFin = article.getFin_encheres();
         LocalDate today = LocalDate.now();
@@ -441,9 +443,11 @@ public class EnchereController {
         }
 
         Enchere meilleureEnchere = enchereService.getMeilleureEnchereParArticleId(id);
+        List<Enchere> enchereList = enchereService.getEnchereByArticleId(id);
 
         model.addAttribute("article", article);
         model.addAttribute("meilleureEnchere", meilleureEnchere);
+        model.addAttribute("enchereList", enchereList);  // Liste des enchères triées
 
         return "enchere_product";
     }
