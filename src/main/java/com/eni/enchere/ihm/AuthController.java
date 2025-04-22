@@ -51,7 +51,6 @@ public class AuthController {
 
         utilisateur.setMotDePasse(passwordEncoder.encode(utilisateur.getMotDePasse()));
         utilisateur.setCredit(0);
-        utilisateur.setAdmin(false);
         utilisateurService.insertUtilisateur(utilisateur);
 
         /*

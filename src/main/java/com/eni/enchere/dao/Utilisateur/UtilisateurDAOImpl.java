@@ -31,14 +31,15 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
         u.setVille(rs.getString("ville"));
         u.setMotDePasse(rs.getString("mot_de_passe"));
         u.setCredit(rs.getInt("credit"));
-        u.setAdmin(rs.getBoolean("administrateur"));
+        u.setIsAdmin(rs.getBoolean("is_admin"));
+        u.setIsActive(rs.getBoolean("is_active"));
         return u;
     };
 
     @Override
     public void insert(Utilisateur utilisateur) {
-        String sql = "INSERT INTO Utilisateurs (pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mot_de_passe, credit, administrateur) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Utilisateurs (pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mot_de_passe, credit) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -54,7 +55,6 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
             ps.setString(8, utilisateur.getVille());
             ps.setString(9, utilisateur.getMotDePasse());
             ps.setLong(10, utilisateur.getCredit());
-            ps.setBoolean(11, utilisateur.getAdmin());
             return ps;
         }, keyHolder);
 
@@ -65,7 +65,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 
     @Override
     public void update(Utilisateur utilisateur) {
-        String sql = "UPDATE Utilisateurs SET pseudo=?, nom=?, prenom=?, email=?, telephone=?, rue=?, code_postal=?, ville=?, mot_de_passe=?, credit=?, administrateur=? " +
+        String sql = "UPDATE Utilisateurs SET pseudo=?, nom=?, prenom=?, email=?, telephone=?, rue=?, code_postal=?, ville=?, mot_de_passe=?, credit=?" +
                 "WHERE no_utilisateur=?";
         jdbcTemplate.update(sql,
                 utilisateur.getPseudo(),
@@ -78,7 +78,6 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
                 utilisateur.getVille(),
                 utilisateur.getMotDePasse(),
                 utilisateur.getCredit(),
-                utilisateur.getAdmin(),
                 utilisateur.getNoUtilisateur());
     }
 

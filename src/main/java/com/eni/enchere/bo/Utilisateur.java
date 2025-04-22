@@ -12,7 +12,8 @@ public class Utilisateur {
     private String codePostal;
     private String motDePasse;
     private long credit;
-    private boolean admin;
+    private boolean isAdmin;
+    private boolean isActive;
 
 
     public Utilisateur() {
@@ -39,13 +40,17 @@ public class Utilisateur {
         this.noUtilisateur = noUtilisateur;
     }
 
-    public boolean getAdmin() {
-        return admin;
+    public boolean getIsAdmin() {
+        return isAdmin;
     }
 
-    public void setAdmin(boolean isadmin) {
-        this.admin = isadmin;
+    public void setIsAdmin(boolean isAdmin) {
+        this.isAdmin = isAdmin;
     }
+
+    public boolean getIsActive() { return isAdmin; }
+
+    public void setIsActive(boolean isActive) { this.isActive = isActive; }
 
     public long getCredit() {
         return credit;
