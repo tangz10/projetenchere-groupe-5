@@ -18,6 +18,9 @@ public class ArticleVenduService {
     public void insertArticleVendu(ArticleVendu articleVendu) {
         articleVenduDAO.insert(articleVendu);
     }
+    public void updateArticleVendu(ArticleVendu articleVendu){
+        articleVenduDAO.update(articleVendu);
+    }
 
     public List<ArticleVendu> getAllArticleVendu() {return articleVenduDAO.selectAll();}
 
