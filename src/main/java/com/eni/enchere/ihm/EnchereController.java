@@ -48,42 +48,28 @@ public class EnchereController {
         Map<Long, Integer> classementUtilisateur = new HashMap<>();
 
         long userId = utilisateurConnecte.getNoUtilisateur();
-        System.out.println("Utilisateur connecté ID: " + userId);
 
         for (ArticleVendu article : articles) {
             long noArticle = article.getNoArticle();
-            System.out.println("\n--- Article traité : " + noArticle + " ---");
 
             // Meilleure enchère
             Enchere meilleure = enchereService.getMeilleureEnchereParArticleId(noArticle);
             if (meilleure != null) {
-                System.out.println("Meilleure enchère trouvée : " + meilleure.getMontantEnchere());
                 meilleuresEncheres.put(noArticle, meilleure);
             } else {
-                System.out.println("Aucune enchère pour cet article.");
             }
 
             // Classement personnel
             List<Enchere> encheres = enchereService.getClassementEncheres(noArticle);
-            System.out.println("Enchères pour l'article " + noArticle + " : ");
-            for (Enchere enchere : encheres) {
-                System.out.println("  Utilisateur : " + enchere.getNoUtilisateur().getNoUtilisateur() +
-                        ", Montant : " + enchere.getMontantEnchere());
-            }
 
             for (int i = 0; i < encheres.size(); i++) {
                 long enchereUserId = encheres.get(i).getNoUtilisateur().getNoUtilisateur();
-                System.out.println("Comparaison : enchérisseur ID = " + enchereUserId + " vs utilisateur connecté = " + userId);
                 if (enchereUserId == userId) {
                     classementUtilisateur.put(noArticle, i + 1); // commence à 1
-                    System.out.println("→ Classement utilisateur pour l'article " + noArticle + " : " + (i + 1));
                     break;
                 }
             }
         }
-
-        System.out.println("→ Meilleures enchères envoyées à la vue : " + meilleuresEncheres.keySet());
-        System.out.println("→ Classements envoyés à la vue : " + classementUtilisateur);
 
         model.addAttribute("meilleuresEncheres", meilleuresEncheres);
         model.addAttribute("classements", classementUtilisateur);
