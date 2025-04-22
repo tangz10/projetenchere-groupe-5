@@ -402,5 +402,17 @@ public class EnchereController {
         return "redirect:/enchere"; // ou une autre vue après succès
     }
 
+    @GetMapping("/enchere/edit")
+    public String enchereEdit(@RequestParam("id") long id, Model model) {
+
+//        if (meilleureEnchere == null || !meilleureEnchere.getNoUtilisateur().equals(utilisateurConnecte)) {
+//            return "redirect:/enchere"; // Redirige si ce n'est pas le gagnant
+//        }
+
+        model.addAttribute("message", "Modification d'une enchere");
+
+        return "enchere_edit";
+    }
+
 
 }
