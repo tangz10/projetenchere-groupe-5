@@ -15,7 +15,34 @@
     <a th:href="@{/enchere}" class="text-decoration-none text-dark">ENI Enchères</a>
 </div>
 
-<p>admin users</p>
+<div class="main-container container">
+    <div class="container mt-4">
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Pseudo</th>
+                    <th>Email</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="utilisateur : ${utilisateurs}">
+                    <td th:text="${utilisateur.getPseudo()}"></td>
+                    <td th:text="${utilisateur.getEmail()}"></td>
+                    <td></td>
+                    <td><button type="button" class="btn btn-outline-danger" th:value="${utilisateur.getPseudo()}" onclick="supprimerUtilisateur(this)">Supprimer</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function supprimerUtilisateur(input) {
+        console.log(input.value);
+    }
+</script>
 
 </body>
 </html>

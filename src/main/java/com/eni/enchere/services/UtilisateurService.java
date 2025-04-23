@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UtilisateurService {
     @Autowired
@@ -28,6 +30,8 @@ public class UtilisateurService {
             return null;
         }
     }
+
+    public List<Utilisateur> getUtilisateurs() { return utilisateurDAO.selectAll(); }
 
     public void insertUtilisateur(Utilisateur utilisateur) {
         utilisateurDAO.insert(utilisateur);
