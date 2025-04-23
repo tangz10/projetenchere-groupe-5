@@ -123,7 +123,7 @@
         <h5 class="modal-title" th:text="#{saleDetail.error.title}">Erreur</h5>
       </div>
       <div class="modal-body">
-        <p th:text="${erreur}">Erreur</p>
+        <p th:text="#{${erreur}}">Erreur</p>
       </div>
       <div class="modal-footer">
         <a th:href="@{/enchere/vente(id=${article.noArticle})}" class="btn btn-outline-dark" th:text="#{saleDetail.error.close}">Fermer</a>

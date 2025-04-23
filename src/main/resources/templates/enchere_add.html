@@ -113,24 +113,32 @@
     </div>
 </form>
 
-<script>
+<script th:inline="javascript">
     function validateForm() {
+        let messageChampsObligatoires = /*[[#{error.form}]]*/ "Tous les champs doivent être remplis !";
+        let messageDatesInvalides = /*[[#{error.date}]]*/ "La date de fin doit être après la date de début.";
+
         let nom_article = document.getElementById("nom_article").value;
         let categorie = document.getElementById("categorie").value;
-        let photos = document.getElementById("photos").value;
         let description = document.getElementById("description").value;
         let prixInitial = document.getElementById("prixInitial").value;
         let debut_encheres = document.getElementById("debut_encheres").value;
         let fin_encheres = document.getElementById("fin_encheres").value;
 
-        // Validation de tous les champs
-        if (nom_article === "" || categorie === "0" || description === "" || prixInitial === "" || debut_encheres === "" || fin_encheres === "" || photos === "") {
-            alert("Tous les champs doivent être remplis !");
-            return false; // Empêche l'envoi du formulaire
+        if (nom_article === "" || categorie === "" || description === "" || prixInitial === "") {
+            alert(messageChampsObligatoires);
+            return false;
         }
-        return true; // Permet l'envoi du formulaire
+
+        if (new Date(debut_encheres) > new Date(fin_encheres)) {
+            alert(messageDatesInvalides);
+            return false;
+        }
+
+        return true;
     }
 </script>
+
 
 <!-- Bootstrap JS (optionnel) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
