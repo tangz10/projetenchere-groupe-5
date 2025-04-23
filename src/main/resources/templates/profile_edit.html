@@ -113,7 +113,7 @@
     </div>
 
     <div class="container mt-3">
-        <p th:text="#{profile.edit.credit}">Crédit: <span th:text="${utilisateur.getCredit()}">0</span></p>
+        <p th:text="#{profile.edit.credit} + ' ' + ${utilisateur.credit}">Crédit : 0</p>
     </div>
 
     <div class="container mt-3">
