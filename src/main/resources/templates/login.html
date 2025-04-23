@@ -47,7 +47,7 @@
                             <input class="form-check-input" type="checkbox" id="checkChecked" name="remember-me" checked>
                             <label class="form-check-label" for="checkChecked" th:text="#{login.rememberMe}">Se souvenir de moi</label>
                             <br>
-                            <a href="#" th:text="#{login.forgotPassword}">Mot de passe oublié</a>
+                            <a th:href="@{/forgotten_password}" th:text="#{login.forgotPassword}">Mot de passe oublié</a>
                         </div>
                     </div>
                 </div>
