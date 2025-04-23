@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Enregistrement</title>
+    <title th:text="#{register.title}">Enregistrement</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -12,20 +12,20 @@
 <body>
 
 <div class="header container mt-5 mb-3">
-    <a th:href="@{/}" class="text-decoration-none text-dark">ENI Enchères</a>
+    <a th:href="@{/}" class="text-decoration-none text-dark" th:text="#{header.home}">ENI Enchères</a>
 </div>
 
 <div class="container text-center">
-    <p class="fs-4">Créer un compte</p>
+    <p class="fs-4" th:text="#{register.createAccount}">Créer un compte</p>
 </div>
 
 <form th:action="@{/register}" method="post">
-    <div class="container ">
+    <div class="container">
         <div class="row row-cols-1 row-cols-md-2">
 
             <div class="col d-flex flex-row gap-2 mb-2">
                 <div class="left-content w-50">
-                    <p>Pseudo: </p>
+                    <p th:text="#{register.username}">Pseudo: </p>
                 </div>
                 <div class="right-content w-60">
                     <input type="text" class="form-control p-2 border-black" aria-label="pseudo" name="pseudo">
@@ -34,7 +34,7 @@
 
             <div class="col d-flex flex-row gap-2 mb-2">
                 <div class="left-content w-50">
-                    <p>Nom: </p>
+                    <p th:text="#{register.lastName}">Nom: </p>
                 </div>
                 <div class="right-content w-60">
                     <input type="text" class="form-control p-2 border-black" aria-label="lastname" name="nom">
@@ -43,7 +43,7 @@
 
             <div class="col d-flex flex-row gap-2 mb-2">
                 <div class="left-content w-50">
-                    <p>Prénom: </p>
+                    <p th:text="#{register.firstName}">Prénom: </p>
                 </div>
                 <div class="right-content w-60">
                     <input type="text" class="form-control p-2 border-black" aria-label="firstname" name="prenom">
@@ -52,7 +52,7 @@
 
             <div class="col d-flex flex-row gap-2 mb-2">
                 <div class="left-content w-50">
-                    <p>Email: </p>
+                    <p th:text="#{register.email}">Email: </p>
                 </div>
                 <div class="right-content w-60">
                     <input type="text" class="form-control p-2 border-black" aria-label="mail" name="email">
@@ -61,7 +61,7 @@
 
             <div class="col d-flex flex-row gap-2 mb-2">
                 <div class="left-content w-50">
-                    <p>Téléphone: </p>
+                    <p th:text="#{register.phone}">Téléphone: </p>
                 </div>
                 <div class="right-content w-60">
                     <input type="text" class="form-control p-2 border-black" aria-label="phone" name="telephone">
@@ -70,7 +70,7 @@
 
             <div class="col d-flex flex-row gap-2 mb-2">
                 <div class="left-content w-50">
-                    <p>Rue: </p>
+                    <p th:text="#{register.street}">Rue: </p>
                 </div>
                 <div class="right-content w-60">
                     <input type="text" class="form-control p-2 border-black" aria-label="street" name="rue">
@@ -79,7 +79,7 @@
 
             <div class="col d-flex flex-row gap-2 mb-2">
                 <div class="left-content w-50">
-                    <p>Code postal: </p>
+                    <p th:text="#{register.zipcode}">Code postal: </p>
                 </div>
                 <div class="right-content w-60">
                     <input type="text" class="form-control p-2 border-black" aria-label="zipcode" name="codePostal">
@@ -88,7 +88,7 @@
 
             <div class="col d-flex flex-row gap-2 mb-2">
                 <div class="left-content w-50">
-                    <p>Ville: </p>
+                    <p th:text="#{register.city}">Ville: </p>
                 </div>
                 <div class="right-content w-60">
                     <input type="text" class="form-control p-2 border-black" aria-label="city" name="ville">
@@ -97,7 +97,7 @@
 
             <div class="col d-flex flex-row gap-2 mb-2">
                 <div class="left-content w-50">
-                    <p>Mot de passe: </p>
+                    <p th:text="#{register.password}">Mot de passe: </p>
                 </div>
                 <div class="right-content w-60">
                     <input type="password" class="form-control p-2 border-black" aria-label="password" name="motDePasse">
@@ -106,7 +106,7 @@
 
             <div class="col d-flex flex-row gap-2 mb-2">
                 <div class="left-content w-50">
-                    <p>Confirmation: </p>
+                    <p th:text="#{register.confirmPassword}">Confirmation: </p>
                 </div>
                 <div class="right-content w-60">
                     <input type="password" class="form-control p-2 border-black" aria-label="password-confirmation">
@@ -119,11 +119,11 @@
     <div class="container mt-3">
         <div class="row">
             <div class="col">
-                <button type="submit" class="btn btn-outline-dark w-100" style="height: 70px">Créer</button>
+                <button type="submit" class="btn btn-outline-dark w-100" style="height: 70px" th:text="#{register.createButton}">Créer</button>
             </div>
 
             <div class="col">
-                <button type="button" class="btn btn-outline-dark w-100" style="height: 70px">Annuler</button>
+                <button type="button" class="btn btn-outline-dark w-100" style="height: 70px" th:text="#{register.cancelButton}">Annuler</button>
             </div>
         </div>
     </div>
