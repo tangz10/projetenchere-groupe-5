@@ -2,52 +2,53 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Enchere</title>
-
+  <title th:text="#{home.title}">Enchere</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 
 <div class="header container mt-5 mb-5 d-flex flex-column">
-  <a th:href="@{/enchere}" class="text-decoration-none text-dark">ENI Enchères</a>
-  <a th:href="@{/enchere/add}">Vendre un article</a>
-  <a th:href="@{/my_profile}">Mon profil</a>
+  <a th:href="@{/enchere}" class="text-decoration-none text-dark" th:text="#{header.home}">ENI Enchères</a>
+  <a th:href="@{/enchere/add}" th:text="#{itemDetail.bid}">Vendre un article</a>
+  <a th:href="@{/my_profile}" th:text="#{header.profile}">Mon profil</a>
   <form th:action="@{/logout}" method="post">
-    <button type="submit" class="btn btn-link p-0" style="text-decoration: underline;">Déconnexion</button>
+    <button type="submit" class="btn btn-link p-0" style="text-decoration: underline;" th:text="#{header.logout}">Déconnexion</button>
   </form>
+
+  <!-- Sélecteur de langue -->
+  <select class="form-select mt-2" style="width: auto;" th:value="${#locale.language}" onchange="changeLanguage(this.value)">
+    <option value="fr" th:selected="${#locale.language == 'fr'}" th:text="#{lang.fr}">Français</option>
+    <option value="en" th:selected="${#locale.language == 'en'}" th:text="#{lang.en}">English</option>
+  </select>
 </div>
 
 <div class="main-container container">
-  <p>Filtres :</p>
+  <p th:text="#{home.filters}">Filtres :</p>
   <form id="filterForm" method="get">
     <div class="container">
       <input class="form-check-input" type="radio" name="radioDefault" id="radioDefault2"
              onchange="window.location.href='/enchere/achats';"
              th:checked="${activeFilter == 'achats'}">
-      <label class="form-check-label" for="radioDefault2">
-        Achats
-      </label>
+      <label class="form-check-label" for="radioDefault2" th:text="#{itemDetail.buy}">Achats</label>
       <ul>
         <li style="list-style: none">
           <input class="form-check-input" type="checkbox" id="checkDefault1" name="ouvertes"
                  onchange="document.getElementById('filterForm').submit();"
                  th:checked="${param.ouvertes != null}">
-          <label class="form-check-label" for="checkDefault1">enchères ouvertes</label>
+          <label class="form-check-label" for="checkDefault1" th:text="#{itemDetail.buy.open}">enchères ouvertes</label>
         </li>
         <li style="list-style: none">
           <input class="form-check-input" type="checkbox" id="checkDefault2" name="AenCours"
                  onchange="document.getElementById('filterForm').submit();"
                  th:checked="${param.AenCours != null}">
-          <label class="form-check-label" for="checkDefault2">mes enchères en cours</label>
+          <label class="form-check-label" for="checkDefault2" th:text="#{itemDetail.buy.live}">enchères en cours</label>
         </li>
         <li style="list-style: none">
           <input class="form-check-input" type="checkbox" id="checkDefault3" name="remportees"
                  onchange="document.getElementById('filterForm').submit();"
                  th:checked="${param.remportees != null}">
-          <label class="form-check-label" for="checkDefault3">mes enchères remportées</label>
+          <label class="form-check-label" for="checkDefault3" th:text="#{itemDetail.buy.win}">enchères remportées</label>
         </li>
       </ul>
     </div>
@@ -56,26 +57,26 @@
       <input class="form-check-input" type="radio" name="radioDefault" id="radioDefault1"
              onchange="window.location.href='/enchere/mes-ventes';"
              th:checked="${activeFilter != null && activeFilter == 'ventes'}">
-      <label class="form-check-label" for="radioDefault1">Mes ventes</label>
+      <label class="form-check-label" for="radioDefault1" th:text="#{itemDetail.sell}">Mes ventes</label>
 
       <ul>
         <li style="list-style: none">
           <input class="form-check-input" type="checkbox" id="checkVente1" name="enCours"
                  onchange="document.getElementById('filterForm').submit();"
                  th:checked="${param.enCours != null}">
-          <label class="form-check-label" for="checkVente1">mes ventes en cours</label>
+          <label class="form-check-label" for="checkVente1" th:text="#{itemDetail.sell.live}">mes ventes en cours</label>
         </li>
         <li style="list-style: none">
           <input class="form-check-input" type="checkbox" id="checkVente2" name="nonDebutees"
                  onchange="document.getElementById('filterForm').submit();"
                  th:checked="${param.nonDebutees != null}">
-          <label class="form-check-label" for="checkVente2">ventes non débutées</label>
+          <label class="form-check-label" for="checkVente2" th:text="#{itemDetail.sell.nostart}">ventes non débutées</label>
         </li>
         <li style="list-style: none">
           <input class="form-check-input" type="checkbox" id="checkVente3" name="terminees"
                  onchange="document.getElementById('filterForm').submit();"
                  th:checked="${param.terminees != null}">
-          <label class="form-check-label" for="checkVente3">ventes terminées</label>
+          <label class="form-check-label" for="checkVente3"th:text="#{itemDetail.sell.close}">ventes terminées</label>
         </li>
       </ul>
     </div>
@@ -83,9 +84,9 @@
 
   <form th:action="@{/enchere/filtrerParCategorie}" method="get">
     <div class="container d-flex flex-row gap-2 align-items-baseline">
-      <p>Categories</p>
-      <select class="form-select" name="categorie" aria-label="Default select example" onchange="this.form.submit()">
-        <option th:value="0" th:text="'Toutes'" th:selected="${categorieId == 0}"></option> <!-- Si categorieId == 0, on sélectionne "Toutes" -->
+      <p th:text="#{home.categories}">Catégories</p>
+      <select class="form-select" name="categorie" onchange="this.form.submit()">
+        <option th:value="0" th:text="#{home.allCategories}" th:selected="${categorieId == 0}">Toutes</option>
         <th:block th:each="categorie : ${categories}">
           <option th:value="${categorie.noCategorie}" th:text="${categorie.libelle}" th:selected="${categorie.noCategorie == categorieId}"></option>
         </th:block>
@@ -97,12 +98,11 @@
     <div class="container">
       <div class="input-group mb-3">
         <span class="input-group-text" id="basic-addon1">@</span>
-        <input type="text" class="form-control" placeholder="Le nom de l'article contient" name="searchQuery" aria-label="articles" aria-describedby="basic-addon1">
+        <input type="text" class="form-control" th:placeholder="#{home.searchPlaceholder}" name="searchQuery" aria-label="articles">
       </div>
     </div>
-    <button type="submit" class="btn btn-outline-dark w-100">Rechercher</button>
+    <button type="submit" class="btn btn-outline-dark w-100" th:text="#{home.searchButton}">Rechercher</button>
   </form>
-
 
   <div class="container mt-4">
     <div th:each="article : ${articleVendus}">
@@ -110,41 +110,40 @@
         <div class="container border border-black py-2 mb-3">
           <div class="row">
             <div class="col-4">
-              <!-- Affichage de l'image avec l'URL dynamique -->
-              <img th:src="@{${article.url}}" alt="Photo de l'article" height="100px">
+              <img th:src="@{${article.url}}" th:alt="#{photo}" height="100px">
             </div>
             <div class="col-8" style="font-size: 12px">
-              <p th:text="${article.nom_article}">Nom de l'article</p>
+              <p th:text="${article.nom_article}">Nom</p>
               <p>
-                Prix :
-                <span th:if="${meilleuresEncheres[article.noArticle] != null}"
-                      th:text="${meilleuresEncheres[article.noArticle].montantEnchere}">0</span>
-                <span th:if="${meilleuresEncheres[article.noArticle] == null}"
-                      th:text="${article.prixInitial}">0</span>
+                <span th:text="#{itemDetail.price} + ':'"></span>
+                <span th:if="${meilleuresEncheres[article.noArticle] != null}" th:text="${meilleuresEncheres[article.noArticle].montantEnchere}">0</span>
+                <span th:if="${meilleuresEncheres[article.noArticle] == null}" th:text="${article.prixInitial}">0</span>
                 points
-                <!-- 🎯 Ajout du classement utilisateur -->
-                <span th:if="${classements[article.noArticle] != null}"
-                      class="ms-2 text-muted"
-                      th:text="'Classement : ' + ${classements[article.noArticle]}"></span>
+                <span th:if="${classements[article.noArticle] != null}" class="ms-2 text-muted" th:text="#{ranking} + ${classements[article.noArticle]}"></span>
+
               </p>
               <p>
-                Fin de l'enchère :
+                <span th:text="#{itemDetail.endTime} + ':'"></span>
                 <span th:text="${#temporals.format(article.fin_encheres, 'dd/MM/yyyy')}"></span>
               </p>
               <p th:text="'Retrait : ' + ${article.noUtilisateur.rue + ' ' + article.noUtilisateur.codePostal + ' ' + article.noUtilisateur.ville}"></p>
-              <p th:text="'Vendeur : ' + ${article.noUtilisateur.pseudo}">Pseudo</p>
+              <p><span th:text="#{itemDetail.seller} + ':'"></span> <span th:text="${article.noUtilisateur.pseudo}"></span></p>
             </div>
           </div>
         </div>
       </a>
     </div>
   </div>
-
-
-
 </div>
 
-<!-- Bootstrap JS (optionnel) -->
+<script>
+  function changeLanguage(language) {
+    const url = new URL(window.location.href);
+    url.searchParams.set('lang', language);
+    window.location.href = url.toString(); // redirection GET avec le paramètre
+  }
+</script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

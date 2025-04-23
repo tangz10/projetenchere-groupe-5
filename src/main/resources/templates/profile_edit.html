@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Modification du profile</title>
+    <title th:text="#{profile.edit.title}">Modification du profil</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -12,18 +12,18 @@
 <body>
 
 <div class="header container mt-5 mb-3">
-    <a th:href="@{/enchere}" class="text-decoration-none text-dark">ENI Enchères</a>
+    <a th:href="@{/enchere}" class="text-decoration-none text-dark" th:text="#{header.home}">ENI Enchères</a>
 </div>
 
 <div class="container text-center">
-    <p class="fs-4">Mon Profil</p>
+    <p class="fs-4" th:text="#{profile.edit.title}">Mon Profil</p>
 </div>
 
 <form th:action="@{/my_profile/edit}" method="post">
     <div class="container text-center mt-3">
         <div class="row">
             <div class="col d-flex align-items-center">
-                Pseudo:
+                <label th:text="#{profile.edit.pseudo}">Pseudo:</label>
             </div>
             <div class="col">
                 <input type="text" class="form-control p-2 border-black" aria-label="pseudo" name="pseudo" th:value="${utilisateur.getPseudo()}">
@@ -32,7 +32,7 @@
 
         <div class="row mt-2">
             <div class="col d-flex align-items-center">
-                Nom:
+                <label th:text="#{profile.edit.lastName}">Nom:</label>
             </div>
             <div class="col">
                 <input type="text" class="form-control p-2 border-black" aria-label="lastname" name="nom" th:value="${utilisateur.getNom()}">
@@ -41,7 +41,7 @@
 
         <div class="row mt-2">
             <div class="col d-flex align-items-center">
-                Prénom:
+                <label th:text="#{profile.edit.firstName}">Prénom:</label>
             </div>
             <div class="col">
                 <input type="text" class="form-control p-2 border-black" aria-label="name" name="prenom" th:value="${utilisateur.getPrenom()}">
@@ -50,7 +50,7 @@
 
         <div class="row mt-2">
             <div class="col d-flex align-items-center">
-                Email:
+                <label th:text="#{profile.edit.email}">Email:</label>
             </div>
             <div class="col">
                 <input type="text" class="form-control p-2 border-black" aria-label="mail" name="email" th:value="${utilisateur.getEmail()}">
@@ -59,7 +59,7 @@
 
         <div class="row mt-2">
             <div class="col d-flex align-items-center">
-                Téléphone:
+                <label th:text="#{profile.edit.phone}">Téléphone:</label>
             </div>
             <div class="col">
                 <input type="text" class="form-control p-2 border-black" aria-label="phone" name="telephone" th:value="${utilisateur.getTelephone()}">
@@ -68,7 +68,7 @@
 
         <div class="row mt-2">
             <div class="col d-flex align-items-center">
-                Rue:
+                <label th:text="#{profile.edit.street}">Rue:</label>
             </div>
             <div class="col">
                 <input type="text" class="form-control p-2 border-black" aria-label="street" name="rue" th:value="${utilisateur.getRue()}">
@@ -77,7 +77,7 @@
 
         <div class="row mt-2">
             <div class="col d-flex align-items-center">
-                Code postal:
+                <label th:text="#{profile.edit.zipcode}">Code postal:</label>
             </div>
             <div class="col">
                 <input type="text" class="form-control p-2 border-black" aria-label="zipcode" name="codePostal" th:value="${utilisateur.getCodePostal()}">
@@ -86,7 +86,7 @@
 
         <div class="row mt-2">
             <div class="col d-flex align-items-center">
-                Ville:
+                <label th:text="#{profile.edit.city}">Ville:</label>
             </div>
             <div class="col">
                 <input type="text" class="form-control p-2 border-black" aria-label="city" name="ville" th:value="${utilisateur.getVille()}">
@@ -95,7 +95,7 @@
 
         <div class="row mt-2">
             <div class="col d-flex align-items-center">
-                Mot de passe:
+                <label th:text="#{profile.edit.password}">Mot de passe:</label>
             </div>
             <div class="col">
                 <input type="password" class="form-control p-2 border-black" aria-label="password" name="motDePasse">
@@ -104,7 +104,7 @@
 
         <div class="row mt-2">
             <div class="col d-flex align-items-center">
-                Confirmation:
+                <label th:text="#{profile.edit.confirmPassword}">Confirmation:</label>
             </div>
             <div class="col">
                 <input type="password" class="form-control p-2 border-black" aria-label="password-confirmation">
@@ -113,21 +113,21 @@
     </div>
 
     <div class="container mt-3">
-        <p>Crédit: <span th:text="${utilisateur.getCredit()}">0</span></p>
+        <p th:text="#{profile.edit.credit}">Crédit: <span th:text="${utilisateur.getCredit()}">0</span></p>
     </div>
 
     <div class="container mt-3">
         <div class="row">
             <div class="col p-1">
-                <button type="submit" class="btn btn-outline-dark w-100" style="height: 70px">Enregistrer</button>
+                <button type="submit" class="btn btn-outline-dark w-100" style="height: 70px" th:text="#{profile.edit.save}">Enregistrer</button>
             </div>
 
             <div class="col p-1">
-                <button type="button" class="btn btn-outline-dark w-100" style="height: 70px" onclick="deleteCompte()">Supprimer mon compte</button>
+                <button type="button" class="btn btn-outline-dark w-100" style="height: 70px" onclick="deleteCompte()" th:text="#{profile.edit.deleteAccount}">Supprimer mon compte</button>
             </div>
 
             <div class="col p-1">
-                <button type="button" class="btn btn-outline-dark w-100" style="height: 70px">Retour</button>
+                <button type="button" class="btn btn-outline-dark w-100" style="height: 70px" th:text="#{profile.edit.back}">Retour</button>
             </div>
         </div>
     </div>
@@ -152,11 +152,11 @@
                         "X-Requested-With": "XMLHttpRequest"
                     }
                 })
-                .then(response => {
-                    if (response.ok) {
-                        window.location.href = '/';
-                    }
-                });
+                    .then(response => {
+                        if (response.ok) {
+                            window.location.href = '/';
+                        }
+                    });
             }
         });
     }

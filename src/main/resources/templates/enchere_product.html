@@ -2,8 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Détail d'une enchère (vendeur)</title>
-
+    <title th:text="#{auctionDetailSeller.title}">Détail d'une enchère (vendeur)</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Bootstrap CSS -->
@@ -12,12 +11,18 @@
 <body>
 
 <div class="header container mt-5 mb-3">
-    <a th:href="@{/enchere}" class="text-decoration-none text-dark">ENI Enchères</a>
+    <a th:href="@{/enchere}" class="text-decoration-none text-dark" th:text="#{header.home}">ENI Enchères</a>
 </div>
 
 <div class="container text-center">
-    <p th:if="${meilleureEnchere != null}" class="fs-4" th:text="${meilleureEnchere.noUtilisateur.pseudo} + ' a remporté l\'enchère'">Johann a remporté l'enchère</p>
-    <p th:if="${meilleureEnchere == null}" class="fs-4 text-danger">Aucune offre n'a été faite sur cet article.</p>
+    <p th:if="${meilleureEnchere != null}" class="fs-4"
+       th:text="#{auctionDetailSeller.winnerMessage(${meilleureEnchere.noUtilisateur.pseudo})}">
+        Johann a remporté l'enchère
+    </p>
+    <p th:if="${meilleureEnchere == null}" class="fs-4 text-danger"
+       th:text="#{auctionDetailSeller.noBidsMessage}">
+        Aucune offre n'a été faite sur cet article.
+    </p>
 </div>
 
 <div class="container">
@@ -25,37 +30,57 @@
 
     <img th:src="@{${article.url}}" alt="Photo de l'article" height="100px">
 
-    <p th:if="${meilleureEnchere != null}" class="mt-3" th:text="'Meilleure offre : ' + ${meilleureEnchere.montantEnchere} + ' pts par ' + ${meilleureEnchere.noUtilisateur.pseudo}">Meilleure offre</p>
+    <p th:if="${meilleureEnchere != null}" class="mt-3"
+       th:text="#{auctionDetailSeller.bestBid(${meilleureEnchere.montantEnchere}, ${meilleureEnchere.noUtilisateur.pseudo})}">
+        Meilleure offre
+    </p>
+
     <div th:if="${!enchereList.isEmpty()}">
-        <h3>Liste des enchérisseurs</h3>
+        <h3 th:text="#{auctionDetailSeller.biddersList}">Liste des enchérisseurs</h3>
         <table class="table">
             <thead>
             <tr>
-                <th scope="col">Pseudo</th>
-                <th scope="col">Montant de l'enchère</th>
-                <th scope="col">Date de l'enchère</th>
+                <th scope="col" th:text="#{auctionDetailSeller.biddersTable.pseudo}">Pseudo</th>
+                <th scope="col" th:text="#{auctionDetailSeller.biddersTable.amount}">Montant de l'enchère</th>
+                <th scope="col" th:text="#{auctionDetailSeller.biddersTable.date}">Date de l'enchère</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="enchere : ${enchereList}">
-                <td><a th:href="@{/user/{pseudo}(pseudo=${enchere.noUtilisateur.pseudo})}" th:text="${enchere.noUtilisateur.pseudo}">Pseudo</a></td>
+                <td>
+                    <a th:href="@{/user/{pseudo}(pseudo=${enchere.noUtilisateur.pseudo})}"
+                       th:text="${enchere.noUtilisateur.pseudo}">Pseudo</a>
+                </td>
                 <td th:text="${enchere.montantEnchere}"></td>
                 <td th:text="${#temporals.format(enchere.dateEnchere, 'dd/MM/yyyy')}"></td>
             </tr>
             </tbody>
         </table>
     </div>
-    <p th:text="'Mise à prix : ' + ${article.prixInitial} + ' points'">Mise à prix</p>
-    <p th:text="'Fin de l\'enchère : ' + ${#temporals.format(article.fin_encheres, 'dd/MM/yyyy')}">Fin enchère</p>
-    <p th:text="'Retrait : ' + ${article.noUtilisateur.rue} + ', ' + ${article.noUtilisateur.codePostal} + ' ' + ${article.noUtilisateur.ville}">Adresse retrait</p>
-    <p>Vendeur: <a th:href="@{/user/{pseudo}(pseudo=${article.noUtilisateur.pseudo})}" th:text="${article.noUtilisateur.pseudo}">Pseudo</a></p>
+
+    <p th:text="#{auctionDetailSeller.startingPrice(${article.prixInitial})}">Mise à prix</p>
+    <p th:text="#{auctionDetailSeller.auctionEnd(${#temporals.format(article.fin_encheres, 'dd/MM/yyyy')})}">
+        Fin enchère
+    </p>
+    <p th:text="#{auctionDetailSeller.withdrawalAddress(${article.noUtilisateur.rue}, ${article.noUtilisateur.codePostal}, ${article.noUtilisateur.ville})}">
+        Adresse retrait
+    </p>
+    <p th:text="#{auctionDetailSeller.seller(${article.noUtilisateur.pseudo})}">
+        Vendeur: <a th:href="@{/user/{pseudo}(pseudo=${article.noUtilisateur.pseudo})}">Pseudo</a>
+    </p>
 </div>
 
 <div class="container d-flex flex-row gap-2">
-    <button th:if="${meilleureEnchere != null}" type="button" class="btn btn-outline-dark w-100" style="height: 70px">Retrait effectué</button>
+    <button th:if="${meilleureEnchere != null}" type="button" class="btn btn-outline-dark w-100" style="height: 70px"
+            th:text="#{auctionDetailSeller.button.withdraw}">Retrait effectué</button>
+
     <button type="button" class="btn btn-outline-dark w-100" style="height: 70px" th:if="${meilleureEnchere != null}"
-            th:text="'Contacter ' + ${meilleureEnchere.noUtilisateur.pseudo}">Contacter l'acheteur</button>
-    <a th:href="@{/enchere}" class="btn btn-outline-dark w-100" style="height: 70px">Retour</a>
+            th:text="#{auctionDetailSeller.button.contactBuyer(${meilleureEnchere.noUtilisateur.pseudo})}">
+        Contacter l'acheteur
+    </button>
+
+    <a th:href="@{/enchere}" class="btn btn-outline-dark w-100" style="height: 70px"
+       th:text="#{auctionDetailSeller.button.back}">Retour</a>
 </div>
 
 <!-- Bootstrap JS -->

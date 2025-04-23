@@ -2,27 +2,24 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Détail d'une vente</title>
+  <title th:text="#{saleDetail.title}">Détail d'une vente</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     .modal {
       background: rgba(0, 0, 0, 0.5);
     }
   </style>
-
 </head>
 <body>
 
 <div class="header container mt-5 mb-3">
-  <a th:href="@{/enchere}" class="text-decoration-none text-dark">ENI Enchères</a>
+  <a th:href="@{/enchere}" class="text-decoration-none text-dark" th:text="#{header.home}">ENI Enchères</a>
 </div>
 
 <div class="container text-center">
-  <p class="fs-4">Détail vente</p>
+  <p class="fs-4" th:text="#{saleDetail.heading}">Détail vente</p>
 </div>
 
 <div class="container">
@@ -30,22 +27,30 @@
 
   <img th:src="@{${article.url}}" alt="Photo de l'article" height="100px">
 
-  <p class="mt-3">Description: <span th:text="${article.description}">Description</span></p>
-  <p>Catégorie: <span th:text="${article.noCategorie.libelle}">Catégorie</span></p>
+  <p class="mt-3">
+    <span th:text="#{saleDetail.description}">Description:</span>
+    <span th:text="${article.description}">Description</span>
+  </p>
+  <p>
+    <span th:text="#{saleDetail.category}">Catégorie:</span>
+    <span th:text="${article.noCategorie.libelle}">Catégorie</span>
+  </p>
+
   <p th:if="${meilleureEnchere != null}">
-    Meilleure offre :
+    <span th:text="#{saleDetail.bestBid}">Meilleure offre :</span>
     <span th:text="${meilleureEnchere.montantEnchere}">0</span> points
-    pour
+    <span th:text="#{saleDetail.for}">pour</span>
     <span th:text="${meilleureEnchere.noUtilisateur.pseudo}">pseudo</span>
   </p>
+
   <div th:if="${!enchereList.isEmpty()}">
-    <h3>Liste des enchérisseurs</h3>
+    <h3 th:text="#{saleDetail.biddersList}">Liste des enchérisseurs</h3>
     <table class="table">
       <thead>
       <tr>
-        <th scope="col">Pseudo</th>
-        <th scope="col">Montant de l'enchère</th>
-        <th scope="col">Date de l'enchère</th>
+        <th scope="col" th:text="#{saleDetail.biddersTable.pseudo}">Pseudo</th>
+        <th scope="col" th:text="#{saleDetail.biddersTable.amount}">Montant de l'enchère</th>
+        <th scope="col" th:text="#{saleDetail.biddersTable.date}">Date de l'enchère</th>
       </tr>
       </thead>
       <tbody>
@@ -58,52 +63,43 @@
     </table>
   </div>
 
-
-  <p>Mise à prix: <span th:text="${article.prixInitial}">0</span> points</p>
-  <p>Fin de l'enchère: <span th:text="${#temporals.format(article.fin_encheres, 'dd/MM/yyyy')}">Date</span></p>
-  <p>Retrait:
-    <span th:text="${article.noUtilisateur.rue}">Rue</span>,
-    <span th:text="${article.noUtilisateur.codePostal}">Code Postal</span>
-    <span th:text="${article.noUtilisateur.ville}">Ville</span>
+  <p><span th:text="#{saleDetail.startingPrice}">Mise à prix:</span> <span th:text="${article.prixInitial}">0</span> points</p>
+  <p><span th:text="#{saleDetail.endDate}">Fin de l'enchère:</span> <span th:text="${#temporals.format(article.fin_encheres, 'dd/MM/yyyy')}">Date</span></p>
+  <p th:text="#{saleDetail.withdrawalAddress(${article.noUtilisateur.rue}, ${article.noUtilisateur.codePostal}, ${article.noUtilisateur.ville})}">
+    Retrait
   </p>
-  <p>Vendeur: <a th:href="@{/user/{pseudo}(pseudo=${article.noUtilisateur.pseudo})}" th:text="${article.noUtilisateur.pseudo}">Pseudo</a></p>
+  <p>
+    <span th:text="#{saleDetail.seller}">Vendeur:</span>
+    <a th:href="@{/user/{pseudo}(pseudo=${article.noUtilisateur.pseudo})}" th:text="${article.noUtilisateur.pseudo}">Pseudo</a>
+  </p>
 
+  <!-- Vendeur -->
   <div th:if="${article.noUtilisateur.noUtilisateur == utilisateurConnecte.noUtilisateur}">
-    <!-- Si l'utilisateur est le VENDEUR -->
-
     <div class="mt-3">
-      <a th:if="${!venteCommencee}" th:href="@{/enchere/modifier(id=${article.noArticle})}" class="btn btn-outline-primary w-100">
-        Modifier l'article
-      </a>
+      <a th:if="${!venteCommencee}" th:href="@{/enchere/modifier(id=${article.noArticle})}" class="btn btn-outline-primary w-100" th:text="#{saleDetail.button.edit}">Modifier l'article</a>
+
       <form th:if="${!venteCommencee}" th:action="@{/enchere/delete}" method="post"
             onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet article ?');">
         <input type="hidden" name="id" th:value="${article.noArticle}" />
-        <button type="submit" class="btn btn-outline-danger w-100 mt-2">
-          Supprimer l'article
-        </button>
+        <button type="submit" class="btn btn-outline-danger w-100 mt-2" th:text="#{saleDetail.button.delete}">Supprimer l'article</button>
       </form>
-      <div th:if="${venteCommencee}" class="alert alert-warning mt-2" role="alert">
-        La vente a déjà commencé. Vous ne pouvez plus modifier l'article.
-      </div>
-      <a th:href="@{/enchere}" class="btn btn-outline-dark w-100 mt-2">Retour</a>
+
+      <div th:if="${venteCommencee}" class="alert alert-warning mt-2" role="alert" th:text="#{saleDetail.warning.started}">La vente a déjà commencé. Vous ne pouvez plus modifier l'article.</div>
+
+      <a th:href="@{/enchere}" class="btn btn-outline-dark w-100 mt-2" th:text="#{saleDetail.button.back}">Retour</a>
     </div>
   </div>
 
+  <!-- Acheteur -->
   <div th:if="${article.noUtilisateur.noUtilisateur != utilisateurConnecte.noUtilisateur}">
-    <!-- Si l'utilisateur est un ACHETEUR -->
-
-    <!-- Alerte si la vente n'a pas encore commencé -->
-    <div th:if="${!venteCommencee}" class="alert alert-warning mt-2" role="alert">
-      La vente n'a pas encore commencé. Vous ne pouvez pas investir dessus pour l'instant.
-    </div>
+    <div th:if="${!venteCommencee}" class="alert alert-warning mt-2" role="alert" th:text="#{saleDetail.warning.notStarted}">La vente n'a pas encore commencé. Vous ne pouvez pas investir dessus pour l'instant.</div>
 
     <form th:action="@{/encherir}" method="post">
       <input type="hidden" name="noArticle" th:value="${article.noArticle}" />
 
-      <!-- Zone d'enchère seulement si la vente a commencé -->
       <div th:if="${venteCommencee}">
         <div class="proposition-container d-flex flex-row align-items-center gap-3" style="width: max-content">
-          <p>Ma proposition</p>
+          <p th:text="#{saleDetail.myBid}">Ma proposition</p>
           <div class="input-group mb-3" style="width: auto">
             <input type="number" name="montant" class="form-control" placeholder="Le montant" aria-label="Montant" aria-describedby="basic-addon1" required>
             <span class="input-group-text" id="basic-addon1">pts</span>
@@ -111,34 +107,31 @@
         </div>
       </div>
 
-      <!-- Bouton de retour toujours visible, bouton "Enchérir" uniquement si vente commencée -->
       <div class="container d-flex flex-row gap-2">
-        <a th:href="@{/enchere}" class="btn btn-outline-dark w-100" style="height: 70px">Retour</a>
-        <button th:if="${venteCommencee}" type="submit" class="btn btn-outline-dark w-100" style="height: 70px">Enchérir</button>
+        <a th:href="@{/enchere}" class="btn btn-outline-dark w-100" style="height: 70px" th:text="#{saleDetail.button.back}">Retour</a>
+        <button th:if="${venteCommencee}" type="submit" class="btn btn-outline-dark w-100" style="height: 70px" th:text="#{saleDetail.button.bid}">Enchérir</button>
       </div>
     </form>
   </div>
 </div>
+
 <!-- Pop-up erreur crédits -->
 <div th:if="${erreur}" class="modal fade show" style="display:block;" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header bg-danger text-white">
-        <h5 class="modal-title">Erreur</h5>
+        <h5 class="modal-title" th:text="#{saleDetail.error.title}">Erreur</h5>
       </div>
       <div class="modal-body">
         <p th:text="${erreur}">Erreur</p>
       </div>
       <div class="modal-footer">
-        <a th:href="@{/enchere/vente(id=${article.noArticle})}" class="btn btn-outline-dark">Fermer</a>
+        <a th:href="@{/enchere/vente(id=${article.noArticle})}" class="btn btn-outline-dark" th:text="#{saleDetail.error.close}">Fermer</a>
       </div>
     </div>
   </div>
 </div>
 
-
-
-<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title th:text="#{login.title}">Login</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -12,15 +12,13 @@
 <body>
 
 <div class="header container mt-5 mb-5">
-    <a th:href="@{/}" class="text-decoration-none text-dark">ENI Enchères</a>
+    <a th:href="@{/}" class="text-decoration-none text-dark" th:text="#{header.home}">ENI Enchères</a>
 </div>
 
 <div class="toast-container position-fixed top-0 end-0 p-3">
     <div class="toast align-items-center text-white bg-danger border-0 show" role="alert" aria-live="assertive" aria-atomic="true" th:if="${param.error}">
         <div class="d-flex">
-            <div class="toast-body">
-                Identifiants incorrects.
-            </div>
+            <div class="toast-body" th:text="#{login.error}">Identifiants incorrects.</div>
             <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
     </div>
@@ -32,9 +30,9 @@
             <div class="col-12 col-md-6 mx-auto">
                 <div class="container">
                     <div style="grid-template-columns: 1fr 1fr;" class="d-grid gap-3">
-                        <div class="p-2">Identifiant :</div>
+                        <div class="p-2" th:text="#{login.username}">Identifiant :</div>
                         <input type="text" class="form-control p-2 border-black" aria-label="Username" name="username">
-                        <div class="p-2">Mot de passe :</div>
+                        <div class="p-2" th:text="#{login.password}">Mot de passe :</div>
                         <input type="password" class="form-control p-2 border-black" aria-label="password" name="password">
                     </div>
                 </div>
@@ -42,16 +40,14 @@
                 <div class="container mt-5">
                     <div class="row">
                         <div class="col d-flex align-items-center">
-                            <button type="submit" class="btn btn-outline-dark w-100">Connexion</button>
+                            <button type="submit" class="btn btn-outline-dark w-100" th:text="#{login.loginButton}">Connexion</button>
                         </div>
 
                         <div class="col fs-7">
                             <input class="form-check-input" type="checkbox" id="checkChecked" name="remember-me" checked>
-                            <label class="form-check-label" for="checkChecked">
-                                Se souvenir de moi
-                            </label>
+                            <label class="form-check-label" for="checkChecked" th:text="#{login.rememberMe}">Se souvenir de moi</label>
                             <br>
-                            <a href="">Mot de passe oublié</a>
+                            <a href="#" th:text="#{login.forgotPassword}">Mot de passe oublié</a>
                         </div>
                     </div>
                 </div>
@@ -60,10 +56,9 @@
     </form>
 </div>
 
-
 <div class="container mt-3 w-100">
     <div class="col-12 col-md-6 mx-auto">
-        <a th:href="@{/register}" class="btn btn-outline-dark w-100 d-flex align-items-center justify-content-center" style="height: 100px">Créer un compte</a>
+        <a th:href="@{/register}" class="btn btn-outline-dark w-100 d-flex align-items-center justify-content-center" style="height: 100px" th:text="#{login.createAccount}">Créer un compte</a>
     </div>
 </div>
 
