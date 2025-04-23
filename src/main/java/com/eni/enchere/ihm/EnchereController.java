@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -554,7 +553,7 @@ public class EnchereController {
     public String enchereCategorie(Model model) {
 
         model.addAttribute("message", "Modifier les catégories de vente");
-        return "enchere_categorie";
+        return "admin_add_category";
     }
 
 
