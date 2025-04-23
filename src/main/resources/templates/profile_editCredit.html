@@ -19,7 +19,7 @@
     <p class="fs-4" th:text="#{changeCredits.subtitle}">Modifier vos crédits</p>
 </div>
 
-<form th:action="@{/change_password}" method="post">
+<form th:action="@{/my_profile/credit}" method="post">
     <div class="container text-center mt-6">
 
         <div class="row mt-2 d-flex flex-column">
@@ -27,7 +27,7 @@
                 <span th:text="#{changeCredits.subtitle}">Modifier vos crédits</span>
             </div>
             <div class="col">
-                <input type="text" class="form-control p-2 border-black" aria-label="email" name="email">
+                <input type="text" class="form-control p-2 border-black" aria-label="credit" name="credit" th:value="${utilisateur.getCredit()}">
             </div>
         </div>
 
@@ -40,7 +40,7 @@
             </div>
 
             <div class="col p-1">
-                <button type="button" class="btn btn-outline-dark w-100" style="height: 70px" th:text="#{changeCredits.button.back}">Retour</button>
+                <a th:href="@{/my_profile/edit}" type="button" class="btn btn-outline-dark w-100" style="height: 70px" th:text="#{changeCredits.button.back}">Retour</a>
             </div>
         </div>
     </div>
