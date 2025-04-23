@@ -30,8 +30,8 @@
                 <tr th:each="utilisateur : ${utilisateurs}">
                     <td th:text="${utilisateur.getPseudo()}"></td>
                     <td th:text="${utilisateur.getEmail()}"></td>
-                    <td></td>
-                    <td><button type="button" class="btn btn-outline-danger" th:value="${utilisateur.getPseudo()}" onclick="supprimerUtilisateur(this)">Supprimer</button></td>
+                    <td><button type="button" class="btn btn-outline-primary" th:text="${utilisateur.getIsActive()} ? 'Désactiver' : 'Activer'" th:onclick="'activerDesactiverUtilisateur(' + ${utilisateur.getNoUtilisateur()} + ', ' + ${utilisateur.getIsActive()} + ')'"></button></td>
+                    <td><button type="button" class="btn btn-outline-danger" th:onclick="'supprimerUtilisateur(' + ${utilisateur.getNoUtilisateur()} + ')'">Supprimer</button></td>
                 </tr>
             </tbody>
         </table>
@@ -39,8 +39,32 @@
 </div>
 
 <script>
-    function supprimerUtilisateur(input) {
-        console.log(input.value);
+    function supprimerUtilisateur(id) {
+        fetch("/admin/delete_user/" + id, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-Requested-With": "XMLHttpRequest"
+            }
+        }).then(response => {
+            if (response.ok) {
+                window.location.href = '/admin/users';
+            }
+        });
+    }
+
+    function activerDesactiverUtilisateur(id, isEnabled) {
+        fetch("/admin/enable_disable_user/" + id + "/" + isEnabled, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-Requested-With": "XMLHttpRequest"
+            }
+        }).then(response => {
+            if (response.ok) {
+                window.location.href = '/admin/users';
+            }
+        });
     }
 </script>
 

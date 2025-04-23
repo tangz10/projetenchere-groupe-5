@@ -65,7 +65,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 
     @Override
     public void update(Utilisateur utilisateur) {
-        String sql = "UPDATE Utilisateurs SET pseudo=?, nom=?, prenom=?, email=?, telephone=?, rue=?, code_postal=?, ville=?, mot_de_passe=?, credit=? " +
+        String sql = "UPDATE Utilisateurs SET pseudo=?, nom=?, prenom=?, email=?, telephone=?, rue=?, code_postal=?, ville=?, mot_de_passe=?, credit=?, is_active=? " +
                 "WHERE no_utilisateur=?";
         jdbcTemplate.update(sql,
                 utilisateur.getPseudo(),
@@ -78,6 +78,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
                 utilisateur.getVille(),
                 utilisateur.getMotDePasse(),
                 utilisateur.getCredit(),
+                utilisateur.getIsActive(),
                 utilisateur.getNoUtilisateur());
     }
 

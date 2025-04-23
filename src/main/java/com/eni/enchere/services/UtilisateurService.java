@@ -14,6 +14,13 @@ public class UtilisateurService {
     @Autowired
     private UtilisateurDAO utilisateurDAO;
 
+    public Utilisateur getUtilisateurById(long id) {
+        try {
+            return utilisateurDAO.selectById(id);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
 
     public Utilisateur getUtilisateurByPseudo(String pseudo) {
         try {
