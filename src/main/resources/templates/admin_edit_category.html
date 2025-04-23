@@ -12,11 +12,11 @@
 <body>
 
 <div class="header container mt-5 mb-3">
-  <a th:href="@{/enchere}" class="text-decoration-none text-dark">ENI Enchères</a>
+  <a th:href="@{/enchere}" class="text-decoration-none text-dark" th:text="#{header.home}">ENI Enchères</a>
 </div>
 
 <div class="container text-center">
-  <p class="fs-4">Modifier une catégorie !</p>
+  <p class="fs-4" th:text="#{categories.modify}">Modifier une catégorie !</p>
 </div>
 
 <form th:action="@{/admin/edit_category/{id}(id=${categorie.getNoCategorie()})}" method="post">
@@ -28,7 +28,7 @@
   <div class="container mt-3">
     <div class="row">
       <div class="col p-1">
-        <button type="submit" class="btn btn-outline-dark w-100" style="height: 70px">Enregistrer</button>
+        <button type="submit" class="btn btn-outline-dark w-100" style="height: 70px" th:text="#{vente.add.save}">Enregistrer</button>
       </div>
     </div>
   </div>
