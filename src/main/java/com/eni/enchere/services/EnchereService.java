@@ -80,6 +80,10 @@ public class EnchereService {
     public Enchere getMeilleureEnchereParArticleId(long idArticle) {
         return enchereDAO.findBestOfferByArticleId(idArticle);
     }
+    public List<Enchere> getEnchereByArticleId(long idArticle) {
+        return enchereDAO.findAllOffersByArticleId(idArticle);
+    }
+
 
     public List<Enchere> getClassementEncheres(long articleId) {
         List<Enchere> encheres = enchereDAO.selectByArticle(articleId);
@@ -89,6 +93,10 @@ public class EnchereService {
 
     public List<Enchere>getEncheresByArticleEtUtilisateur(long noArticle, long noUtilisateur) {
         return enchereDAO.selectByUtilisateurEtArticle(noArticle,noUtilisateur);
+    }
+
+    public void deleteEnchere(long noArticle) {
+        articleDAO.delete(noArticle);
     }
 
 

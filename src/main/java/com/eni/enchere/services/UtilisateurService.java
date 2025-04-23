@@ -7,11 +7,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UtilisateurService {
     @Autowired
     private UtilisateurDAO utilisateurDAO;
 
+    public Utilisateur getUtilisateurById(long id) {
+        try {
+            return utilisateurDAO.selectById(id);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
 
     public Utilisateur getUtilisateurByPseudo(String pseudo) {
         try {
@@ -28,6 +37,8 @@ public class UtilisateurService {
             return null;
         }
     }
+
+    public List<Utilisateur> getUtilisateurs() { return utilisateurDAO.selectAllUsers(); }
 
     public void insertUtilisateur(Utilisateur utilisateur) {
         utilisateurDAO.insert(utilisateur);

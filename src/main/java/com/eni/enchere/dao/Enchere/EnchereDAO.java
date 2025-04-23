@@ -13,6 +13,7 @@ public interface EnchereDAO {
 
     List<Enchere> selectByUtilisateur(long noUtilisateur);
     Enchere findBestOfferByArticleId(long noArticle);
+    List<Enchere>findAllOffersByArticleId(long idArticle);
     List<Enchere> selectByUtilisateurEtArticle(long noArticle,long noUtilisateur);
 
 }

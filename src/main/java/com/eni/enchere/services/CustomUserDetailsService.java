@@ -25,14 +25,14 @@ public class CustomUserDetailsService implements UserDetailsService {
             utilisateur = utilisateurService.getUtilisateurByEmail(username);
         }
 
-        if (utilisateur == null) {
+        if (utilisateur == null || !utilisateur.getIsActive()) {
             throw new UsernameNotFoundException("Utilisateur introuvable : " + username);
         }
 
         return org.springframework.security.core.userdetails.User.builder()
                 .username(utilisateur.getPseudo())
                 .password(utilisateur.getMotDePasse())
-                .authorities(utilisateur.getIsAdmin() ? "ADMIN" : "USER")
+                .roles(utilisateur.getIsAdmin() ? "ADMIN" : "USER")
                 .build();
     }
 }

@@ -15,8 +15,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,42 +47,28 @@ public class EnchereController {
         Map<Long, Integer> classementUtilisateur = new HashMap<>();
 
         long userId = utilisateurConnecte.getNoUtilisateur();
-        System.out.println("Utilisateur connecté ID: " + userId);
 
         for (ArticleVendu article : articles) {
             long noArticle = article.getNoArticle();
-            System.out.println("\n--- Article traité : " + noArticle + " ---");
 
             // Meilleure enchère
             Enchere meilleure = enchereService.getMeilleureEnchereParArticleId(noArticle);
             if (meilleure != null) {
-                System.out.println("Meilleure enchère trouvée : " + meilleure.getMontantEnchere());
                 meilleuresEncheres.put(noArticle, meilleure);
             } else {
-                System.out.println("Aucune enchère pour cet article.");
             }
 
             // Classement personnel
             List<Enchere> encheres = enchereService.getClassementEncheres(noArticle);
-            System.out.println("Enchères pour l'article " + noArticle + " : ");
-            for (Enchere enchere : encheres) {
-                System.out.println("  Utilisateur : " + enchere.getNoUtilisateur().getNoUtilisateur() +
-                        ", Montant : " + enchere.getMontantEnchere());
-            }
 
             for (int i = 0; i < encheres.size(); i++) {
                 long enchereUserId = encheres.get(i).getNoUtilisateur().getNoUtilisateur();
-                System.out.println("Comparaison : enchérisseur ID = " + enchereUserId + " vs utilisateur connecté = " + userId);
                 if (enchereUserId == userId) {
                     classementUtilisateur.put(noArticle, i + 1); // commence à 1
-                    System.out.println("→ Classement utilisateur pour l'article " + noArticle + " : " + (i + 1));
                     break;
                 }
             }
         }
-
-        System.out.println("→ Meilleures enchères envoyées à la vue : " + meilleuresEncheres.keySet());
-        System.out.println("→ Classements envoyés à la vue : " + classementUtilisateur);
 
         model.addAttribute("meilleuresEncheres", meilleuresEncheres);
         model.addAttribute("classements", classementUtilisateur);
@@ -86,11 +77,23 @@ public class EnchereController {
 
 
     @GetMapping("/enchere")
-    public String enchere(Model model) {
+    public String enchere(
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "6") int size,
+            Model model) {
         List<Categorie> categories = categorieService.getAllCategories();
         model.addAttribute("categories", categories);
 
-        List<ArticleVendu> articleVendus = ArticleVenduService.getAllArticleVendu();
+        List<ArticleVendu> allArticles = ArticleVenduService.getAllArticleVendu();
+        int totalArticles = allArticles.size();
+        int totalPages = (int) Math.ceil((double) totalArticles / size);
+        
+        // Calculer les indices de début et de fin pour la page courante
+        int startIndex = (page - 1) * size;
+        int endIndex = Math.min(startIndex + size, totalArticles);
+        
+        // Extraire la sous-liste pour la page courante
+        List<ArticleVendu> articleVendus = allArticles.subList(startIndex, endIndex);
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurByPseudo(auth.getName());
@@ -98,6 +101,9 @@ public class EnchereController {
 
         model.addAttribute("articleVendus", articleVendus);
         model.addAttribute("categories", categorieService.getAllCategories());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("currentUrl", "/enchere");
 
         return "enchere";
     }
@@ -105,12 +111,29 @@ public class EnchereController {
 
 
     @GetMapping("/enchere/recherche")
-    public String rechercheArticles(@RequestParam("searchQuery") String searchQuery, Model model) {
+    public String rechercheArticles(
+            @RequestParam("searchQuery") String searchQuery,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "6") int size,
+            Model model) {
         // Effectuer la recherche dans la base de données
-        List<ArticleVendu> articlesTrouves = ArticleVenduService.getAllArticleVenduByName(searchQuery);
+        List<ArticleVendu> allArticles = ArticleVenduService.getAllArticleVenduByName(searchQuery);
+        int totalArticles = allArticles.size();
+        int totalPages = (int) Math.ceil((double) totalArticles / size);
+        
+        // Calculer les indices de début et de fin pour la page courante
+        int startIndex = (page - 1) * size;
+        int endIndex = Math.min(startIndex + size, totalArticles);
+        
+        // Extraire la sous-liste pour la page courante
+        List<ArticleVendu> articlesTrouves = allArticles.subList(startIndex, endIndex);
+
         model.addAttribute("articleVendus", articlesTrouves);
         model.addAttribute("categories", categorieService.getAllCategories());
         model.addAttribute("message", "Résultats de recherche pour : " + searchQuery);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("currentUrl", "/enchere/recherche?searchQuery=" + searchQuery);
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurByPseudo(auth.getName());
@@ -120,15 +143,32 @@ public class EnchereController {
     }
 
     @GetMapping("/enchere/filtrerParCategorie")
-    public String filtrerParCategorie(@RequestParam("categorie") long categorieId, Model model) {
-        List<ArticleVendu> articles = (categorieId == 0)
+    public String filtrerParCategorie(
+            @RequestParam("categorie") long categorieId,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "6") int size,
+            Model model) {
+        List<ArticleVendu> allArticles = (categorieId == 0)
                 ? ArticleVenduService.getAllArticleVendu()
                 : ArticleVenduService.getArticleVenduByCategorie(categorieId);
+
+        int totalArticles = allArticles.size();
+        int totalPages = (int) Math.ceil((double) totalArticles / size);
+        
+        // Calculer les indices de début et de fin pour la page courante
+        int startIndex = (page - 1) * size;
+        int endIndex = Math.min(startIndex + size, totalArticles);
+        
+        // Extraire la sous-liste pour la page courante
+        List<ArticleVendu> articles = allArticles.subList(startIndex, endIndex);
 
         // On passe les articles, les catégories, et la catégorie sélectionnée au modèle
         model.addAttribute("articleVendus", articles);
         model.addAttribute("categories", categorieService.getAllCategories());
         model.addAttribute("categorieId", categorieId);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("currentUrl", "/enchere/filtrerParCategorie?categorie=" + categorieId);
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurByPseudo(auth.getName());
@@ -158,7 +198,7 @@ public class EnchereController {
 
         LocalDate aujourdHui = LocalDate.now();
 
-        // Si aucun filtre spécifique n’est coché → on affiche tout
+        // Si aucun filtre spécifique n'est coché → on affiche tout
         if (enCours == null && nonDebutees == null && terminees == null) {
             articlesFiltres = toutesMesVentes;
         } else {
@@ -275,33 +315,67 @@ public class EnchereController {
             return "redirect:/enchere";
         }
 
-
-
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurByPseudo(auth.getName());
 
-        // Vérifie si l’enchère est terminée
+        // Récupérer meilleure enchère UNE SEULE FOIS
+        Enchere meilleureEnchere = enchereService.getMeilleureEnchereParArticleId(id);
+        List<Enchere> enchereList = enchereService.getEnchereByArticleId(id);
+        model.addAttribute("enchereList", enchereList);
+
         LocalDate dateFin = article.getFin_encheres();
         LocalDate today = LocalDate.now();
 
         if (!dateFin.isAfter(today)) {
-            // Si c'est le vendeur
+            // L'enchère est terminée
+
+            // Cas vendeur
             if (article.getNoUtilisateur().getNoUtilisateur() == utilisateurConnecte.getNoUtilisateur()) {
                 return "redirect:/enchere/product?id=" + article.getNoArticle();
-            } else {
+            }
+
+            // Cas gagnant
+            if (meilleureEnchere != null &&
+                    meilleureEnchere.getNoUtilisateur().getNoUtilisateur() == utilisateurConnecte.getNoUtilisateur()) {
                 return "redirect:/enchere/win?id=" + article.getNoArticle();
             }
+
+            // Cas perdu
+            model.addAttribute("article", article);
+            model.addAttribute("meilleureEnchere", meilleureEnchere);
+            model.addAttribute("utilisateurConnecte", utilisateurConnecte);
+            return "enchere_perdu";
         }
 
-        Enchere meilleureEnchere = enchereService.getMeilleureEnchereParArticleId(id);
+        // Enchère en cours
+        boolean venteCommencee = !article.getDebut_encheres().isAfter(today);
         model.addAttribute("article", article);
         model.addAttribute("meilleureEnchere", meilleureEnchere);
         model.addAttribute("utilisateurConnecte", utilisateurConnecte);
-
-        boolean venteCommencee = !article.getDebut_encheres().isAfter(today);
         model.addAttribute("venteCommencee", venteCommencee);
 
         return "enchere_vente";
+    }
+    @GetMapping("/enchere/modifier")
+    public String modifierDetailArticle(@RequestParam("id") long id, Model model) {
+        ArticleVendu article = ArticleVenduService.getArticleVenduById(id);
+
+        if (article == null) {
+            model.addAttribute("message", "Article introuvable");
+            return "redirect:/enchere";
+        }
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurByPseudo(auth.getName());
+
+        // Récupérer meilleure enchère UNE SEULE FOIS
+        Enchere meilleureEnchere = enchereService.getMeilleureEnchereParArticleId(id);
+        model.addAttribute("article", article);
+        model.addAttribute("meilleureEnchere", meilleureEnchere);
+        model.addAttribute("categories", categorieService.getAllCategories());
+        model.addAttribute("utilisateur", utilisateurConnecte);
+
+        return "enchere_edit";
     }
 
 
@@ -320,7 +394,7 @@ public class EnchereController {
         try {
             enchereService.ajouterEnchere(utilisateurConnecte.getNoUtilisateur(), noArticle, montant);
         } catch (IllegalArgumentException e) {
-            redirectAttributes.addFlashAttribute("erreur", e.getMessage());
+            redirectAttributes.addFlashAttribute("erreur", "saleDetail.error.notEnoughCredits");
             return "redirect:/enchere/vente?id=" + noArticle;
         }
 
@@ -338,7 +412,9 @@ public class EnchereController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurByPseudo(auth.getName());
 
-        if (meilleureEnchere == null || !meilleureEnchere.getNoUtilisateur().equals(utilisateurConnecte)) {
+        // Comparaison sécurisée par ID
+        if (meilleureEnchere == null ||
+                meilleureEnchere.getNoUtilisateur().getNoUtilisateur() != utilisateurConnecte.getNoUtilisateur()) {
             return "redirect:/enchere"; // Redirige si ce n'est pas le gagnant
         }
 
@@ -350,11 +426,12 @@ public class EnchereController {
     }
 
 
-    @GetMapping("/enchere/delete")
-    public String enchereDelete(Model model) {
-        model.addAttribute("message", "Suppression de l'enchère");
-        return "enchere_delete";
+    @PostMapping("/enchere/delete")
+    public String deleteArticle(@RequestParam("id") long id) {
+        enchereService.deleteEnchere(id);
+        return "redirect:/enchere?success=suppression"; // Redirige avec un petit message si tu veux
     }
+
 
     @GetMapping("/enchere/product")
     public String enchereProduct(@RequestParam("id") long id, Model model) {
@@ -365,9 +442,11 @@ public class EnchereController {
         }
 
         Enchere meilleureEnchere = enchereService.getMeilleureEnchereParArticleId(id);
+        List<Enchere> enchereList = enchereService.getEnchereByArticleId(id);
 
         model.addAttribute("article", article);
         model.addAttribute("meilleureEnchere", meilleureEnchere);
+        model.addAttribute("enchereList", enchereList);  // Liste des enchères triées
 
         return "enchere_product";
     }
@@ -390,29 +469,83 @@ public class EnchereController {
 
     @PostMapping("/vente/enregistrer")
     public String enregistrerArticle(@ModelAttribute ArticleVendu article,
+                                     @RequestParam("photo") MultipartFile photo,
                                      HttpSession session) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
         Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurByPseudo(auth.getName());
+
         article.setNoUtilisateur(utilisateurConnecte);
         article.setPrixVente(article.getPrixInitial());
 
+        // 📂 Gestion du fichier photo
+        if (!photo.isEmpty()) {
+            try {
+                // Utilisation de la racine du projet + "uploads" (répertoire à côté de src)
+                String basePath = System.getProperty("user.dir");  // Obtient le répertoire de travail actuel
+                Path uploadPath = Paths.get(basePath, "src/main/resources/static/uploads");  // Crée un répertoire 'uploads' à la racine
+
+                // Vérifie si le dossier existe, sinon, crée-le
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
+
+                // Génère le nom du fichier avec un timestamp unique
+                String originalFilename = photo.getOriginalFilename();
+                Path destinationPath = uploadPath.resolve(System.currentTimeMillis() + "_" + originalFilename);
+
+                // Sauvegarde le fichier dans le dossier 'uploads'
+                photo.transferTo(destinationPath.toFile());
+
+                // Stockage de l'URL relative en BDD (accessible depuis la racine de l'application)
+                article.setUrl("/uploads/" + destinationPath.getFileName().toString());
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "redirect:/vente/enregistrer"; // Redirige ou affiche une erreur en cas d'exception
+            }
+        }
+
         ArticleVenduService.insertArticleVendu(article);
-        return "redirect:/enchere"; // ou une autre vue après succès
+        return "redirect:/enchere"; // Redirige vers la page des enchères
     }
 
-    @GetMapping("/enchere/edit")
-    public String enchereEdit(@RequestParam("id") long id, Model model) {
+    @PostMapping("/vente/modifier")
+    public String modifierArticle(
+            @RequestParam("id") Long id,
+            @ModelAttribute("article") ArticleVendu articleModifie,
+            @RequestParam(value = "photo", required = false) MultipartFile photo
+    ) {
+        ArticleVendu articleExistant = ArticleVenduService.getArticleVenduById(id);
+        if (articleExistant == null) {
+            return "redirect:/enchere?erreur=articleIntrouvable";
+        }
 
-//        if (meilleureEnchere == null || !meilleureEnchere.getNoUtilisateur().equals(utilisateurConnecte)) {
-//            return "redirect:/enchere"; // Redirige si ce n'est pas le gagnant
-//        }
+        // Champs toujours remplacés
+        articleExistant.setNom_article(articleModifie.getNom_article());
+        articleExistant.setDescription(articleModifie.getDescription());
+        articleExistant.setPrixInitial(articleModifie.getPrixInitial());
+        articleExistant.setNoCategorie(articleModifie.getNoCategorie());
 
-        model.addAttribute("message", "Modification d'une enchere");
+        // Début d'enchère seulement si renseigné
+        if (articleModifie.getDebut_encheres() != null) {
+            articleExistant.setDebut_encheres(articleModifie.getDebut_encheres());
+        }
 
-        return "enchere_edit";
+        // Fin d'enchère seulement si renseigné
+        if (articleModifie.getFin_encheres() != null) {
+            articleExistant.setFin_encheres(articleModifie.getFin_encheres());
+        }
+
+        // Photo seulement si une nouvelle est uploadée
+        if (photo != null && !photo.isEmpty()) {
+            String nomFichier = photo.getOriginalFilename();
+            articleExistant.setUrl(nomFichier);
+        }
+
+        ArticleVenduService.updateArticleVendu(articleExistant);
+
+        return "redirect:/enchere";
     }
-
 
 }

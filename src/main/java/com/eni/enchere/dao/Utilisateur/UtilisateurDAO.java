@@ -10,6 +10,7 @@ public interface UtilisateurDAO {
     void delete(long id);
     Utilisateur selectById(long id);
     List<Utilisateur> selectAll();
+    List<Utilisateur> selectAllUsers();
     Utilisateur selectByPseudo(String pseudo);
     Utilisateur selectByEmail(String email);
 }

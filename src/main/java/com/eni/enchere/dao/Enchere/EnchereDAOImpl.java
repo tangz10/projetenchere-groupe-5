@@ -87,9 +87,9 @@ public class EnchereDAOImpl implements EnchereDAO {
     @Override
     public Enchere findBestOfferByArticleId(long noArticle) {
         String sql = """
-        SELECT * FROM encheres 
-        WHERE no_article = ? 
-        ORDER BY montant_enchere DESC 
+        SELECT * FROM encheres e LEFT JOIN utilisateurs u ON e.no_utilisateur = u.no_utilisateur
+        WHERE no_article = ? and u.is_active = true
+        ORDER BY montant_enchere DESC
         LIMIT 1
     """;
 
@@ -113,6 +113,33 @@ public class EnchereDAOImpl implements EnchereDAO {
         }, noArticle);
 
         return result.isEmpty() ? null : result.get(0);
+    }
+    @Override
+    public List<Enchere> findAllOffersByArticleId(long noArticle) {
+        String sql = """
+                SELECT * FROM encheres e LEFT JOIN utilisateurs u ON e.no_utilisateur = u.no_utilisateur
+                WHERE e.no_article = ? and u.is_active = true
+                ORDER BY montant_enchere DESC
+    """;
+
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            Enchere e = new Enchere();
+
+            // récupérer l'utilisateur complet
+            int idUtilisateur = rs.getInt("no_utilisateur");
+            Utilisateur utilisateur = utilisateurDAO.selectById(idUtilisateur);
+            e.setNoUtilisateur(utilisateur);
+
+            // récupérer l'article complet
+            int idArticle = rs.getInt("no_article");
+            ArticleVendu article = articleVenduDAO.selectById(idArticle);
+            e.setNoArticle(article);
+
+            e.setDateEnchere(rs.getDate("date_enchere").toLocalDate());
+            e.setMontantEnchere(rs.getInt("montant_enchere"));
+
+            return e;
+        }, noArticle);
     }
 
     @Override

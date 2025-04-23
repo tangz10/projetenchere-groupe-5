@@ -34,6 +34,7 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
         article.setFin_encheres(rs.getDate("date_fin_encheres").toLocalDate());
         article.setPrixInitial(rs.getInt("prix_initial"));
         article.setPrixVente(rs.getInt("prix_vente"));
+        article.setUrl(rs.getString("url"));
 
         Utilisateur utilisateur = new Utilisateur();
         utilisateur.setNoUtilisateur(rs.getInt("no_utilisateur"));
@@ -62,8 +63,8 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
         java.sql.Date dateDebut = (article.getDebut_encheres() != null) ? java.sql.Date.valueOf(article.getDebut_encheres()) : null;
         java.sql.Date dateFin = (article.getFin_encheres() != null) ? java.sql.Date.valueOf(article.getFin_encheres()) : null;
 
-        String sql = "INSERT INTO articles_vendus(nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO articles_vendus(nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie, url) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?,?)";
 
         jdbcTemplate.update(sql,
                 article.getNom_article(),
@@ -73,14 +74,57 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
                 article.getPrixInitial(),
                 article.getPrixVente(),
                 article.getNoUtilisateur() != null ? article.getNoUtilisateur().getNoUtilisateur() : null, // Assure que ce n'est pas null
-                article.getNoCategorie() != null ? article.getNoCategorie().getNoCategorie() : null // Idem pour la catégorie
+                article.getNoCategorie() != null ? article.getNoCategorie().getNoCategorie() : null, // Idem pour la catégorie
+                article.getUrl()
+        );
+    }
+
+    @Override
+    public void update(ArticleVendu article) {
+        if (article == null || article.getNom_article() == null || article.getNom_article().isEmpty()) {
+            throw new IllegalArgumentException("Le nom de l'article est obligatoire");
+        }
+        if (article.getNoUtilisateur() == null) {
+            throw new IllegalArgumentException("L'utilisateur connecté est obligatoire");
+        }
+        if (article.getNoCategorie() == null) {
+            throw new IllegalArgumentException("La catégorie est obligatoire");
+        }
+
+        // Conversion des LocalDate vers java.sql.Date
+        java.sql.Date dateDebut = (article.getDebut_encheres() != null) ? java.sql.Date.valueOf(article.getDebut_encheres()) : null;
+        java.sql.Date dateFin = (article.getFin_encheres() != null) ? java.sql.Date.valueOf(article.getFin_encheres()) : null;
+
+        String sql = "UPDATE articles_vendus " +
+                "SET nom_article = ?, description = ?, date_debut_encheres = ?, date_fin_encheres = ?, " +
+                "prix_initial = ?, prix_vente = ?, no_utilisateur = ?, no_categorie = ?, url = ? " +
+                "WHERE no_article = ?";
+
+        jdbcTemplate.update(sql,
+                article.getNom_article(),
+                article.getDescription(),
+                dateDebut,
+                dateFin,
+                article.getPrixInitial(),
+                article.getPrixVente(),
+                article.getNoUtilisateur().getNoUtilisateur(),
+                article.getNoCategorie().getNoCategorie(),
+                article.getUrl(),
+                article.getNoArticle()
         );
     }
 
 
     @Override
+    public void delete(long id) {
+        jdbcTemplate.update("DELETE FROM articles_vendus WHERE no_article = ?", id);
+    }
+
+
+    @Override
     public List<ArticleVendu> selectAll() {
-        String sql = "SELECT * FROM articles_vendus";
+        String sql = "SELECT * FROM articles_vendus a LEFT JOIN utilisateurs u ON a.no_utilisateur = u.no_utilisateur\n" +
+                "WHERE u.is_active=true";
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
             ArticleVendu article = new ArticleVendu();
@@ -91,6 +135,7 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
             article.setFin_encheres(rs.getDate("date_fin_encheres").toLocalDate());
             article.setPrixInitial(rs.getLong("prix_initial"));
             article.setPrixVente(rs.getLong("prix_vente"));
+            article.setUrl(rs.getString("url"));
 
             int idUtilisateur = rs.getInt("no_utilisateur");
             Utilisateur utilisateur = utilisateurDAO.selectById(idUtilisateur);
@@ -117,6 +162,7 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
             article.setFin_encheres(rs.getDate("date_fin_encheres").toLocalDate());
             article.setPrixInitial(rs.getLong("prix_initial"));
             article.setPrixVente(rs.getLong("prix_vente"));
+            article.setUrl(rs.getString("url"));
 
             int idUtilisateur = rs.getInt("no_utilisateur");
             Utilisateur utilisateur = utilisateurDAO.selectById(idUtilisateur);
@@ -145,6 +191,7 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
             article.setFin_encheres(rs.getDate("date_fin_encheres").toLocalDate());
             article.setPrixInitial(rs.getLong("prix_initial"));
             article.setPrixVente(rs.getLong("prix_vente"));
+            article.setUrl(rs.getString("url"));
 
             int idUtilisateur = rs.getInt("no_utilisateur");
             Utilisateur utilisateur = utilisateurDAO.selectById(idUtilisateur);
@@ -172,6 +219,7 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
             article.setFin_encheres(rs.getDate("date_fin_encheres").toLocalDate());
             article.setPrixInitial(rs.getLong("prix_initial"));
             article.setPrixVente(rs.getLong("prix_vente"));
+            article.setUrl(rs.getString("url"));
 
             // Récupération des informations de l'utilisateur
             int idUtilisateur = rs.getInt("no_utilisateur");
@@ -201,6 +249,7 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
             article.setFin_encheres(rs.getDate("date_fin_encheres").toLocalDate());
             article.setPrixInitial(rs.getLong("prix_initial"));
             article.setPrixVente(rs.getLong("prix_vente"));
+            article.setUrl(rs.getString("url"));
 
             // Récupération des informations de l'utilisateur
             int idUtilisateur = rs.getInt("no_utilisateur");

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{changeCredits.title}">Modification des crédits</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="header container mt-5 mb-3">
+    <a th:href="@{/enchere}" class="text-decoration-none text-dark" th:text="#{header.home}">ENI Enchères</a>
+</div>
+
+<div class="container text-center">
+    <p class="fs-4" th:text="#{changeCredits.subtitle}">Modifier vos crédits</p>
+</div>
+
+<form th:action="@{/my_profile/credit}" method="post">
+    <div class="container text-center mt-6">
+
+        <div class="row mt-2 d-flex flex-column">
+            <div class="col d-flex align-items-center">
+                <span th:text="#{changeCredits.subtitle}">Modifier vos crédits</span>
+            </div>
+            <div class="col">
+                <input type="text" class="form-control p-2 border-black" aria-label="credit" name="credit" th:value="${utilisateur.getCredit()}">
+            </div>
+        </div>
+
+    </div>
+
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col p-1">
+                <button type="submit" class="btn btn-outline-dark w-100" style="height: 70px" th:text="#{changeCredits.button.save}">Enregistrer</button>
+            </div>
+
+            <div class="col p-1">
+                <a th:href="@{/my_profile/edit}" type="button" class="btn btn-outline-dark w-100" style="height: 70px" th:text="#{changeCredits.button.back}">Retour</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- Bootstrap JS (optionnel) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

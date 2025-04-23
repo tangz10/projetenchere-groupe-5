@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Utilisateur</title>
+    <title th:text="#{user.title}">Utilisateur</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -12,13 +12,13 @@
 <body>
 
 <div class="header container mt-5 mb-3">
-    <a th:href="@{/enchere}" class="text-decoration-none text-dark">ENI Enchères</a>
+    <a th:href="@{/enchere}" class="text-decoration-none text-dark" th:text="#{header.home}">ENI Enchères</a>
 </div>
 
 <div class="container text-center mt-3">
     <div class="row">
         <div class="col d-flex align-items-center">
-            Pseudo:
+            <label th:text="#{user.pseudo}">Pseudo:</label>
         </div>
         <div class="col">
             <input type="text" disabled class="form-control p-2 border-black" aria-label="pseudo" th:value="${utilisateur.getPseudo()}">
@@ -27,7 +27,7 @@
 
     <div class="row mt-2">
         <div class="col d-flex align-items-center">
-            Nom:
+            <label th:text="#{user.lastName}">Nom:</label>
         </div>
         <div class="col">
             <input type="text" disabled class="form-control p-2 border-black" aria-label="lastname" th:value="${utilisateur.getNom()}">
@@ -36,7 +36,7 @@
 
     <div class="row mt-2">
         <div class="col d-flex align-items-center">
-            Prénom:
+            <label th:text="#{user.firstName}">Prénom:</label>
         </div>
         <div class="col">
             <input type="text" disabled class="form-control p-2 border-black" aria-label="name" th:value="${utilisateur.getPrenom()}">
@@ -45,7 +45,7 @@
 
     <div class="row mt-2">
         <div class="col d-flex align-items-center">
-            Email:
+            <label th:text="#{user.email}">Email:</label>
         </div>
         <div class="col">
             <input type="text" disabled class="form-control p-2 border-black" aria-label="mail" th:value="${utilisateur.getEmail()}">
@@ -54,7 +54,7 @@
 
     <div class="row mt-2">
         <div class="col d-flex align-items-center">
-            Téléphone:
+            <label th:text="#{user.phone}">Téléphone:</label>
         </div>
         <div class="col">
             <input type="text" disabled class="form-control p-2 border-black" aria-label="phone" th:value="${utilisateur.getTelephone()}">
@@ -63,7 +63,7 @@
 
     <div class="row mt-2">
         <div class="col d-flex align-items-center">
-            Rue:
+            <label th:text="#{user.street}">Rue:</label>
         </div>
         <div class="col">
             <input type="text" disabled class="form-control p-2 border-black" aria-label="street" th:value="${utilisateur.getRue()}">
@@ -72,7 +72,7 @@
 
     <div class="row mt-2">
         <div class="col d-flex align-items-center">
-            Code postal:
+            <label th:text="#{user.zipcode}">Code postal:</label>
         </div>
         <div class="col">
             <input type="text" disabled class="form-control p-2 border-black" aria-label="zipcode" th:value="${utilisateur.getCodePostal()}">
@@ -81,7 +81,7 @@
 
     <div class="row mt-2">
         <div class="col d-flex align-items-center">
-            Ville:
+            <label th:text="#{user.city}">Ville:</label>
         </div>
         <div class="col">
             <input type="text" disabled class="form-control p-2 border-black" aria-label="city" th:value="${utilisateur.getVille()}">
@@ -90,9 +90,8 @@
 </div>
 
 <div class="container mt-3" id="buttonModifier" style="display:none">
-    <a th:href="@{/my_profile/edit}" class="btn btn-outline-dark w-100" style="height: 70px">Modifier</a>
+    <a th:href="@{/my_profile/edit}" class="btn btn-outline-dark w-100" style="height: 70px" th:text="#{user.editButton}">Modifier</a>
 </div>
-
 
 <!-- Bootstrap JS (optionnel) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
