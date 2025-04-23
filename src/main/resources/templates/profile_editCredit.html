@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Modification du mot de passe</title>
+    <title th:text="#{changeCredits.title}">Modification des crédits</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -12,11 +12,11 @@
 <body>
 
 <div class="header container mt-5 mb-3">
-    <a th:href="@{/enchere}" class="text-decoration-none text-dark">ENI Enchères</a>
+    <a th:href="@{/enchere}" class="text-decoration-none text-dark" th:text="#{header.home}">ENI Enchères</a>
 </div>
 
 <div class="container text-center">
-    <p class="fs-4">Modifier vos crédits</p>
+    <p class="fs-4" th:text="#{changeCredits.subtitle}">Modifier vos crédits</p>
 </div>
 
 <form th:action="@{/change_password}" method="post">
@@ -24,22 +24,23 @@
 
         <div class="row mt-2 d-flex flex-column">
             <div class="col d-flex align-items-center">
-                Modifier vos crédits
+                <span th:text="#{changeCredits.subtitle}">Modifier vos crédits</span>
             </div>
             <div class="col">
-                <input type="text" class="form-control p-2 border-black" aria-label="password" name="email">
+                <input type="text" class="form-control p-2 border-black" aria-label="email" name="email">
             </div>
         </div>
 
+    </div>
 
     <div class="container mt-3">
         <div class="row">
             <div class="col p-1">
-                <button type="submit" class="btn btn-outline-dark w-100" style="height: 70px">Enregistrer</button>
+                <button type="submit" class="btn btn-outline-dark w-100" style="height: 70px" th:text="#{changeCredits.button.save}">Enregistrer</button>
             </div>
 
             <div class="col p-1">
-                <button type="button" class="btn btn-outline-dark w-100" style="height: 70px">Retour</button>
+                <button type="button" class="btn btn-outline-dark w-100" style="height: 70px" th:text="#{changeCredits.button.back}">Retour</button>
             </div>
         </div>
     </div>
