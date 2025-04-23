@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <meta charset="UTF-8">
   <title th:text="#{home.title}">Enchere</title>
@@ -10,6 +10,8 @@
 
 <div class="header container mt-5 mb-5 d-flex flex-column">
   <a th:href="@{/enchere}" class="text-decoration-none text-dark" th:text="#{header.home}">ENI Enchères</a>
+  <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/users}" th:text="#{admin.configUsers}">Gérer les utilisateurs</a>
+  <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/categories}" th:text="#{admin.configCategories}">Gérer les catégories</a>
   <a th:href="@{/enchere/add}" th:text="#{itemDetail.bid}">Vendre un article</a>
   <a th:href="@{/my_profile}" th:text="#{header.profile}">Mon profil</a>
   <form th:action="@{/logout}" method="post">
@@ -106,7 +108,7 @@
 
   <div class="container mt-4">
     <div th:each="article : ${articleVendus}">
-      <a th:href="@{/enchere/vente(id=${article.noArticle})}" class="text-decoration-none text-dark">
+      <a th:href="@{/enchere/vente/{id}(id=${article.noArticle})}" class="text-decoration-none text-dark">
         <div class="container border border-black py-2 mb-3">
           <div class="row">
             <div class="col-4">
