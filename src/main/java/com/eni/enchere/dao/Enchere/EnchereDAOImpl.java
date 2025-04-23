@@ -87,9 +87,9 @@ public class EnchereDAOImpl implements EnchereDAO {
     @Override
     public Enchere findBestOfferByArticleId(long noArticle) {
         String sql = """
-        SELECT * FROM encheres 
-        WHERE no_article = ? 
-        ORDER BY montant_enchere DESC 
+        SELECT * FROM encheres e LEFT JOIN utilisateurs u ON e.no_utilisateur = u.no_utilisateur
+        WHERE no_article = ? and u.is_active = true
+        ORDER BY montant_enchere DESC
         LIMIT 1
     """;
 
@@ -117,9 +117,9 @@ public class EnchereDAOImpl implements EnchereDAO {
     @Override
     public List<Enchere> findAllOffersByArticleId(long noArticle) {
         String sql = """
-    SELECT * FROM encheres 
-    WHERE no_article = ? 
-    ORDER BY montant_enchere DESC
+                SELECT * FROM encheres e LEFT JOIN utilisateurs u ON e.no_utilisateur = u.no_utilisateur
+                WHERE e.no_article = ? and u.is_active = true
+                ORDER BY montant_enchere DESC
     """;
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
