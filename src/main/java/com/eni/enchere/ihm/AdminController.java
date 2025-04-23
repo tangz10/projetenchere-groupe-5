@@ -4,15 +4,18 @@ import com.eni.enchere.bo.Categorie;
 import com.eni.enchere.bo.Utilisateur;
 import com.eni.enchere.services.CategorieService;
 import com.eni.enchere.services.UtilisateurService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
+@PreAuthorize("hasRole('ADMIN')")
+@RequestMapping("/admin")
 @Controller
 public class AdminController {
 
@@ -24,7 +27,7 @@ public class AdminController {
         this.categorieService = categorieService;
     }
 
-    @GetMapping("/admin/users")
+    @GetMapping("/users")
     public String viewUsers(Model model) {
         List<Utilisateur> utilisateurs = utilisateurService.getUtilisateurs();
 
@@ -33,7 +36,7 @@ public class AdminController {
         return "admin_users";
     }
 
-    @GetMapping("/admin/categories")
+    @GetMapping("/categories")
     public String viewCategories(Model model) {
         List<Categorie> categories = categorieService.getAllCategories();
 
@@ -42,12 +45,12 @@ public class AdminController {
         return "admin_categories";
     }
 
-    @GetMapping("/admin/add_category")
+    @GetMapping("/add_category")
     public String addCategory() {
         return "admin_add_category";
     }
 
-    @GetMapping("/admin/edit_category/{id}")
+    @GetMapping("/edit_category/{id}")
     public String addCategory(@PathVariable int id, Model model) {
         Categorie categorie = categorieService.getCategorieById(id);
 
@@ -56,14 +59,14 @@ public class AdminController {
         return "admin_edit_category";
     }
 
-    @PostMapping("/admin/delete_user/{id}")
+    @PostMapping("/delete_user/{id}")
     public String deleteUser(@PathVariable long id) {
         utilisateurService.deleteUtilisateur(id);
 
         return "redirect:/admin/users";
     }
 
-    @PostMapping("/admin/enable_disable_user/{id}/{is_enabled}")
+    @PostMapping("/enable_disable_user/{id}/{is_enabled}")
     public String enableDisableUser(@PathVariable long id, @PathVariable boolean is_enabled) {
         Utilisateur utilisateur = utilisateurService.getUtilisateurById(id);
 
@@ -74,14 +77,14 @@ public class AdminController {
         return "redirect:/admin/users";
     }
 
-    @PostMapping("/admin/add_category")
+    @PostMapping("/add_category")
     public String addCategory(Categorie categorie) {
         categorieService.insertCategorie(categorie);
 
         return "redirect:/admin/categories";
     }
 
-    @PostMapping("/admin/edit_category/{id}")
+    @PostMapping("/edit_category/{id}")
     public String editCategory(@PathVariable long id, Categorie categorie) {
         Categorie categorieToUpdate = categorieService.getCategorieById(id);
 
@@ -92,7 +95,7 @@ public class AdminController {
         return "redirect:/admin/categories";
     }
 
-    @PostMapping("/admin/delete_category/{id}")
+    @PostMapping("/delete_category/{id}")
     public String deleteCategory(@PathVariable long id) {
         categorieService.deleteCategorie(id);
 
