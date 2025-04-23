@@ -108,4 +108,13 @@ public class ProfileController {
 
         return "forgotten_password";
     }
+
+    @GetMapping("/my_profile/credit")
+    public String creditEdit(Utilisateur utilisateur) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurByPseudo(auth.getName());
+
+        return "profile_editCredit";
+    }
 }
