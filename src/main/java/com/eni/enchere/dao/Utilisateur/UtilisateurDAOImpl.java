@@ -101,6 +101,12 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
     }
 
     @Override
+    public List<Utilisateur> selectAllUsers() {
+        String sql = "SELECT * FROM Utilisateurs WHERE is_admin=false";
+        return jdbcTemplate.query(sql, utilisateurRowMapper);
+    }
+
+    @Override
     public Utilisateur selectByPseudo(String pseudo) {
         String sql = "SELECT * FROM Utilisateurs WHERE pseudo=?";
         List<Utilisateur> result = jdbcTemplate.query(sql, utilisateurRowMapper, pseudo);

@@ -38,7 +38,7 @@ public class UtilisateurService {
         }
     }
 
-    public List<Utilisateur> getUtilisateurs() { return utilisateurDAO.selectAll(); }
+    public List<Utilisateur> getUtilisateurs() { return utilisateurDAO.selectAllUsers(); }
 
     public void insertUtilisateur(Utilisateur utilisateur) {
         utilisateurDAO.insert(utilisateur);
