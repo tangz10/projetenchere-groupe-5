@@ -549,12 +549,6 @@ public class EnchereController {
     }
 
 
-    @GetMapping("/enchere/categorie")
-    public String enchereCategorie(Model model) {
-
-        model.addAttribute("message", "Modifier les catégories de vente");
-        return "admin_add_category";
-    }
 
 
 

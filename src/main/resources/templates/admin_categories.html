@@ -12,35 +12,33 @@
 <body>
 
 <div class="header container mt-5 mb-5 d-flex flex-column">
-    <a th:href="@{/enchere}" class="text-decoration-none text-dark">ENI Enchères</a>
+    <a th:href="@{/enchere}" class="text-decoration-none text-dark" th:text="#{header.home}">ENI Enchères</a>
 </div>
 
 <div class="main-container container">
     <div class="container mt-4">
         <div class="row">
             <div class="col">
-                <h5>Catégories</h5>
+                <h5 th:text="#{categories}">Catégories</h5>
             </div>
             <div class="col text-end">
-                <a th:href="@{/admin/add_category}" class="btn btn-outline-primary">Ajouter</a>
+                <a th:href="@{/admin/add_category}" class="btn btn-outline-primary" th:text="#{categories.add}">Ajouter</a>
             </div>
         </div>
         <br>
         <table class="table table-striped table-bordered table-hover">
             <thead>
                 <tr>
-                    <th>Id</th>
-                    <th>Libelle</th>
+                    <th th:text="#{categories.Label}">Libelle</th>
                     <th></th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="categorie : ${categories}">
-                    <td th:text="${categorie.getNoCategorie()}"></td>
                     <td th:text="${categorie.getLibelle()}"></td>
-                    <td><a th:href="@{/admin/edit_category/{id}(id=${categorie.getNoCategorie()})}" class="btn btn-outline-primary">Modifier</a></td>
-                    <td><button type="button" class="btn btn-outline-danger" th:onclick="'supprimerCategorie(' + ${categorie.getNoCategorie()} + ')'">Supprimer</button></td>
+                    <td><a th:href="@{/admin/edit_category/{id}(id=${categorie.getNoCategorie()})}" class="btn btn-outline-primary" th:text="#{profile.edit}">Modifier</a></td>
+                    <td><button type="button" class="btn btn-outline-danger" th:onclick="'supprimerCategorie(' + ${categorie.getNoCategorie()} + ')'" th:text="#{admin.delete}">Supprimer</button></td>
                 </tr>
             </tbody>
         </table>
