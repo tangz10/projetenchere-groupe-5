@@ -548,9 +548,4 @@ public class EnchereController {
         return "redirect:/enchere";
     }
 
-
-
-
-
-
 }
