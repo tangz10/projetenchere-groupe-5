@@ -2,7 +2,9 @@ package com.eni.enchere.ihm;
 
 import com.eni.enchere.bo.Utilisateur;
 import com.eni.enchere.services.CustomUserDetailsService;
+import com.eni.enchere.services.EnchereService;
 import com.eni.enchere.services.UtilisateurService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,13 +15,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class ProfileController {
 
+
     private final UtilisateurService utilisateurService;
     private final PasswordEncoder passwordEncoder;
     private final CustomUserDetailsService userDetailsService;
+
 
     public ProfileController(UtilisateurService utilisateurService, PasswordEncoder passwordEncoder, CustomUserDetailsService userDetailsService) {
         this.utilisateurService = utilisateurService;
@@ -87,6 +92,29 @@ public class ProfileController {
         SecurityContextHolder.getContext().setAuthentication(newAuth);
 
         return "redirect:/my_profile";
+    }
+    @PostMapping("/my_profile/credit")
+    public String updateCredits(@RequestParam("credit") int newCredit, Model model) {
+
+        Authentication currentAuth = SecurityContextHolder.getContext().getAuthentication();
+
+        Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurByPseudo(currentAuth.getName());
+        // Mettez à jour les crédits dans l'utilisateur
+        utilisateurConnecte.setCredit(newCredit);
+        utilisateurService.updateUtilisateur(utilisateurConnecte);
+
+        model.addAttribute("user", utilisateurConnecte);  // Passer l'utilisateur mis à jour au modèle
+        return "redirect:/my_profile";  // Redirection vers le profil après modification
+    }
+    @GetMapping("/my_profile/credit")
+    public String creditEdit(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurByPseudo(auth.getName());
+
+        model.addAttribute("utilisateur", utilisateurConnecte); // Ajout de l'utilisateur au modèle pour afficher ses informations
+
+        return "profile_editCredit"; // Redirige vers la page profile_editCredit.html
     }
 
     @PostMapping("/my_profile/delete")

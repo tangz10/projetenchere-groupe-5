@@ -123,7 +123,7 @@
             </div>
 
             <div class="col p-1">
-                <button type="submit" class="btn btn-outline-dark w-100" style="height: 70px" th:text="#{profile.edit.editCredit}">Modifier Crédit</button>
+                <a th:href="@{/my_profile/credit}" type="submit" class="btn btn-outline-dark w-100 d-flex align-items-center justify-content-center" style="height: 70px" th:text="#{profile.edit.editCredit}">Modifier Crédit</a>
             </div>
 
             <div class="col p-1">
@@ -131,7 +131,7 @@
             </div>
 
             <div class="col p-1">
-                <button type="button" class="btn btn-outline-dark w-100" style="height: 70px" th:text="#{profile.edit.back}">Retour</button>
+                <a th:href="@{/my_profile}" type="button" class="btn btn-outline-dark w-100" style="height: 70px" th:text="#{profile.edit.back}">Retour</a>
             </div>
         </div>
     </div>
