@@ -6,8 +6,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
-<body class="bg-blue-500">
-<nav class="relative px-4 py-4 flex justify-between items-center bg-white">
+<body>
+<nav class="relative px-4 py-4 flex justify-between items-center bg-blue-600">
     <a th:href="@{/}">
         <img class="h-[60px]" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxn33FNU6y_diGg-jxsjb6JM6pT4WsHFDQBw&s" alt="">
     </a>
@@ -20,7 +20,7 @@
         </button>
     </div>
     <ul class="hidden absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 lg:flex lg:mx-auto lg:flex lg:items-center lg:w-auto lg:space-x-6">
-        <li><a class="text-sm text-blue-600 font-bold" href="#" th:text="#{home.title}">Accueil</a></li>
+        <li><a class="text-sm text-white font-bold" href="#" th:text="#{home.title}">Accueil</a></li>
     </ul>
     <a th:href="@{/login}" th:text="#{header.login}" class="hidden lg:inline-block lg:ml-auto lg:mr-3 py-2 px-6 bg-gray-50 hover:bg-gray-100 text-sm text-gray-900 font-bold  rounded-xl transition duration-200" href="#">Se connecter</a>
     <a th:href="@{/register}" th:text="#{header.register}" class="hidden lg:inline-block py-2 px-6 bg-blue-500 hover:bg-blue-600 text-sm text-white font-bold rounded-xl transition duration-200" href="#">S'inscrire</a>
@@ -55,6 +55,7 @@
         </div>
     </nav>
 </div>
+
 
 <!--Filtre-->
 <div class="container mx-auto py-4 flex flex-col gap-4 mt-6">
@@ -122,7 +123,7 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full">
             <div th:each="article : ${articleVendus}" class="relative mx-auto w-full">
-                <a href="#" class="relative inline-block duration-300 ease-in-out transition-transform transform hover:-translate-y-2 w-full">
+                <a href="#" class="relative border border-gray-300 inline-block duration-300 ease-in-out transition-transform transform hover:-translate-y-2 w-full">
                     <div class="shadow p-4 rounded-lg bg-white">
                         <div class="flex justify-center relative rounded-lg overflow-hidden h-52">
                             <div class="transition-transform duration-500 transform ease-in-out hover:scale-110 w-full">
@@ -230,4 +231,5 @@
         url.searchParams.set('lang', language);
         window.location.href = url.toString(); // redirection GET avec le paramètre
     }
+
 </script>

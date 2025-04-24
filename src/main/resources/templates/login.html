@@ -1,68 +1,87 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title th:text="#{login.title}">Login</title>
+  <meta charset="UTF-8">
+  <title th:text="#{login.title}">Login</title>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
 </head>
-<body>
+<body class="">
 
-<div class="header container mt-5 mb-5">
-    <a th:href="@{/}" class="text-decoration-none text-dark" th:text="#{header.home}">ENI Enchères</a>
-</div>
-
-<div class="toast-container position-fixed top-0 end-0 p-3">
-    <div class="toast align-items-center text-white bg-danger border-0 show" role="alert" aria-live="assertive" aria-atomic="true" th:if="${param.error}">
-        <div class="d-flex">
-            <div class="toast-body" th:text="#{login.error}">Identifiants incorrects.</div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
+<div class="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
+  <div class="relative py-3 sm:max-w-xl sm:mx-auto">
+    <div
+            class="absolute inset-0 bg-gradient-to-r from-blue-300 to-blue-600 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl">
     </div>
-</div>
+    <div class="relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20">
+      <div class="max-w-md mx-auto">
 
-<div class="container-form w-100">
-    <form th:action="@{/login}" method="post" class="w-100">
-        <div class="row justify-content-center">
-            <div class="col-12 col-md-6 mx-auto">
-                <div class="container">
-                    <div style="grid-template-columns: 1fr 1fr;" class="d-grid gap-3">
-                        <div class="p-2" th:text="#{login.username}">Identifiant :</div>
-                        <input type="text" class="form-control p-2 border-black" aria-label="Username" name="username">
-                        <div class="p-2" th:text="#{login.password}">Mot de passe :</div>
-                        <input type="password" class="form-control p-2 border-black" aria-label="password" name="password">
-                    </div>
+        <div class="mx-auto">
+          <a href="">
+            <img class="h-[80px] mx-auto mb-6" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxn33FNU6y_diGg-jxsjb6JM6pT4WsHFDQBw&s" alt="">
+          </a>
+        </div>
+
+        <div>
+          <h1 class="text-2xl font-semibold">Connecte toi à ENI Enchère</h1>
+        </div>
+        <div class="divide-y divide-gray-200">
+          <form th:action="@{/login}" method="post" class=w-full>
+            <div class="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+              <div class="relative">
+                <input autocomplete="off" id="email" name="username" type="text" class="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder="Email address" />
+                <label th:text="#{login.username}" for="email" class="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm">Adresse Email</label>
+              </div>
+              <div class="relative">
+                <input autocomplete="off" id="password" name="password" type="password" class="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder="Password" />
+                <label th:text="#{login.password}" for="password" class="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm">Mot de passe</label>
+                <a th:href="@{/forgotten_password}" th:text="#{login.forgotPassword}" class="text-xs text-center mx-auto hover:text-blue-600">Mot de passe oublié</a>
+              </div>
+
+              <div class="relative">
+                <div class="flex">
+                  <div class="flex items-center h-5">
+                    <input id="helper-radio" aria-describedby="helper-radio-text" type="radio" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                  </div>
+                  <div class="ms-2 text-sm">
+                    <label th:text="#{login.rememberMe}" name="remember-me" for="helper-radio" class="font-medium text-gray-900 dark:text-gray-300">Se souvenir de moi</label>
+                  </div>
                 </div>
+              </div>
 
-                <div class="container mt-5">
-                    <div class="row">
-                        <div class="col d-flex align-items-center">
-                            <button type="submit" class="btn btn-outline-dark w-100" th:text="#{login.loginButton}">Connexion</button>
-                        </div>
+              <div class="relative mt-2">
+                <button th:text="#{login.loginButton}" class="m-0 w-full px-4 py-3 mb-2 leading-loose text-xs text-center text-white font-semibold bg-blue-600 hover:bg-blue-700  rounded-xl">Se connecter</button>
+              </div>
 
-                        <div class="col fs-7">
-                            <input class="form-check-input" type="checkbox" id="checkChecked" name="remember-me" checked>
-                            <label class="form-check-label" for="checkChecked" th:text="#{login.rememberMe}">Se souvenir de moi</label>
-                            <br>
-                            <a th:href="@{/forgotten_password}" th:text="#{login.forgotPassword}">Mot de passe oublié</a>
-                        </div>
-                    </div>
-                </div>
+              <div class="relative text-center">
+                <a th:href="@{/register}" th:text="#{login.createAccount}" class="text-xs text-center mx-auto text-blue-600 hover:text-gray-600">Pas de compte ? S'inscrire</a>
+              </div>
             </div>
+          </form>
         </div>
-    </form>
-</div>
-
-<div class="container mt-3 w-100">
-    <div class="col-12 col-md-6 mx-auto">
-        <a th:href="@{/register}" class="btn btn-outline-dark w-100 d-flex align-items-center justify-content-center" style="height: 100px" th:text="#{login.createAccount}">Créer un compte</a>
+      </div>
     </div>
+  </div>
 </div>
 
-<!-- Bootstrap JS (optionnel) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<form class="fixed bottom-4 right-4 max-w-sm mx-auto">
+  <select th:value="${#locale.language}" onchange="changeLanguage(this.value)" id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+    <option value="fr" th:selected="${#locale.language == 'fr'}" th:text="#{lang.fr}" selected>FR</option>
+    <option value="en" th:selected="${#locale.language == 'en'}" th:text="#{lang.en}">UK</option>
+  </select>
+</form>
+
 </body>
 </html>
+
+<script>
+  function changeLanguage(language) {
+    const url = new URL(window.location.href);
+    url.searchParams.set('lang', language);
+    window.location.href = url.toString(); // redirection GET avec le paramètre
+  }
+</script>

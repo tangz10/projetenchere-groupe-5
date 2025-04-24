@@ -1,135 +1,111 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title th:text="#{register.title}">Enregistrement</title>
-
+    <title th:text="#{register.title}">Hello Tailwind</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
+<body class="">
 
-<div class="header container mt-5 mb-3">
-    <a th:href="@{/}" class="text-decoration-none text-dark" th:text="#{header.home}">ENI Enchères</a>
-</div>
-
-<div class="container text-center">
-    <p class="fs-4" th:text="#{register.createAccount}">Créer un compte</p>
-</div>
-
-<form th:action="@{/register}" method="post">
-    <div class="container">
-        <div class="row row-cols-1 row-cols-md-2">
-
-            <div class="col d-flex flex-row gap-2 mb-2">
-                <div class="left-content w-50">
-                    <p th:text="#{register.username}">Pseudo: </p>
-                </div>
-                <div class="right-content w-60">
-                    <input type="text" class="form-control p-2 border-black" aria-label="pseudo" name="pseudo">
-                </div>
-            </div>
-
-            <div class="col d-flex flex-row gap-2 mb-2">
-                <div class="left-content w-50">
-                    <p th:text="#{register.lastName}">Nom: </p>
-                </div>
-                <div class="right-content w-60">
-                    <input type="text" class="form-control p-2 border-black" aria-label="lastname" name="nom">
-                </div>
-            </div>
-
-            <div class="col d-flex flex-row gap-2 mb-2">
-                <div class="left-content w-50">
-                    <p th:text="#{register.firstName}">Prénom: </p>
-                </div>
-                <div class="right-content w-60">
-                    <input type="text" class="form-control p-2 border-black" aria-label="firstname" name="prenom">
-                </div>
-            </div>
-
-            <div class="col d-flex flex-row gap-2 mb-2">
-                <div class="left-content w-50">
-                    <p th:text="#{register.email}">Email: </p>
-                </div>
-                <div class="right-content w-60">
-                    <input type="text" class="form-control p-2 border-black" aria-label="mail" name="email">
-                </div>
-            </div>
-
-            <div class="col d-flex flex-row gap-2 mb-2">
-                <div class="left-content w-50">
-                    <p th:text="#{register.phone}">Téléphone: </p>
-                </div>
-                <div class="right-content w-60">
-                    <input type="text" class="form-control p-2 border-black" aria-label="phone" name="telephone">
-                </div>
-            </div>
-
-            <div class="col d-flex flex-row gap-2 mb-2">
-                <div class="left-content w-50">
-                    <p th:text="#{register.street}">Rue: </p>
-                </div>
-                <div class="right-content w-60">
-                    <input type="text" class="form-control p-2 border-black" aria-label="street" name="rue">
-                </div>
-            </div>
-
-            <div class="col d-flex flex-row gap-2 mb-2">
-                <div class="left-content w-50">
-                    <p th:text="#{register.zipcode}">Code postal: </p>
-                </div>
-                <div class="right-content w-60">
-                    <input type="text" class="form-control p-2 border-black" aria-label="zipcode" name="codePostal">
-                </div>
-            </div>
-
-            <div class="col d-flex flex-row gap-2 mb-2">
-                <div class="left-content w-50">
-                    <p th:text="#{register.city}">Ville: </p>
-                </div>
-                <div class="right-content w-60">
-                    <input type="text" class="form-control p-2 border-black" aria-label="city" name="ville">
-                </div>
-            </div>
-
-            <div class="col d-flex flex-row gap-2 mb-2">
-                <div class="left-content w-50">
-                    <p th:text="#{register.password}">Mot de passe: </p>
-                </div>
-                <div class="right-content w-60">
-                    <input type="password" class="form-control p-2 border-black" aria-label="password" name="motDePasse">
-                </div>
-            </div>
-
-            <div class="col d-flex flex-row gap-2 mb-2">
-                <div class="left-content w-50">
-                    <p th:text="#{register.confirmPassword}">Confirmation: </p>
-                </div>
-                <div class="right-content w-60">
-                    <input type="password" class="form-control p-2 border-black" aria-label="password-confirmation">
-                </div>
-            </div>
-
+<div class="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
+    <div class="relative py-3 sm:max-w-xl sm:mx-auto">
+        <div
+                class="absolute inset-0 bg-gradient-to-r from-blue-300 to-blue-600 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl">
         </div>
-    </div>
+        <div class="relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20">
+            <div class="max-w-md mx-auto">
 
-    <div class="container mt-3">
-        <div class="row">
-            <div class="col">
-                <button type="submit" class="btn btn-outline-dark w-100" style="height: 70px" th:text="#{register.createButton}">Créer</button>
-            </div>
+                <div class="mx-auto">
+                    <a href="">
+                        <img class="h-[80px] mx-auto mb-6" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxn33FNU6y_diGg-jxsjb6JM6pT4WsHFDQBw&s" alt="">
+                    </a>
+                </div>
 
-            <div class="col">
-                <button type="button" class="btn btn-outline-dark w-100" style="height: 70px" th:text="#{register.cancelButton}">Annuler</button>
+                <div>
+                    <h1 class="text-2xl font-semibold">Connecte toi à ENI Enchère</h1>
+                </div>
+                <div class="divide-y divide-gray-200">
+                    <form th:action="@{/register}" method="post" class=w-full>
+                        <div class="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="relative">
+                                    <input autocomplete="off" name="pseudo" type="text" class="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder="Email address" />
+                                    <label th:text="#{register.username}" class="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm">Adresse Email</label>
+                                </div>
+                                <div class="relative">
+                                    <input autocomplete="off" name="nom" type="text" class="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder="Password" />
+                                    <label th:text="#{register.lastName}" class="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm">Mot de passe</label>
+                                </div>
+
+                                <div class="relative">
+                                    <input autocomplete="off" name="prenom" type="text" class="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder="Email address" />
+                                    <label th:text="#{register.firstName}" class="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm">Adresse Email</label>
+                                </div>
+                                <div class="relative">
+                                    <input autocomplete="off" name="email" type="text" class="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder="Password" />
+                                    <label th:text="#{register.email}" class="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm">Mot de passe</label>
+                                </div>
+
+                                <div class="relative">
+                                    <input autocomplete="off" name="telephone" type="text" class="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder="Email address" />
+                                    <label th:text="#{register.phone}" class="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm">Adresse Email</label>
+                                </div>
+                                <div class="relative">
+                                    <input autocomplete="off" name="rue" type="text" class="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder="Password" />
+                                    <label th:text="#{register.street}" class="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm">Mot de passe</label>
+                                </div>
+
+                                <div class="relative">
+                                    <input autocomplete="off" name="codePostal" type="text" class="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder="Email address" />
+                                    <label th:text="#{register.zipcode}" class="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm">Adresse Email</label>
+                                </div>
+                                <div class="relative">
+                                    <input autocomplete="off" name="ville" type="text" class="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder="Password" />
+                                    <label th:text="#{register.city}" class="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm">Mot de passe</label>
+                                </div>
+
+                                <div class="relative">
+                                    <input autocomplete="off" name="motDePasse" type="password" class="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder="Email address" />
+                                    <label th:text="#{register.password}" class="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm">Adresse Email</label>
+                                </div>
+                                <div class="relative">
+                                    <input autocomplete="off" name="passwordConfirmation" type="password" class="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder="Password" />
+                                    <label th:text="#{register.confirmPassword}" class="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm">Mot de passe</label>
+                                </div>
+                            </div>
+
+                            <div class="relative mt-2">
+                                <button type="submit" th:text="#{register.createAccount}" class="m-0 w-full px-4 py-3 mb-2 leading-loose text-xs text-center text-white font-semibold bg-blue-600 hover:bg-blue-700  rounded-xl">Se connecter</button>
+                            </div>
+
+                            <div class="relative text-center">
+                                <a th:href="@{/}" th:text="#{register.cancelButton}" class="text-xs text-center mx-auto text-blue-600 hover:text-gray-600">Pas de compte ? S'inscrire</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
+</div>
+
+<form class="fixed bottom-4 right-4 max-w-sm mx-auto">
+    <select th:value="${#locale.language}" onchange="changeLanguage(this.value)" id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        <option value="fr" th:selected="${#locale.language == 'fr'}" th:text="#{lang.fr}" selected>FR</option>
+        <option value="en" th:selected="${#locale.language == 'en'}" th:text="#{lang.en}">UK</option>
+    </select>
 </form>
 
-<!-- Bootstrap JS (optionnel) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
+
+<script>
+    function changeLanguage(language) {
+        const url = new URL(window.location.href);
+        url.searchParams.set('lang', language);
+        window.location.href = url.toString(); // redirection GET avec le paramètre
+    }
+</script>
