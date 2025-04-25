@@ -8,6 +8,20 @@
 </head>
 <body>
 
+<div id="alert-box" class="fixed top-4 right-4 px-8 py-6 bg-red-400 text-white flex justify-between items-start rounded shadow-lg z-50" th:if="${param.error} and ${message != null}">
+    <div class="flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 mr-4" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+        </svg>
+        <p th:text="${message}">message</p>
+    </div>
+    <button onclick="document.getElementById('alert-box').style.display='none'" class="text-red-100 hover:text-white ml-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+    </button>
+</div>
+
 <!--Navbar-->
 <nav class="relative px-4 py-4 flex justify-between items-center bg-blue-600">
     <a th:href="@{/enchere}">
@@ -168,7 +182,7 @@
 
             <div>
                 <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" th:text="#{profile.edit.confirmPassword}">Article:</label>
-                <input name="ville" type="password"
+                <input name="confirmationMotDePasse" type="password"
                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
             </div>
 
@@ -283,4 +297,9 @@
             }
         });
     }
+
+    // Faire disparaître l'alerte après 5 secondes
+    setTimeout(function() {
+        document.getElementById('alert-box').style.display = 'none';
+    }, 5000);
 </script>

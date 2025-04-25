@@ -1,10 +1,8 @@
 package com.eni.enchere.ihm;
 
 import com.eni.enchere.bo.Utilisateur;
-import com.eni.enchere.services.CustomUserDetailsService;
-import com.eni.enchere.services.EnchereService;
+import com.eni.enchere.security.CustomUserDetailsService;
 import com.eni.enchere.services.UtilisateurService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class ProfileController {
@@ -71,7 +70,13 @@ public class ProfileController {
     }
 
     @PostMapping("/my_profile/edit")
-    public String editMyProfile(Utilisateur utilisateur) {
+    public String editMyProfile(Utilisateur utilisateur, RedirectAttributes redirectAttributes) {
+        if (!utilisateur.getMotDePasse().equals(utilisateur.getConfirmationMotDePasse())) {
+            redirectAttributes.addFlashAttribute("message", "Les mots de passe ne sont pas identiques");
+
+            return "redirect:/profile_edit?error";
+        }
+
         Authentication currentAuth = SecurityContextHolder.getContext().getAuthentication();
 
         Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurByPseudo(currentAuth.getName());

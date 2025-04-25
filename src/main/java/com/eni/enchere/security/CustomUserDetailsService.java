@@ -1,6 +1,7 @@
-package com.eni.enchere.services;
+package com.eni.enchere.security;
 
 import com.eni.enchere.bo.Utilisateur;
+import com.eni.enchere.services.UtilisateurService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
