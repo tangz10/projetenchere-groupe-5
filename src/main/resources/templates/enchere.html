@@ -299,7 +299,7 @@
                   <span th:if="${meilleuresEncheres[article.noArticle] != null}" th:text="${meilleuresEncheres[article.noArticle].montantEnchere}">0</span>
                   <span th:if="${meilleuresEncheres[article.noArticle] == null}" th:text="${article.prixInitial}">0</span>
                   points
-                  <span th:if="${classements[article.noArticle] != null}" class="ms-2 text-muted" th:text="#{ranking} + ${classements[article.noArticle]}"></span>
+                  <span th:if="${classements[article.noArticle] != null}" class="ms-2 text-muted" th:text="#{ranking} +' '+ ${classements[article.noArticle]}"></span>
                 </p>
               </div>
             </div>
