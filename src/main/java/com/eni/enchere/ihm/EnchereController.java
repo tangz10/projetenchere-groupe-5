@@ -183,6 +183,8 @@ public class EnchereController {
             @RequestParam(value = "enCours", required = false) String enCours,
             @RequestParam(value = "nonDebutees", required = false) String nonDebutees,
             @RequestParam(value = "terminees", required = false) String terminees,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "6") int size,
             HttpSession session,
             Model model) {
 
@@ -193,8 +195,11 @@ public class EnchereController {
             return "redirect:/login";
         }
 
+
         List<ArticleVendu> toutesMesVentes = ArticleVenduService.getArticleVenduByUser(utilisateurConnecte.getNoUtilisateur());
         List<ArticleVendu> articlesFiltres = new ArrayList<>();
+
+
 
         LocalDate aujourdHui = LocalDate.now();
 
@@ -223,12 +228,14 @@ public class EnchereController {
             }
         }
 
-
         ajouterInfosEncheres(articlesFiltres, utilisateurConnecte, model);
+        int totalPages = (int) Math.ceil((double) articlesFiltres.size() / size);
 
         model.addAttribute("articleVendus", articlesFiltres);
         model.addAttribute("categories", categorieService.getAllCategories());
         model.addAttribute("activeFilter", "ventes");
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
 
         return "enchere";
     }
@@ -237,6 +244,8 @@ public class EnchereController {
             @RequestParam(value = "ouvertes", required = false) String ouvertes,
             @RequestParam(value = "AenCours", required = false) String AenCours,
             @RequestParam(value = "remportees", required = false) String remportees,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "6") int size,
             Model model) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -298,10 +307,15 @@ public class EnchereController {
             }
         }
 
+        int totalPages = (int) Math.ceil((double) articlesFiltres.size() / size);
+
         ajouterInfosEncheres(articlesFiltres, utilisateurConnecte, model);
         model.addAttribute("articleVendus", articlesFiltres);
         model.addAttribute("categories", categorieService.getAllCategories());
         model.addAttribute("activeFilter", "achats");
+        model.addAttribute("currentUrl", "/enchere");
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
 
         return "enchere";
     }

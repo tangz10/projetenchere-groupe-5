@@ -111,7 +111,6 @@
 
     <form th:action="@{/vente/enregistrer}" th:object="${article}" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white rounded-xl py-4 px-4 border border-gray-300">
-
             <!-- Article -->
             <div>
                 <label for="nom_article" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" th:text="#{vente.add.article}">Article:</label>

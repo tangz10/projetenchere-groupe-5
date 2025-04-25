@@ -316,7 +316,7 @@
     <li>
       <a
               href="#"
-              th:href="@{${currentUrl}(page=${currentPage - 1})}"
+              th:href="@{${currentUrl}(page=${currentPage != null ? currentPage - 1 : 0})}"
               class="grid size-8 place-content-center rounded border bg-blue-600 text-white hover:text-black hover:border-gray-500 border-gray-200 transition-colors hover:bg-gray-50 rtl:rotate-180"
               aria-label="Previous page"
               th:classappend="${currentPage == 1} ? 'opacity-50 cursor-not-allowed'"
@@ -336,7 +336,7 @@
     <li>
       <a
               href="#"
-              th:href="@{${currentUrl}(page=${currentPage + 1})}"
+              th:href="@{${currentUrl}(page=${currentPage != null ? currentPage + 1 : 1})}"
               class="grid size-8 place-content-center bg-blue-600 text-white rounded border border-gray-200 transition-colors hover:bg-gray-50 hover:text-black hover:border hover:border-gray-500 rtl:rotate-180"
               aria-label="Next page"
               th:classappend="${currentPage == totalPages} ? 'opacity-50 cursor-not-allowed'"

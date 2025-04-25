@@ -112,14 +112,12 @@
 
         <!-- Article -->
         <div>
-            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" th:text="#{user.pseudo}">Article:</label>
+            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Credits:</label>
             <input name="credit" th:value="${utilisateur.getCredit()}" type="text"
                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-
-
 
             <button th:text="#{changeCredits.button.save}" type="submit" class="lg:inline-block text-center py-2 px-6 bg-blue-600 text-white hover:bg-blue-500 text-sm text-black font-bold rounded-xl transition duration-200" href="#">S'inscrire</button>
             <a th:href="@{/my_profile/edit}" th:text="#{changeCredits.button.back}" type="submit" class="lg:inline-block text-center py-2 px-6 bg-red-600 text-white hover:bg-red-500 text-sm text-black font-bold rounded-xl transition duration-200" href="#">S'inscrire</a>
