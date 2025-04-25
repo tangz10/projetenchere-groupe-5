@@ -492,36 +492,33 @@ public class EnchereController {
         article.setNoUtilisateur(utilisateurConnecte);
         article.setPrixVente(article.getPrixInitial());
 
-        // 📂 Gestion du fichier photo
+        // 📂 Gestion du fichier photo (avec remplacement si même nom)
         if (!photo.isEmpty()) {
             try {
-                // Utilisation de la racine du projet + "uploads" (répertoire à côté de src)
-                String basePath = System.getProperty("user.dir");  // Obtient le répertoire de travail actuel
-                Path uploadPath = Paths.get(basePath, "src/main/resources/static/uploads");  // Crée un répertoire 'uploads' à la racine
+                String basePath = System.getProperty("user.dir");
+                Path uploadPath = Paths.get(basePath, "src/main/resources/static/uploads");
 
-                // Vérifie si le dossier existe, sinon, crée-le
                 if (!Files.exists(uploadPath)) {
                     Files.createDirectories(uploadPath);
                 }
 
-                // Génère le nom du fichier avec un timestamp unique
                 String originalFilename = photo.getOriginalFilename();
-                Path destinationPath = uploadPath.resolve(System.currentTimeMillis() + "_" + originalFilename);
+                Path destinationPath = uploadPath.resolve(originalFilename);
 
-                // Sauvegarde le fichier dans le dossier 'uploads'
+                // Remplace le fichier s'il existe déjà
                 photo.transferTo(destinationPath.toFile());
 
-                // Stockage de l'URL relative en BDD (accessible depuis la racine de l'application)
-                article.setUrl("/uploads/" + destinationPath.getFileName().toString());
+                // URL accessible dans l'application
+                article.setUrl("/uploads/" + originalFilename);
 
             } catch (IOException e) {
                 e.printStackTrace();
-                return "redirect:/vente/enregistrer"; // Redirige ou affiche une erreur en cas d'exception
+                return "redirect:/vente/enregistrer?erreur=upload";
             }
         }
 
         ArticleVenduService.insertArticleVendu(article);
-        return "redirect:/enchere"; // Redirige vers la page des enchères
+        return "redirect:/enchere";
     }
 
     @PostMapping("/vente/modifier")
@@ -541,20 +538,37 @@ public class EnchereController {
         articleExistant.setPrixInitial(articleModifie.getPrixInitial());
         articleExistant.setNoCategorie(articleModifie.getNoCategorie());
 
-        // Début d'enchère seulement si renseigné
         if (articleModifie.getDebut_encheres() != null) {
             articleExistant.setDebut_encheres(articleModifie.getDebut_encheres());
         }
 
-        // Fin d'enchère seulement si renseigné
         if (articleModifie.getFin_encheres() != null) {
             articleExistant.setFin_encheres(articleModifie.getFin_encheres());
         }
 
-        // Photo seulement si une nouvelle est uploadée
+        // 📂 Photo : remplacer si même nom
         if (photo != null && !photo.isEmpty()) {
-            String nomFichier = photo.getOriginalFilename();
-            articleExistant.setUrl(nomFichier);
+            try {
+                String basePath = System.getProperty("user.dir");
+                Path uploadPath = Paths.get(basePath, "src/main/resources/static/uploads");
+
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
+
+                String originalFilename = photo.getOriginalFilename();
+                Path destinationPath = uploadPath.resolve(originalFilename);
+
+                // Écrase le fichier s'il existe
+                photo.transferTo(destinationPath.toFile());
+
+                // Chemin accessible via l'app
+                articleExistant.setUrl("/uploads/" + originalFilename);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "redirect:/vente/modifier?id=" + id + "&erreur=upload";
+            }
         }
 
         ArticleVenduService.updateArticleVendu(articleExistant);
