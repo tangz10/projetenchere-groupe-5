@@ -1,29 +1,22 @@
 package com.eni.enchere.ihm;
 
 import com.eni.enchere.bo.Utilisateur;
-import com.eni.enchere.services.CustomUserDetailsService;
 import com.eni.enchere.services.UtilisateurService;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class AuthController {
 
     private final UtilisateurService utilisateurService;
     private final PasswordEncoder passwordEncoder;
-    private final CustomUserDetailsService userDetailsService;
 
-    public AuthController(UtilisateurService utilisateurService, PasswordEncoder passwordEncoder, CustomUserDetailsService userDetailsService) {
+    public AuthController(UtilisateurService utilisateurService, PasswordEncoder passwordEncoder) {
         this.utilisateurService = utilisateurService;
         this.passwordEncoder = passwordEncoder;
-        this.userDetailsService = userDetailsService;
     }
 
     @GetMapping("/login")
@@ -42,13 +35,19 @@ public class AuthController {
     }
 
     @PostMapping("/change_password")
-    public String changePassword(Utilisateur utilisateur, Model model) {
+    public String changePassword(Utilisateur utilisateur, RedirectAttributes redirectAttributes) {
+        if (!utilisateur.getMotDePasse().equals(utilisateur.getConfirmationMotDePasse())) {
+            redirectAttributes.addFlashAttribute("message", "Les mots de passe ne sont pas identiques");
+
+            return "redirect:/forgotten_password?error";
+        }
+
         Utilisateur utilisateurToUpdate = utilisateurService.getUtilisateurByEmail(utilisateur.getEmail());
 
         if (utilisateurToUpdate == null) {
-            model.addAttribute("message", "Email incorrect");
+            redirectAttributes.addFlashAttribute("message", "Email incorrect");
 
-            return "forgotten_password";
+            return "redirect:/forgotten_password?error";
         }
 
         utilisateurToUpdate.setMotDePasse(passwordEncoder.encode(utilisateur.getMotDePasse()));
@@ -58,29 +57,27 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String registerUser(Utilisateur utilisateur, Model model) {
-        if (utilisateurService.getUtilisateurByPseudo(utilisateur.getPseudo()) != null) {
-            model.addAttribute("message", "Ce pseudo est déjà utilisé");
+    public String registerUser(Utilisateur utilisateur, RedirectAttributes redirectAttributes) {
+        if (!utilisateur.getMotDePasse().equals(utilisateur.getConfirmationMotDePasse())) {
+            redirectAttributes.addFlashAttribute("message", "Les mots de passe ne sont pas identiques");
 
-            return "register?error";
+            return "redirect:/register?error";
+        }
+
+        if (utilisateurService.getUtilisateurByPseudo(utilisateur.getPseudo()) != null) {
+            redirectAttributes.addFlashAttribute("message", "Ce pseudo est déjà utilisé");
+
+            return "redirect:/register?error";
         }
 
         if (utilisateurService.getUtilisateurByEmail(utilisateur.getEmail()) != null) {
-            model.addAttribute("message", "Cet email est déjà utilisé");
+            redirectAttributes.addFlashAttribute("message", "Cet email est déjà utilisé");
 
-            return "register?error";
+            return "redirect:/register?error";
         }
 
         utilisateur.setMotDePasse(passwordEncoder.encode(utilisateur.getMotDePasse()));
         utilisateurService.insertUtilisateur(utilisateur);
-
-        /*
-        UserDetails userDetails = userDetailsService.loadUserByUsername(utilisateur.getPseudo());
-        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
-        auth.setAuthenticated(true);
-
-        SecurityContextHolder.getContext().setAuthentication(auth);
-        */
 
         return "redirect:/login?registered";
     }

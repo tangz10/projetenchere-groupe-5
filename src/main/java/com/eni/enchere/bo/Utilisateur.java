@@ -11,6 +11,7 @@ public class Utilisateur {
     private String ville;
     private String codePostal;
     private String motDePasse;
+    private String confirmationMotDePasse;
     private long credit;
     private boolean isAdmin;
     private boolean isActive;
@@ -19,7 +20,7 @@ public class Utilisateur {
     public Utilisateur() {
     }
 
-    public Utilisateur(long noUtilisateur, String pseudo, String nom, String prenom, String email, String telephone, String rue, String ville, String codePostal, String motDePasse) {
+    public Utilisateur(long noUtilisateur, String pseudo, String nom, String prenom, String email, String telephone, String rue, String ville, String codePostal, String motDePasse, String confirmationMotDePasse) {
         this.noUtilisateur = noUtilisateur;
         this.pseudo = pseudo;
         this.nom = nom;
@@ -30,6 +31,7 @@ public class Utilisateur {
         this.ville = ville;
         this.codePostal = codePostal;
         this.motDePasse = motDePasse;
+        this.confirmationMotDePasse = confirmationMotDePasse;
     }
 
     public long getNoUtilisateur() { return noUtilisateur; }
@@ -59,6 +61,12 @@ public class Utilisateur {
     public void setMotDePasse(String motDePasse) {
         this.motDePasse = motDePasse;
     }
+
+    public String getConfirmationMotDePasse() {
+        return confirmationMotDePasse;
+    }
+
+    public void setConfirmationMotDePasse(String confirmationMotDePasse) { this.confirmationMotDePasse = confirmationMotDePasse; }
 
     public String getCodePostal() {
         return codePostal;
