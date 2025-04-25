@@ -127,13 +127,4 @@ public class ProfileController {
 
         return "redirect:/";
     }
-
-    @GetMapping("/my_profile/forgot_password")
-    public String forgotPassword(Utilisateur utilisateur) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        Utilisateur utilisateurConnecte = utilisateurService.getUtilisateurByPseudo(auth.getName());
-
-        return "forgotten_password";
-    }
 }
