@@ -295,7 +295,11 @@
                 <p class="inline-block font-semibold text-primary whitespace-nowrap leading-tight rounded-xl">
 			  <span class="text-sm uppercase">
 			  </span>
-                  <span th:text="${article.prixInitial} + ' points'" class="text-lg">Prix</span>
+                  <span th:text="#{itemDetail.price} + ':'"></span>
+                  <span th:if="${meilleuresEncheres[article.noArticle] != null}" th:text="${meilleuresEncheres[article.noArticle].montantEnchere}">0</span>
+                  <span th:if="${meilleuresEncheres[article.noArticle] == null}" th:text="${article.prixInitial}">0</span>
+                  points
+                  <span th:if="${classements[article.noArticle] != null}" class="ms-2 text-muted" th:text="#{ranking} + ${classements[article.noArticle]}"></span>
                 </p>
               </div>
             </div>

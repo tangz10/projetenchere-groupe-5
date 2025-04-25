@@ -106,7 +106,7 @@
 <div class="container mx-auto py-4 flex flex-col gap-4 mt-6">
 
   <div>
-    <p class="font-bold text-black text-xl" >Ajouter une nouvelle vente</p>
+    <p class="font-bold text-black text-xl" th:text="#{vente.add}">Ajouter une nouvelle vente</p>
   </div>
 
   <!-- Pop-up erreur crédits -->
@@ -176,7 +176,7 @@
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mr-3 stroke-black size-5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z" />
               </svg>
-              <span th:text="#{saleDetail.bestBid} + ${meilleureEnchere.montantEnchere} + ' par ' + ${meilleureEnchere.noUtilisateur.pseudo}" class="mt-2 xl:mt-0">
+              <span th:text="#{saleDetail.bestBid} + ${meilleureEnchere.montantEnchere} + #{by} + ${meilleureEnchere.noUtilisateur.pseudo}" class="mt-2 xl:mt-0">
 			  Vendeur
 			</span>
             </p>
@@ -197,7 +197,7 @@
 
             <div class="flex justify-end">
               <p class="inline-block font-semibold text-primary whitespace-nowrap leading-tight rounded-xl">
-			  <span th:text="'PRIX DE BASE: ' + ${article.prixInitial} + ' points'" class="text-sm uppercase">
+			  <span th:text="#{enchere.finished.price}+ ' ' + ${article.prixInitial} + ' points'" class="text-sm uppercase">
 				$
 			  </span>
               </p>
@@ -284,8 +284,11 @@
 
       <!-- Montant de l'enchère (affiché uniquement si la vente a commencé) -->
       <div th:if="${venteCommencee}">
-        <label for="montant" class="block mb-2 text-sm font-medium text-gray-900"
-               th:text="#{saleDetail.myBid} + ' (Vous avez ' + ${utilisateurConnecte.getCredit()} + ' crédits)'">Ma proposition</label>
+        <label for="montant"
+               class="block mb-2 text-sm font-medium text-gray-900"
+               th:text="#{saleDetail.myBid(${utilisateurConnecte.getCredit()})}">
+          Ma proposition
+        </label>
         <div class="relative flex">
           <input type="number" name="montant" id="montant"
                  class="block w-full p-2.5 text-sm text-gray-900 bg-gray-50 rounded-l-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
