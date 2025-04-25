@@ -435,7 +435,8 @@ public class EnchereController {
         try {
             enchereService.ajouterEnchere(utilisateurConnecte.getNoUtilisateur(), noArticle, montant);
         } catch (IllegalArgumentException e) {
-            redirectAttributes.addFlashAttribute("erreur", "saleDetail.error.notEnoughCredits");
+            // Ajouter l'erreur dans les flash attributes pour qu'elle soit disponible sur la page suivante
+            redirectAttributes.addFlashAttribute("erreur", e.getMessage());
             return "redirect:/enchere/vente?id=" + noArticle;
         }
 
