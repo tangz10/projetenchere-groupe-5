@@ -1,137 +1,383 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <meta charset="UTF-8">
-  <title th:text="#{saleDetail.title}">Détail d'une vente</title>
-
+  <title th:text="#{home.title}">Hello Tailwind</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    .modal {
-      background: rgba(0, 0, 0, 0.5);
-    }
-  </style>
 </head>
 <body>
 
-<div class="header container mt-5 mb-3">
-  <a th:href="@{/enchere}" class="text-decoration-none text-dark" th:text="#{header.home}">ENI Enchères</a>
+<!--Navbar-->
+<nav class="relative px-4 py-4 flex justify-between items-center bg-blue-600">
+  <a th:href="@{/enchere}">
+    <img class="h-[60px]" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxn33FNU6y_diGg-jxsjb6JM6pT4WsHFDQBw&s" alt="">
+  </a>
+  <div class="lg:hidden">
+    <button class="navbar-burger flex items-center text-blue-600 p-3">
+      <svg class="block h-4 w-4 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        <title>Mobile menu</title>
+        <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
+      </svg>
+    </button>
+  </div>
+  <ul class="hidden absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 lg:flex lg:mx-auto lg:flex lg:items-center lg:w-auto lg:space-x-6">
+    <li><a th:href="@{/enchere/add}" th:text="#{itemDetail.bid}" class="text-sm text-white font-bold" >Accueil</a></li>
+    <li class="text-gray-300">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" class="w-4 h-4 current-fill" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+      </svg>
+    </li>
+    <li><a th:href="@{/my_profile}" th:text="#{header.profile}" class="text-sm text-white font-bold" >Accueil</a></li>
+
+    <li sec:authorize="hasRole('ADMIN')" class="text-gray-300">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" class="w-4 h-4 current-fill" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+      </svg>
+    </li>
+    <li><a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/users}" th:text="#{admin.configUsers}" class="text-sm text-white font-bold" >Accueil</a></li>
+    <li sec:authorize="hasRole('ADMIN')" class="text-gray-300">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" class="w-4 h-4 current-fill" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+      </svg>
+    </li>
+    <li><a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/categories}" th:text="#{admin.configCategories}" class="text-sm text-white font-bold" >Accueil</a></li>
+
+  </ul>
+  <form th:action="@{/logout}" method="post">
+    <button type="submit" th:text="#{header.logout}" class="hidden lg:inline-block py-2 px-6 bg-white hover:bg-white/20 text-sm text-black font-bold rounded-xl transition duration-200" href="#">S'inscrire</button>
+  </form>
+</nav>
+<div class="navbar-menu relative z-50 hidden">
+  <div class="navbar-backdrop fixed inset-0 bg-gray-800 opacity-25"></div>
+  <nav class="fixed top-0 left-0 bottom-0 flex flex-col w-5/6 max-w-sm py-6 px-6 bg-white border-r overflow-y-auto">
+    <div class="flex items-center mb-8">
+      <a th:href="@{/enchere}" class="mr-auto text-3xl font-bold leading-none" href="#">
+        <img class="h-[60px]" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxn33FNU6y_diGg-jxsjb6JM6pT4WsHFDQBw&s" alt="">
+      </a>
+      <button class="navbar-close">
+        <svg class="h-6 w-6 text-gray-400 cursor-pointer hover:text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+    <div>
+      <ul>
+        <li class="text-gray-300">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" class="w-4 h-4 current-fill" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+          </svg>
+        </li>
+        <li><a th:href="@{/enchere/add}" th:text="#{itemDetail.bid}" class="text-sm text-blue-600 font-bold" >Accueil</a></li>
+        <li class="text-gray-300">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" class="w-4 h-4 current-fill" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+          </svg>
+        </li>
+        <li><a th:href="@{/my_profile}" th:text="#{header.profile}" class="text-sm text-blue-600 font-bold" >Accueil</a></li>
+
+        <li sec:authorize="hasRole('ADMIN')" class="text-gray-300">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" class="w-4 h-4 current-fill" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+          </svg>
+        </li>
+        <li><a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/users}" th:text="#{admin.configUsers}" class="text-sm text-blue-600 font-bold" >Accueil</a></li>
+        <li sec:authorize="hasRole('ADMIN')" class="text-gray-300">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" class="w-4 h-4 current-fill" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+          </svg>
+        </li>
+        <li><a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/categories}" th:text="#{admin.configCategories}" class="text-sm text-blue-600 font-bold" >Accueil</a></li>
+
+      </ul>
+    </div>
+    <div class="mt-auto">
+      <div class="pt-6">
+        <form th:action="@{/logout}" method="post">
+          <button type="submit" th:text="#{header.logout}" class="lg:inline-block py-2 px-6 bg-blue-500 hover:bg-blue-600 text-sm text-white font-bold rounded-xl transition duration-200" href="#">S'inscrire</button>
+        </form>
+      </div>
+    </div>
+  </nav>
 </div>
 
-<div class="container text-center">
-  <p class="fs-4" th:text="#{saleDetail.heading}">Détail vente</p>
-</div>
 
-<div class="container">
-  <p th:text="${article.nom_article}">Nom de l'article</p>
+<!--Filtre-->
+<div class="container mx-auto py-4 flex flex-col gap-4 mt-6">
 
-  <img th:src="@{${article.url}}" alt="Photo de l'article" height="100px">
-
-  <p class="mt-3">
-    <span th:text="#{saleDetail.description}">Description:</span>
-    <span th:text="${article.description}">Description</span>
-  </p>
-  <p>
-    <span th:text="#{saleDetail.category}">Catégorie:</span>
-    <span th:text="${article.noCategorie.libelle}">Catégorie</span>
-  </p>
-
-  <p th:if="${meilleureEnchere != null}">
-    <span th:text="#{saleDetail.bestBid}">Meilleure offre :</span>
-    <span th:text="${meilleureEnchere.montantEnchere}">0</span> points
-    <span th:text="#{saleDetail.for}">pour</span>
-    <span th:text="${meilleureEnchere.noUtilisateur.pseudo}">pseudo</span>
-  </p>
-
-  <div th:if="${!enchereList.isEmpty()}">
-    <h3 th:text="#{saleDetail.biddersList}">Liste des enchérisseurs</h3>
-    <table class="table">
-      <thead>
-      <tr>
-        <th scope="col" th:text="#{saleDetail.biddersTable.pseudo}">Pseudo</th>
-        <th scope="col" th:text="#{saleDetail.biddersTable.amount}">Montant de l'enchère</th>
-        <th scope="col" th:text="#{saleDetail.biddersTable.date}">Date de l'enchère</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr th:each="enchere : ${enchereList}">
-        <td><a th:href="@{/user/{pseudo}(pseudo=${enchere.noUtilisateur.pseudo})}" th:text="${enchere.noUtilisateur.pseudo}">Pseudo</a></td>
-        <td th:text="${enchere.montantEnchere}"></td>
-        <td th:text="${#temporals.format(enchere.dateEnchere, 'dd/MM/yyyy')}"></td>
-      </tr>
-      </tbody>
-    </table>
+  <div>
+    <p class="font-bold text-black text-xl" >Ajouter une nouvelle vente</p>
   </div>
 
-  <p><span th:text="#{saleDetail.startingPrice}">Mise à prix:</span> <span th:text="${article.prixInitial}">0</span> points</p>
-  <p><span th:text="#{saleDetail.endDate}">Fin de l'enchère:</span> <span th:text="${#temporals.format(article.fin_encheres, 'dd/MM/yyyy')}">Date</span></p>
-  <p th:text="#{saleDetail.withdrawalAddress(${article.noUtilisateur.rue}, ${article.noUtilisateur.codePostal}, ${article.noUtilisateur.ville})}">
-    Retrait
-  </p>
-  <p>
-    <span th:text="#{saleDetail.seller}">Vendeur:</span>
-    <a th:href="@{/user/{pseudo}(pseudo=${article.noUtilisateur.pseudo})}" th:text="${article.noUtilisateur.pseudo}">Pseudo</a>
-  </p>
+  <!-- Pop-up erreur crédits -->
+  <div th:if="${erreur}" class="bg-red-600/90 border border-red-500 rounded-lg text-center px-6 py-6 text-white" style="display:block;" tabindex="-1" role="dialog">
+          <h5 class="modal-title" th:text="#{saleDetail.error.title}">Erreur</h5>
+          <p th:text="#{${erreur}}">Erreur</p>
+  </div>
+
+  <!-- Vendeur VENTE TERMINER -->
+  <div class="border-orange-500 bg-orange-600/70 border px-6 py-6 text-center text-black rounded-lg font-bold" th:if="${article.noUtilisateur.noUtilisateur == utilisateurConnecte.noUtilisateur && venteCommencee}">
+    <div  class="mt-3">
+      <div  class="alert alert-warning mt-2" role="alert" th:text="#{saleDetail.warning.started}">La vente a déjà commencé. Vous ne pouvez plus modifier l'article.</div>
+    </div>
+  </div>
+
+  <!--  Carte du produit-->
+  <div class=" gap-6 w-full">
+    <div class="relative mx-auto w-full">
+      <div class="border border-gray-300 rounded-lg relative inline-block w-full">
+        <div class="shadow p-4 rounded-lg bg-white">
+          <div class="flex justify-center relative rounded-lg overflow-hidden h-52">
+            <div class="transition-transform duration-500 transform ease-in-out hover:scale-110 w-full">
+              <div class="absolute inset-0 bg-black ">
+                <img th:src="@{${article.url}}" alt="" style="height: -webkit-fill-available; width: -webkit-fill-available;">
+              </div>
+            </div>
+
+          </div>
+
+          <div class="mt-4">
+            <h2 th:text="${article.nom_article}" class="font-medium text-base md:text-lg text-gray-800 line-clamp-1" title="New York">
+              Titre
+            </h2>
+            <p th:text="${article.description}" class="mt-2 text-sm text-gray-800 line-clamp-1" title="New York, NY 10004, United States">
+              Description
+            </p>
+          </div>
+
+          <div class="grid grid-cols-2 grid-rows-2 gap-4 mt-8">
+            <p class="inline-flex flex-col xl:flex-row xl:items-center text-gray-800">
+              <svg  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mr-3 stroke-black size-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6Z" />
+              </svg>
+
+              <span th:text="${article.noCategorie.libelle}" class="mt-2 xl:mt-0">
+			  Categorie
+			</span>
+            </p>
+            <p class="inline-flex flex-col xl:flex-row xl:items-center text-gray-800">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mr-3 stroke-black size-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+              </svg>
+              <span th:text="#{saleDetail.withdrawalAddress(${article.noUtilisateur.rue}, ${article.noUtilisateur.codePostal}, ${article.noUtilisateur.ville})}" class="mt-2 xl:mt-0">
+			  Mise a prix
+			</span>
+            </p>
+            <p class="inline-flex flex-col xl:flex-row xl:items-center text-gray-800">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mr-3 stroke-black size-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 0 0 5.636 5.636m12.728 12.728A9 9 0 0 1 5.636 5.636m12.728 12.728L5.636 5.636" />
+              </svg>
+              <span th:text="#{saleDetail.endDate}">Fin de l'enchère: </span> <span th:text="${#temporals.format(article.fin_encheres, 'dd/MM/yyyy')}" class="mt-2 xl:mt-0">
+			  Fin enchère
+			</span>
+            </p>
+            <p th:if="${meilleureEnchere != null}" class="inline-flex flex-col xl:flex-row xl:items-center text-gray-800">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mr-3 stroke-black size-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z" />
+              </svg>
+              <span th:text="#{saleDetail.bestBid} + ${meilleureEnchere.montantEnchere} + ' par ' + ${meilleureEnchere.noUtilisateur.pseudo}" class="mt-2 xl:mt-0">
+			  Vendeur
+			</span>
+            </p>
+          </div>
+
+          <div class="grid grid-cols-2 mt-8">
+            <div class="flex items-center">
+              <div class="relative">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                </svg>
+              </div>
+
+              <a th:href="@{/user/{pseudo}(pseudo=${article.noUtilisateur.pseudo})}" th:text="${article.noUtilisateur.pseudo}" class="ml-2 text-gray-800 line-clamp-1">
+                John Doe
+              </a>
+            </div>
+
+            <div class="flex justify-end">
+              <p class="inline-block font-semibold text-primary whitespace-nowrap leading-tight rounded-xl">
+			  <span th:text="'PRIX DE BASE: ' + ${article.prixInitial} + ' points'" class="text-sm uppercase">
+				$
+			  </span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Vendeur -->
-  <div th:if="${article.noUtilisateur.noUtilisateur == utilisateurConnecte.noUtilisateur}">
-    <div class="mt-3">
-      <a th:if="${!venteCommencee}" th:href="@{/enchere/modifier(id=${article.noArticle})}" class="btn btn-outline-primary w-100" th:text="#{saleDetail.button.edit}">Modifier l'article</a>
+  <div class="border-gray-300 gap-4 grid grid-cols-1 lg:grid-cols-3 border px-6 py-6 text-center text-black rounded-lg font-bold" th:if="${article.noUtilisateur.noUtilisateur == utilisateurConnecte.noUtilisateur}">
 
+    <div>
+      <a th:if="${!venteCommencee}" th:href="@{/enchere/modifier(id=${article.noArticle})}" th:text="#{saleDetail.button.edit}" class="w-full lg:inline-block text-center bg-green-600 hover:bg-green-500 py-2 px-6 text-white border border-gray-300 text-sm text-black font-bold rounded-xl transition duration-200" href="#">Retour</a>
+    </div>
+
+    <div>
       <form th:if="${!venteCommencee}" th:action="@{/enchere/delete}" method="post"
             onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet article ?');">
         <input type="hidden" name="id" th:value="${article.noArticle}" />
-        <button type="submit" class="btn btn-outline-danger w-100 mt-2" th:text="#{saleDetail.button.delete}">Supprimer l'article</button>
+        <button th:text="#{saleDetail.button.delete}" type="submit" class="w-full lg:inline-block text-center py-2 px-6 bg-red-600 text-white hover:bg-red-500 text-sm text-black font-bold rounded-xl transition duration-200" href="#">S'inscrire</button>
       </form>
-
-      <div th:if="${venteCommencee}" class="alert alert-warning mt-2" role="alert" th:text="#{saleDetail.warning.started}">La vente a déjà commencé. Vous ne pouvez plus modifier l'article.</div>
-
-      <a th:href="@{/enchere}" class="btn btn-outline-dark w-100 mt-2" th:text="#{saleDetail.button.back}">Retour</a>
     </div>
+
+    <div>
+      <a th:href="@{/enchere}" th:text="#{saleDetail.button.back}" class="w-full lg:inline-block text-center bg-blue-600 hover:bg-blue-500 py-2 px-6 text-white border border-gray-300 text-sm text-black font-bold rounded-xl transition duration-200" href="#">Retour</a>
+    </div>
+
   </div>
+
+  <!--  Tableau des encherisseur-->
+  <section class="container mx-auto pt-6 border border-gray-300 rounded-lg py-3 px-4" th:if="${!enchereList.isEmpty() && utilisateurConnecte.noUtilisateur == article.noUtilisateur.noUtilisateur}">
+    <h3 class="text-lg font-bold text-gray-800 mb-4" th:text="#{saleDetail.biddersList}">Liste des enchérisseurs</h3>
+
+    <div class="w-full mb-8 overflow-hidden rounded-lg shadow-lg">
+      <div class="w-full overflow-x-auto">
+        <table class="w-full">
+          <thead>
+          <tr class="text-md font-semibold tracking-wide text-left text-gray-900 bg-gray-100 uppercase border-b border-gray-600">
+            <th class="px-4 py-3" th:text="#{saleDetail.biddersTable.pseudo}">Pseudo</th>
+            <th class="px-4 py-3" th:text="#{saleDetail.biddersTable.amount}">Montant</th>
+            <th class="px-4 py-3" th:text="#{saleDetail.biddersTable.date}">Date</th>
+          </tr>
+          </thead>
+          <tbody class="bg-white">
+          <tr class="text-gray-700" th:each="enchere : ${enchereList}">
+            <!-- Pseudo avec lien -->
+            <td class="px-4 py-3 border">
+              <div class="flex items-center text-sm">
+                <div class="relative w-8 h-8 mr-3 rounded-full">
+                  <img class="object-cover w-full h-full rounded-full" src="https://ui-avatars.com/api/?name="
+                       th:src="'https://ui-avatars.com/api/?name=' + ${enchere.noUtilisateur.pseudo}"
+                       alt="Avatar" loading="lazy" />
+                  <div class="absolute inset-0 rounded-full shadow-inner" aria-hidden="true"></div>
+                </div>
+                <div>
+                  <a class="font-semibold text-black hover:underline"
+                     th:href="@{/user/{pseudo}(pseudo=${enchere.noUtilisateur.pseudo})}"
+                     th:text="${enchere.noUtilisateur.pseudo}">Pseudo</a>
+                </div>
+              </div>
+            </td>
+
+            <!-- Montant -->
+            <td class="px-4 py-3 text-md font-semibold border" th:text="${enchere.montantEnchere} + ' pts'">0 pts</td>
+
+            <!-- Date -->
+            <td class="px-4 py-3 text-sm border"
+                th:text="${#temporals.format(enchere.dateEnchere, 'dd/MM/yyyy HH:mm')}">00/00/0000</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
 
   <!-- Acheteur -->
   <div th:if="${article.noUtilisateur.noUtilisateur != utilisateurConnecte.noUtilisateur}">
     <div th:if="${!venteCommencee}" class="alert alert-warning mt-2" role="alert" th:text="#{saleDetail.warning.notStarted}">La vente n'a pas encore commencé. Vous ne pouvez pas investir dessus pour l'instant.</div>
 
-    <form th:action="@{/encherir}" method="post">
+    <form th:action="@{/encherir}" method="post" class="bg-white rounded-xl py-4 px-4 border border-gray-300">
       <input type="hidden" name="noArticle" th:value="${article.noArticle}" />
 
+      <!-- Montant de l'enchère (affiché uniquement si la vente a commencé) -->
       <div th:if="${venteCommencee}">
-        <div class="proposition-container d-flex flex-row align-items-center gap-3" style="width: max-content">
-          <p th:text="#{saleDetail.myBid}">Ma proposition</p>
-          <div class="input-group mb-3" style="width: auto">
-            <input type="number" name="montant" class="form-control" placeholder="Le montant" aria-label="Montant" aria-describedby="basic-addon1" required>
-            <span class="input-group-text" id="basic-addon1">pts</span>
-          </div>
+        <label for="montant" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+               th:text="#{saleDetail.myBid} + ' (Vous avez ' + ${utilisateurConnecte.getCredit()} + ' crédits)'">Ma proposition</label>
+        <div class="relative flex">
+          <input type="number" name="montant" id="montant"
+                 class="block w-full p-2.5 text-sm text-gray-900 bg-gray-50 rounded-l-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                 placeholder="Le montant" required />
+          <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-l-0 border-gray-300 rounded-r-md">
+                    pts
+                </span>
         </div>
       </div>
 
-      <div class="container d-flex flex-row gap-2">
-        <a th:href="@{/enchere}" class="btn btn-outline-dark w-100" style="height: 70px" th:text="#{saleDetail.button.back}">Retour</a>
-        <button th:if="${venteCommencee}" type="submit" class="btn btn-outline-dark w-100" style="height: 70px" th:text="#{saleDetail.button.bid}">Enchérir</button>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+
+        <!-- Boutons -->
+        <div class="flex flex-col md:flex-row gap-2 md:col-span-2">
+          <a th:href="@{/enchere}"
+             class="w-full text-center py-2 px-6 bg-white text-black border border-gray-300 text-sm font-bold rounded-xl transition duration-200"
+             th:text="#{saleDetail.button.back}">
+            Retour
+          </a>
+
+          <button th:if="${venteCommencee}"
+                  type="submit"
+                  class="w-full text-center py-2 px-6 bg-blue-600 text-white hover:bg-blue-500 text-sm font-bold rounded-xl transition duration-200"
+                  th:text="#{saleDetail.button.bid}">
+            Enchérir
+          </button>
+        </div>
       </div>
     </form>
+
   </div>
+
+
 </div>
 
-<!-- Pop-up erreur crédits -->
-<div th:if="${erreur}" class="modal fade show" style="display:block;" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header bg-danger text-white">
-        <h5 class="modal-title" th:text="#{saleDetail.error.title}">Erreur</h5>
-      </div>
-      <div class="modal-body">
-        <p th:text="#{${erreur}}">Erreur</p>
-      </div>
-      <div class="modal-footer">
-        <a th:href="@{/enchere/vente(id=${article.noArticle})}" class="btn btn-outline-dark" th:text="#{saleDetail.error.close}">Fermer</a>
-      </div>
-    </div>
-  </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<form class="fixed bottom-4 right-4 max-w-sm mx-auto">
+  <select th:value="${#locale.language}" onchange="changeLanguage(this.value)" id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+    <option value="fr" th:selected="${#locale.language == 'fr'}" th:text="#{lang.fr}" selected>FR</option>
+    <option value="en" th:selected="${#locale.language == 'en'}" th:text="#{lang.en}">UK</option>
+  </select>
+</form>
+
 </body>
+
 </html>
+
+<script>
+  // Burger menus
+  document.addEventListener('DOMContentLoaded', function() {
+    // open
+    const burger = document.querySelectorAll('.navbar-burger');
+    const menu = document.querySelectorAll('.navbar-menu');
+
+    if (burger.length && menu.length) {
+      for (var i = 0; i < burger.length; i++) {
+        burger[i].addEventListener('click', function() {
+          for (var j = 0; j < menu.length; j++) {
+            menu[j].classList.toggle('hidden');
+          }
+        });
+      }
+    }
+
+    // close
+    const close = document.querySelectorAll('.navbar-close');
+    const backdrop = document.querySelectorAll('.navbar-backdrop');
+
+    if (close.length) {
+      for (var i = 0; i < close.length; i++) {
+        close[i].addEventListener('click', function() {
+          for (var j = 0; j < menu.length; j++) {
+            menu[j].classList.toggle('hidden');
+          }
+        });
+      }
+    }
+
+    if (backdrop.length) {
+      for (var i = 0; i < backdrop.length; i++) {
+        backdrop[i].addEventListener('click', function() {
+          for (var j = 0; j < menu.length; j++) {
+            menu[j].classList.toggle('hidden');
+          }
+        });
+      }
+    }
+  });
+
+  function changeLanguage(language) {
+    const url = new URL(window.location.href);
+    url.searchParams.set('lang', language);
+    window.location.href = url.toString(); // redirection GET avec le paramètre
+  }
+</script>

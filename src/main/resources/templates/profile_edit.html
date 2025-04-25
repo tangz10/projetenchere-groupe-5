@@ -1,145 +1,264 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title th:text="#{profile.edit.title}">Modification du profil</title>
-
+    <title th:text="#{home.title}">Hello Tailwind</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 
-<div class="header container mt-5 mb-3">
-    <a th:href="@{/enchere}" class="text-decoration-none text-dark" th:text="#{header.home}">ENI Enchères</a>
+<!--Navbar-->
+<nav class="relative px-4 py-4 flex justify-between items-center bg-blue-600">
+    <a th:href="@{/enchere}">
+        <img class="h-[60px]" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxn33FNU6y_diGg-jxsjb6JM6pT4WsHFDQBw&s" alt="">
+    </a>
+    <div class="lg:hidden">
+        <button class="navbar-burger flex items-center text-blue-600 p-3">
+            <svg class="block h-4 w-4 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <title>Mobile menu</title>
+                <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
+            </svg>
+        </button>
+    </div>
+    <ul class="hidden absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 lg:flex lg:mx-auto lg:flex lg:items-center lg:w-auto lg:space-x-6">
+        <li><a th:href="@{/enchere/add}" th:text="#{itemDetail.bid}" class="text-sm text-white font-bold" >Accueil</a></li>
+        <li class="text-gray-300">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" class="w-4 h-4 current-fill" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+            </svg>
+        </li>
+        <li><a th:href="@{/my_profile}" th:text="#{header.profile}" class="text-sm text-white font-bold" >Accueil</a></li>
+
+        <li sec:authorize="hasRole('ADMIN')" class="text-gray-300">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" class="w-4 h-4 current-fill" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+            </svg>
+        </li>
+        <li><a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/users}" th:text="#{admin.configUsers}" class="text-sm text-white font-bold" >Accueil</a></li>
+        <li sec:authorize="hasRole('ADMIN')" class="text-gray-300">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" class="w-4 h-4 current-fill" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+            </svg>
+        </li>
+        <li><a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/categories}" th:text="#{admin.configCategories}" class="text-sm text-white font-bold" >Accueil</a></li>
+
+    </ul>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit" th:text="#{header.logout}" class="hidden lg:inline-block py-2 px-6 bg-white hover:bg-white/20 text-sm text-black font-bold rounded-xl transition duration-200" href="#">S'inscrire</button>
+    </form>
+</nav>
+<div class="navbar-menu relative z-50 hidden">
+    <div class="navbar-backdrop fixed inset-0 bg-gray-800 opacity-25"></div>
+    <nav class="fixed top-0 left-0 bottom-0 flex flex-col w-5/6 max-w-sm py-6 px-6 bg-white border-r overflow-y-auto">
+        <div class="flex items-center mb-8">
+            <a th:href="@{/enchere}" class="mr-auto text-3xl font-bold leading-none" href="#">
+                <img class="h-[60px]" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxn33FNU6y_diGg-jxsjb6JM6pT4WsHFDQBw&s" alt="">
+            </a>
+            <button class="navbar-close">
+                <svg class="h-6 w-6 text-gray-400 cursor-pointer hover:text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        <div>
+            <ul>
+                <li class="text-gray-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" class="w-4 h-4 current-fill" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                    </svg>
+                </li>
+                <li><a th:href="@{/enchere/add}" th:text="#{itemDetail.bid}" class="text-sm text-blue-600 font-bold" >Accueil</a></li>
+                <li class="text-gray-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" class="w-4 h-4 current-fill" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                    </svg>
+                </li>
+                <li><a th:href="@{/my_profile}" th:text="#{header.profile}" class="text-sm text-blue-600 font-bold" >Accueil</a></li>
+
+                <li sec:authorize="hasRole('ADMIN')" class="text-gray-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" class="w-4 h-4 current-fill" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                    </svg>
+                </li>
+                <li><a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/users}" th:text="#{admin.configUsers}" class="text-sm text-blue-600 font-bold" >Accueil</a></li>
+                <li sec:authorize="hasRole('ADMIN')" class="text-gray-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" class="w-4 h-4 current-fill" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                    </svg>
+                </li>
+                <li><a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/categories}" th:text="#{admin.configCategories}" class="text-sm text-blue-600 font-bold" >Accueil</a></li>
+
+            </ul>
+        </div>
+        <div class="mt-auto">
+            <div class="pt-6">
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" th:text="#{header.logout}" class="lg:inline-block py-2 px-6 bg-blue-500 hover:bg-blue-600 text-sm text-white font-bold rounded-xl transition duration-200" href="#">S'inscrire</button>
+                </form>
+            </div>
+        </div>
+    </nav>
 </div>
 
-<div class="container text-center">
-    <p class="fs-4" th:text="#{profile.edit.title}">Mon Profil</p>
+<!--Filtre-->
+<div class="container mx-auto py-4 flex flex-col gap-4 mt-6">
+
+    <div>
+        <p class="font-bold text-black text-xl">Modifier votre profile</p>
+    </div>
+
+    <form th:action="@{/my_profile/edit}" method="post">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white rounded-xl py-4 px-4 border border-gray-300">
+
+            <!-- Article -->
+            <div>
+                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" th:text="#{user.pseudo}">Article:</label>
+                <input name="pseudo" th:value="${utilisateur.getPseudo()}" type="text"
+                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            </div>
+
+            <div>
+                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" th:text="#{user.lastName}">Article:</label>
+                <input name="nom" th:value="${utilisateur.getNom()}" type="text"
+                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            </div>
+
+            <div>
+                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" th:text="#{user.firstName}">Article:</label>
+                <input name="prenom" th:value="${utilisateur.getPrenom()}" type="text"
+                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            </div>
+
+            <div>
+                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" th:text="#{user.email}">Article:</label>
+                <input name="email" th:value="${utilisateur.getEmail()}" type="text"
+                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            </div>
+
+            <div>
+                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" th:text="#{user.phone}">Article:</label>
+                <input name="telephone" th:value="${utilisateur.getTelephone()}" type="text"
+                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            </div>
+
+            <div>
+                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" th:text="#{user.street}">Article:</label>
+                <input name="rue" th:value="${utilisateur.getRue()}" type="text"
+                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            </div>
+
+            <div>
+                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" th:text="#{user.zipcode}">Article:</label>
+                <input name="codePostal" th:value="${utilisateur.getCodePostal()}" type="text"
+                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            </div>
+
+            <div>
+                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" th:text="#{user.city}">Article:</label>
+                <input name="ville" th:value="${utilisateur.getVille()}" type="text"
+                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            </div>
+
+            <div>
+                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" th:text="#{profile.edit.password}">Article:</label>
+                <input name="motDePasse" type="password"
+                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            </div>
+
+            <div>
+                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" th:text="#{profile.edit.confirmPassword}">Article:</label>
+                <input name="ville" type="password"
+                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            </div>
+
+            <div>
+                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" th:text="#{profile.edit.credit}">Article:</label>
+                <input disabled th:value="${utilisateur.credit}" name="ville" type="text"
+                       class="cursor-not-allowed bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            </div>
+
+            <div>
+
+            </div>
+
+            <button th:text="#{profile.edit.save}" type="submit" class="lg:inline-block text-center py-2 px-6 bg-blue-600 text-white hover:bg-blue-500 text-sm text-black font-bold rounded-xl transition duration-200" href="#">S'inscrire</button>
+            <button onclick="deleteCompte()" th:text="#{profile.edit.deleteAccount}" type="submit" class="lg:inline-block text-center py-2 px-6 bg-red-600 text-white hover:bg-red-500 text-sm text-black font-bold rounded-xl transition duration-200" href="#">S'inscrire</button>
+            <a th:href="@{/my_profile/credit}" th:text="#{profile.edit.editCredit}" class="lg:inline-block text-center bg-green-600 hover:bg-green-500 py-2 px-6 text-white border border-gray-300 text-sm text-black font-bold rounded-xl transition duration-200" href="#">Retour</a>
+            <a th:href="@{/my_profile/}" th:text="#{profile.edit.back}" class="lg:inline-block text-center py-2 px-6 bg-white text-black border border-gray-300 text-sm text-black font-bold rounded-xl transition duration-200" href="#">Retour</a>
+
+        </div>
+
+
+    </form>
+
+
+
 </div>
 
-<form th:action="@{/my_profile/edit}" method="post">
-    <div class="container text-center mt-3">
-        <div class="row">
-            <div class="col d-flex align-items-center">
-                <label th:text="#{profile.edit.pseudo}">Pseudo:</label>
-            </div>
-            <div class="col">
-                <input type="text" class="form-control p-2 border-black" aria-label="pseudo" name="pseudo" th:value="${utilisateur.getPseudo()}">
-            </div>
-        </div>
-
-        <div class="row mt-2">
-            <div class="col d-flex align-items-center">
-                <label th:text="#{profile.edit.lastName}">Nom:</label>
-            </div>
-            <div class="col">
-                <input type="text" class="form-control p-2 border-black" aria-label="lastname" name="nom" th:value="${utilisateur.getNom()}">
-            </div>
-        </div>
-
-        <div class="row mt-2">
-            <div class="col d-flex align-items-center">
-                <label th:text="#{profile.edit.firstName}">Prénom:</label>
-            </div>
-            <div class="col">
-                <input type="text" class="form-control p-2 border-black" aria-label="name" name="prenom" th:value="${utilisateur.getPrenom()}">
-            </div>
-        </div>
-
-        <div class="row mt-2">
-            <div class="col d-flex align-items-center">
-                <label th:text="#{profile.edit.email}">Email:</label>
-            </div>
-            <div class="col">
-                <input type="text" class="form-control p-2 border-black" aria-label="mail" name="email" th:value="${utilisateur.getEmail()}">
-            </div>
-        </div>
-
-        <div class="row mt-2">
-            <div class="col d-flex align-items-center">
-                <label th:text="#{profile.edit.phone}">Téléphone:</label>
-            </div>
-            <div class="col">
-                <input type="text" class="form-control p-2 border-black" aria-label="phone" name="telephone" th:value="${utilisateur.getTelephone()}">
-            </div>
-        </div>
-
-        <div class="row mt-2">
-            <div class="col d-flex align-items-center">
-                <label th:text="#{profile.edit.street}">Rue:</label>
-            </div>
-            <div class="col">
-                <input type="text" class="form-control p-2 border-black" aria-label="street" name="rue" th:value="${utilisateur.getRue()}">
-            </div>
-        </div>
-
-        <div class="row mt-2">
-            <div class="col d-flex align-items-center">
-                <label th:text="#{profile.edit.zipcode}">Code postal:</label>
-            </div>
-            <div class="col">
-                <input type="text" class="form-control p-2 border-black" aria-label="zipcode" name="codePostal" th:value="${utilisateur.getCodePostal()}">
-            </div>
-        </div>
-
-        <div class="row mt-2">
-            <div class="col d-flex align-items-center">
-                <label th:text="#{profile.edit.city}">Ville:</label>
-            </div>
-            <div class="col">
-                <input type="text" class="form-control p-2 border-black" aria-label="city" name="ville" th:value="${utilisateur.getVille()}">
-            </div>
-        </div>
-
-        <div class="row mt-2">
-            <div class="col d-flex align-items-center">
-                <label th:text="#{profile.edit.password}">Mot de passe:</label>
-            </div>
-            <div class="col">
-                <input type="password" class="form-control p-2 border-black" aria-label="password" name="motDePasse">
-            </div>
-        </div>
-
-        <div class="row mt-2">
-            <div class="col d-flex align-items-center">
-                <label th:text="#{profile.edit.confirmPassword}">Confirmation:</label>
-            </div>
-            <div class="col">
-                <input type="password" class="form-control p-2 border-black" aria-label="password-confirmation">
-            </div>
-        </div>
-    </div>
-
-    <div class="container mt-3">
-        <p th:text="#{profile.edit.credit} + ' ' + ${utilisateur.credit}">Crédit : 0</p>
-    </div>
-
-    <div class="container mt-3">
-        <div class="row">
-            <div class="col p-1">
-                <button type="submit" class="btn btn-outline-dark w-100" style="height: 70px" th:text="#{profile.edit.save}">Enregistrer</button>
-            </div>
-
-            <div class="col p-1">
-                <a th:href="@{/my_profile/credit}" type="submit" class="btn btn-outline-dark w-100 d-flex align-items-center justify-content-center" style="height: 70px" th:text="#{profile.edit.editCredit}">Modifier Crédit</a>
-            </div>
-
-            <div class="col p-1">
-                <button type="button" class="btn btn-outline-dark w-100" style="height: 70px" onclick="deleteCompte()" th:text="#{profile.edit.deleteAccount}">Supprimer mon compte</button>
-            </div>
-
-            <div class="col p-1">
-                <a th:href="@{/my_profile}" type="button" class="btn btn-outline-dark w-100" style="height: 70px" th:text="#{profile.edit.back}">Retour</a>
-            </div>
-        </div>
-    </div>
+<form class="fixed bottom-4 right-4 max-w-sm mx-auto">
+    <select th:value="${#locale.language}" onchange="changeLanguage(this.value)" id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        <option value="fr" th:selected="${#locale.language == 'fr'}" th:text="#{lang.fr}" selected>FR</option>
+        <option value="en" th:selected="${#locale.language == 'en'}" th:text="#{lang.en}">UK</option>
+    </select>
 </form>
 
-<!-- Bootstrap JS (optionnel) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
+
 <script>
+    // Burger menus
+    document.addEventListener('DOMContentLoaded', function() {
+        // open
+        const burger = document.querySelectorAll('.navbar-burger');
+        const menu = document.querySelectorAll('.navbar-menu');
+
+        if (burger.length && menu.length) {
+            for (var i = 0; i < burger.length; i++) {
+                burger[i].addEventListener('click', function() {
+                    for (var j = 0; j < menu.length; j++) {
+                        menu[j].classList.toggle('hidden');
+                    }
+                });
+            }
+        }
+
+        // close
+        const close = document.querySelectorAll('.navbar-close');
+        const backdrop = document.querySelectorAll('.navbar-backdrop');
+
+        if (close.length) {
+            for (var i = 0; i < close.length; i++) {
+                close[i].addEventListener('click', function() {
+                    for (var j = 0; j < menu.length; j++) {
+                        menu[j].classList.toggle('hidden');
+                    }
+                });
+            }
+        }
+
+        if (backdrop.length) {
+            for (var i = 0; i < backdrop.length; i++) {
+                backdrop[i].addEventListener('click', function() {
+                    for (var j = 0; j < menu.length; j++) {
+                        menu[j].classList.toggle('hidden');
+                    }
+                });
+            }
+        }
+    });
+
+    function changeLanguage(language) {
+        const url = new URL(window.location.href);
+        url.searchParams.set('lang', language);
+        window.location.href = url.toString(); // redirection GET avec le paramètre
+    }
+
+    if (document.location.href.includes('my_profile')) {
+        document.querySelector('#buttonModifier').style.display = '';
+    }
+
     function deleteCompte() {
         fetch("/my_profile/delete", {
             method: "POST",
@@ -165,5 +284,3 @@
         });
     }
 </script>
-</body>
-</html>
