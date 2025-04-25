@@ -45,10 +45,10 @@
               <div class="relative">
                 <div class="flex">
                   <div class="flex items-center h-5">
-                    <input id="helper-radio" aria-describedby="helper-radio-text" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                    <input id="helper-radio" aria-describedby="helper-radio-text" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2">
                   </div>
                   <div class="ms-2 text-sm">
-                    <label th:text="#{login.rememberMe}" name="remember-me" for="helper-radio" class="font-medium text-gray-900 dark:text-gray-300">Se souvenir de moi</label>
+                    <label th:text="#{login.rememberMe}" name="remember-me" for="helper-radio" class="font-medium text-gray-900">Se souvenir de moi</label>
                   </div>
                 </div>
               </div>
@@ -70,7 +70,7 @@
 </div>
 
 <form class="fixed bottom-4 right-4 max-w-sm mx-auto">
-  <select th:value="${#locale.language}" onchange="changeLanguage(this.value)" id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+  <select th:value="${#locale.language}" onchange="changeLanguage(this.value)" id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
     <option value="fr" th:selected="${#locale.language == 'fr'}" th:text="#{lang.fr}" selected>FR</option>
     <option value="en" th:selected="${#locale.language == 'en'}" th:text="#{lang.en}">UK</option>
   </select>

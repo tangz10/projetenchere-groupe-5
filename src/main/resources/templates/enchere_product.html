@@ -14,7 +14,7 @@
         <img class="h-[60px]" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxn33FNU6y_diGg-jxsjb6JM6pT4WsHFDQBw&s" alt="">
     </a>
     <div class="lg:hidden">
-        <button class="navbar-burger flex items-center text-blue-600 p-3">
+        <button class="navbar-burger flex items-center text-white p-3">
             <svg class="block h-4 w-4 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <title>Mobile menu</title>
                 <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
@@ -262,7 +262,7 @@
 
 
 <form class="fixed bottom-4 right-4 max-w-sm mx-auto">
-    <select th:value="${#locale.language}" onchange="changeLanguage(this.value)" id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+    <select th:value="${#locale.language}" onchange="changeLanguage(this.value)" id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
         <option value="fr" th:selected="${#locale.language == 'fr'}" th:text="#{lang.fr}" selected>FR</option>
         <option value="en" th:selected="${#locale.language == 'en'}" th:text="#{lang.en}">UK</option>
     </select>
