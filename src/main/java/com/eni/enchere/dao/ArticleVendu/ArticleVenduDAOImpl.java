@@ -124,7 +124,7 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
     @Override
     public List<ArticleVendu> selectAll() {
         String sql = "SELECT * FROM articles_vendus a LEFT JOIN utilisateurs u ON a.no_utilisateur = u.no_utilisateur\n" +
-                "WHERE u.is_active=true";
+                "WHERE u.is_active=true ORDER BY a.date_fin_encheres ASC";
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
             ArticleVendu article = new ArticleVendu();
