@@ -84,6 +84,8 @@ public class ProfileController {
             utilisateur.setMotDePasse(utilisateurConnecte.getMotDePasse());
         }
 
+        utilisateur.setIsActive(utilisateurConnecte.getIsActive());
+
         utilisateurService.updateUtilisateur(utilisateur);
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(utilisateur.getPseudo());
