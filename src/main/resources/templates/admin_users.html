@@ -136,7 +136,7 @@
                             <td class="px-4 py-3 border text-xs">
                             <span th:classappend="${utilisateur.isActive} ? 'text-green-700 bg-green-100' : 'text-red-700 bg-red-100'"
                                   class="px-2 py-1 font-semibold leading-tight rounded-sm"
-                                  th:text="${utilisateur.isActive} ? 'ACTIF' : 'INACTIF'">
+                                  th:text="${utilisateur.isActive} ? #{admin.actived1} : #{admin.inactive}">
                                 Actif
                             </span>
                             </td>
