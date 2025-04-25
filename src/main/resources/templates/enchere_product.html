@@ -106,7 +106,8 @@
 <div class="container mx-auto py-4 flex flex-col gap-4 mt-6">
 
     <div>
-        <p th:text="#{auctionDetailSeller.winnerMessage(${meilleureEnchere.noUtilisateur.pseudo})} + ' 🌟🌟'" class="font-bold text-black text-xl">Vous n'avez pas remporté l'enchère</p>
+        <p th:if="${meilleureEnchere != null}" th:text="#{auctionDetailSeller.winnerMessage(${meilleureEnchere.noUtilisateur.pseudo})} + ' 🌟🌟'" class="font-bold text-black text-xl">        Vous n'avez pas remporté l'enchère    </p>
+        <p th:if="${meilleureEnchere == null}" th:text="#{auctionDetailSeller.noBidsMessage}" class="font-bold text-black text-xl">        Aucune offre n'a été faite sur cet article.    </p>
     </div>
 
     <!-- Carte du produit -->
@@ -203,7 +204,6 @@
             </div>
         </div>
     </div>
-
 
     <div class="border border-gray-300 rounded-lg w-full py-4 px-4 flex flex-row">
         <a th:if="${meilleureEnchere != null}" th:text="#{auctionDetailSeller.button.withdraw}" class="w-full lg:inline-block text-center bg-green-600 hover:bg-green-500 py-2 px-6 text-white border border-gray-300 text-sm text-black font-bold rounded-xl transition duration-200" href="#">Retirer votre produit</a>
