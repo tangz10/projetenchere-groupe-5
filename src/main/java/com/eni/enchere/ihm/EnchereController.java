@@ -8,6 +8,7 @@ import com.eni.enchere.services.ArticleVenduService;
 import com.eni.enchere.services.CategorieService;
 import com.eni.enchere.services.*;
 import com.eni.enchere.services.UtilisateurService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -185,6 +186,7 @@ public class EnchereController {
             @RequestParam(value = "terminees", required = false) String terminees,
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "size", defaultValue = "6") int size,
+            HttpServletRequest request, // Ajouté pour récupérer l'URL actuelle
             HttpSession session,
             Model model) {
 
@@ -195,50 +197,57 @@ public class EnchereController {
             return "redirect:/login";
         }
 
-
         List<ArticleVendu> toutesMesVentes = ArticleVenduService.getArticleVenduByUser(utilisateurConnecte.getNoUtilisateur());
         List<ArticleVendu> articlesFiltres = new ArrayList<>();
-
-
-
         LocalDate aujourdHui = LocalDate.now();
 
-        // Si aucun filtre spécifique n'est coché → on affiche tout
+        // Appliquer les filtres comme tu fais déjà...
         if (enCours == null && nonDebutees == null && terminees == null) {
             articlesFiltres = toutesMesVentes;
         } else {
             for (ArticleVendu article : toutesMesVentes) {
                 boolean ajouter = false;
-
                 if (enCours != null && !article.getDebut_encheres().isAfter(aujourdHui) && article.getFin_encheres().isAfter(aujourdHui)) {
                     ajouter = true;
                 }
-
                 if (nonDebutees != null && article.getDebut_encheres().isAfter(aujourdHui)) {
                     ajouter = true;
                 }
-
-                if (terminees != null && article.getFin_encheres().isBefore(aujourdHui)) {
+                if (terminees != null && !article.getFin_encheres().isAfter(aujourdHui)) {
                     ajouter = true;
                 }
-
                 if (ajouter) {
                     articlesFiltres.add(article);
                 }
             }
         }
 
-        ajouterInfosEncheres(articlesFiltres, utilisateurConnecte, model);
-        int totalPages = (int) Math.ceil((double) articlesFiltres.size() / size);
+        // Pagination
+        int totalItems = articlesFiltres.size();
+        int totalPages = totalItems > 0 ? (int) Math.ceil((double) totalItems / size) : 1;
+        int startIndex = (page - 1) * size;
+        int endIndex = Math.min(startIndex + size, articlesFiltres.size());
+        List<ArticleVendu> articles = articlesFiltres.subList(startIndex, endIndex);
 
-        model.addAttribute("articleVendus", articlesFiltres);
+        model.addAttribute("articleVendus", articles);
         model.addAttribute("categories", categorieService.getAllCategories());
         model.addAttribute("activeFilter", "ventes");
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
 
+        // Récupérer l'URL actuelle avec les paramètres pour la pagination
+        String currentUrl = request.getRequestURL().toString();
+        String queryParams = request.getQueryString();
+        if (queryParams != null) {
+            currentUrl += "?" + queryParams;
+        }
+        // Supprimer le paramètre "page" pour éviter les doublons
+        currentUrl = currentUrl.replaceAll("([&?])page=[^&]*", "");
+        model.addAttribute("currentUrl", currentUrl);
+
         return "enchere";
     }
+
     @GetMapping("/enchere/achats")
     public String afficherAchats(
             @RequestParam(value = "ouvertes", required = false) String ouvertes,
@@ -246,6 +255,7 @@ public class EnchereController {
             @RequestParam(value = "remportees", required = false) String remportees,
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "size", defaultValue = "6") int size,
+            HttpServletRequest request, // Ajouté pour récupérer l'URL actuelle
             Model model) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -307,15 +317,32 @@ public class EnchereController {
             }
         }
 
-        int totalPages = (int) Math.ceil((double) articlesFiltres.size() / size);
+        int totalItems = articlesFiltres.size();
+        int totalPages = totalItems > 0 ? (int) Math.ceil((double) totalItems / size) : 1;
+        // Calculer les indices de début et de fin pour la page courante
+        int startIndex = (page - 1) * size;
+        int endIndex = Math.min(startIndex + size, articlesFiltres.size());
+        // Extraire la sous-liste pour la page courante
+        List<ArticleVendu> Articles = articlesFiltres.subList(startIndex, endIndex);
+
 
         ajouterInfosEncheres(articlesFiltres, utilisateurConnecte, model);
-        model.addAttribute("articleVendus", articlesFiltres);
+        model.addAttribute("articleVendus", Articles);
         model.addAttribute("categories", categorieService.getAllCategories());
         model.addAttribute("activeFilter", "achats");
         model.addAttribute("currentUrl", "/enchere");
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
+
+        // Récupérer l'URL actuelle avec les paramètres pour la pagination
+        String currentUrl = request.getRequestURL().toString();
+        String queryParams = request.getQueryString();
+        if (queryParams != null) {
+            currentUrl += "?" + queryParams;
+        }
+        // Supprimer le paramètre "page" pour éviter les doublons
+        currentUrl = currentUrl.replaceAll("([&?])page=[^&]*", "");
+        model.addAttribute("currentUrl", currentUrl);
 
         return "enchere";
     }
@@ -492,36 +519,33 @@ public class EnchereController {
         article.setNoUtilisateur(utilisateurConnecte);
         article.setPrixVente(article.getPrixInitial());
 
-        // 📂 Gestion du fichier photo
+        // 📂 Gestion du fichier photo (avec remplacement si même nom)
         if (!photo.isEmpty()) {
             try {
-                // Utilisation de la racine du projet + "uploads" (répertoire à côté de src)
-                String basePath = System.getProperty("user.dir");  // Obtient le répertoire de travail actuel
-                Path uploadPath = Paths.get(basePath, "src/main/resources/static/uploads");  // Crée un répertoire 'uploads' à la racine
+                String basePath = System.getProperty("user.dir");
+                Path uploadPath = Paths.get(basePath, "src/main/resources/static/uploads");
 
-                // Vérifie si le dossier existe, sinon, crée-le
                 if (!Files.exists(uploadPath)) {
                     Files.createDirectories(uploadPath);
                 }
 
-                // Génère le nom du fichier avec un timestamp unique
                 String originalFilename = photo.getOriginalFilename();
-                Path destinationPath = uploadPath.resolve(System.currentTimeMillis() + "_" + originalFilename);
+                Path destinationPath = uploadPath.resolve(originalFilename);
 
-                // Sauvegarde le fichier dans le dossier 'uploads'
+                // Remplace le fichier s'il existe déjà
                 photo.transferTo(destinationPath.toFile());
 
-                // Stockage de l'URL relative en BDD (accessible depuis la racine de l'application)
-                article.setUrl("/uploads/" + destinationPath.getFileName().toString());
+                // URL accessible dans l'application
+                article.setUrl("/uploads/" + originalFilename);
 
             } catch (IOException e) {
                 e.printStackTrace();
-                return "redirect:/vente/enregistrer"; // Redirige ou affiche une erreur en cas d'exception
+                return "redirect:/vente/enregistrer?erreur=upload";
             }
         }
 
         ArticleVenduService.insertArticleVendu(article);
-        return "redirect:/enchere"; // Redirige vers la page des enchères
+        return "redirect:/enchere";
     }
 
     @PostMapping("/vente/modifier")
@@ -541,20 +565,37 @@ public class EnchereController {
         articleExistant.setPrixInitial(articleModifie.getPrixInitial());
         articleExistant.setNoCategorie(articleModifie.getNoCategorie());
 
-        // Début d'enchère seulement si renseigné
         if (articleModifie.getDebut_encheres() != null) {
             articleExistant.setDebut_encheres(articleModifie.getDebut_encheres());
         }
 
-        // Fin d'enchère seulement si renseigné
         if (articleModifie.getFin_encheres() != null) {
             articleExistant.setFin_encheres(articleModifie.getFin_encheres());
         }
 
-        // Photo seulement si une nouvelle est uploadée
+        // 📂 Photo : remplacer si même nom
         if (photo != null && !photo.isEmpty()) {
-            String nomFichier = photo.getOriginalFilename();
-            articleExistant.setUrl(nomFichier);
+            try {
+                String basePath = System.getProperty("user.dir");
+                Path uploadPath = Paths.get(basePath, "src/main/resources/static/uploads");
+
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
+
+                String originalFilename = photo.getOriginalFilename();
+                Path destinationPath = uploadPath.resolve(originalFilename);
+
+                // Écrase le fichier s'il existe
+                photo.transferTo(destinationPath.toFile());
+
+                // Chemin accessible via l'app
+                articleExistant.setUrl("/uploads/" + originalFilename);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "redirect:/vente/modifier?id=" + id + "&erreur=upload";
+            }
         }
 
         ArticleVenduService.updateArticleVendu(articleExistant);
