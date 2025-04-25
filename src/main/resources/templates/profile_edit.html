@@ -119,7 +119,7 @@
 <div class="container mx-auto py-4 flex flex-col gap-4 mt-6">
 
     <div>
-        <p class="font-bold text-black text-xl">Modifier votre profile</p>
+        <p class="font-bold text-black text-xl" th:text="#{profile.edit.title}">Modifier votre profil</p>
     </div>
 
     <form th:action="@{/my_profile/edit}" method="post">
@@ -181,15 +181,15 @@
             </div>
 
             <div>
-
-                <label class="block mb-2 text-sm font-medium text-gray-900" th:text="#{profile.edit.confirmPassword}">Article:</label>
-                <input name="ville" type="password"
+                <label class="block mb-2 text-sm font-medium text-gray-900"
+                       th:text="#{profile.edit.confirmPassword}">Confirmation</label>
+                <input name="confirmationMotDePasse" type="password"
                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
             </div>
 
             <div>
                 <label class="block mb-2 text-sm font-medium text-gray-900" th:text="#{profile.edit.credit}">Article:</label>
-                <input disabled th:value="${utilisateur.credit}" name="ville" type="text"
+                <input disabled th:value="${utilisateur.credit}" name="credit" type="text"
                        class="cursor-not-allowed bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
             </div>
 
@@ -200,7 +200,7 @@
             <button th:text="#{profile.edit.save}" type="submit" class="lg:inline-block text-center py-2 px-6 bg-blue-600 text-white hover:bg-blue-500 text-sm text-black font-bold rounded-xl transition duration-200" href="#">S'inscrire</button>
             <button onclick="deleteCompte()" th:text="#{profile.edit.deleteAccount}" type="submit" class="lg:inline-block text-center py-2 px-6 bg-red-600 text-white hover:bg-red-500 text-sm text-black font-bold rounded-xl transition duration-200" href="#">S'inscrire</button>
             <a th:href="@{/my_profile/credit}" th:text="#{profile.edit.editCredit}" class="lg:inline-block text-center bg-green-600 hover:bg-green-500 py-2 px-6 text-white border border-gray-300 text-sm text-black font-bold rounded-xl transition duration-200" href="#">Retour</a>
-            <a th:href="@{/my_profile/}" th:text="#{profile.edit.back}" class="lg:inline-block text-center py-2 px-6 bg-white text-black border border-gray-300 text-sm text-black font-bold rounded-xl transition duration-200" href="#">Retour</a>
+            <a th:href="@{/my_profile}" th:text="#{profile.edit.back}" class="lg:inline-block text-center py-2 px-6 bg-white text-black border border-gray-300 text-sm text-black font-bold rounded-xl transition duration-200" href="#">Retour</a>
 
         </div>
 

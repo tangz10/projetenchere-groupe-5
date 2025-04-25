@@ -74,7 +74,7 @@ public class ProfileController {
         if (!utilisateur.getMotDePasse().equals(utilisateur.getConfirmationMotDePasse())) {
             redirectAttributes.addFlashAttribute("message", "Les mots de passe ne sont pas identiques");
 
-            return "redirect:/profile_edit?error";
+            return "redirect:/my_profile/edit?error";
         }
 
         Authentication currentAuth = SecurityContextHolder.getContext().getAuthentication();
