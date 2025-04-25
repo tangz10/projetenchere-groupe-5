@@ -8,6 +8,7 @@ import com.eni.enchere.services.ArticleVenduService;
 import com.eni.enchere.services.CategorieService;
 import com.eni.enchere.services.*;
 import com.eni.enchere.services.UtilisateurService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -185,6 +186,7 @@ public class EnchereController {
             @RequestParam(value = "terminees", required = false) String terminees,
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "size", defaultValue = "6") int size,
+            HttpServletRequest request, // Ajouté pour récupérer l'URL actuelle
             HttpSession session,
             Model model) {
 
@@ -195,50 +197,57 @@ public class EnchereController {
             return "redirect:/login";
         }
 
-
         List<ArticleVendu> toutesMesVentes = ArticleVenduService.getArticleVenduByUser(utilisateurConnecte.getNoUtilisateur());
         List<ArticleVendu> articlesFiltres = new ArrayList<>();
-
-
-
         LocalDate aujourdHui = LocalDate.now();
 
-        // Si aucun filtre spécifique n'est coché → on affiche tout
+        // Appliquer les filtres comme tu fais déjà...
         if (enCours == null && nonDebutees == null && terminees == null) {
             articlesFiltres = toutesMesVentes;
         } else {
             for (ArticleVendu article : toutesMesVentes) {
                 boolean ajouter = false;
-
                 if (enCours != null && !article.getDebut_encheres().isAfter(aujourdHui) && article.getFin_encheres().isAfter(aujourdHui)) {
                     ajouter = true;
                 }
-
                 if (nonDebutees != null && article.getDebut_encheres().isAfter(aujourdHui)) {
                     ajouter = true;
                 }
-
-                if (terminees != null && article.getFin_encheres().isBefore(aujourdHui)) {
+                if (terminees != null && !article.getFin_encheres().isAfter(aujourdHui)) {
                     ajouter = true;
                 }
-
                 if (ajouter) {
                     articlesFiltres.add(article);
                 }
             }
         }
 
-        ajouterInfosEncheres(articlesFiltres, utilisateurConnecte, model);
-        int totalPages = (int) Math.ceil((double) articlesFiltres.size() / size);
+        // Pagination
+        int totalItems = articlesFiltres.size();
+        int totalPages = totalItems > 0 ? (int) Math.ceil((double) totalItems / size) : 1;
+        int startIndex = (page - 1) * size;
+        int endIndex = Math.min(startIndex + size, articlesFiltres.size());
+        List<ArticleVendu> articles = articlesFiltres.subList(startIndex, endIndex);
 
-        model.addAttribute("articleVendus", articlesFiltres);
+        model.addAttribute("articleVendus", articles);
         model.addAttribute("categories", categorieService.getAllCategories());
         model.addAttribute("activeFilter", "ventes");
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
 
+        // Récupérer l'URL actuelle avec les paramètres pour la pagination
+        String currentUrl = request.getRequestURL().toString();
+        String queryParams = request.getQueryString();
+        if (queryParams != null) {
+            currentUrl += "?" + queryParams;
+        }
+        // Supprimer le paramètre "page" pour éviter les doublons
+        currentUrl = currentUrl.replaceAll("([&?])page=[^&]*", "");
+        model.addAttribute("currentUrl", currentUrl);
+
         return "enchere";
     }
+
     @GetMapping("/enchere/achats")
     public String afficherAchats(
             @RequestParam(value = "ouvertes", required = false) String ouvertes,
@@ -246,6 +255,7 @@ public class EnchereController {
             @RequestParam(value = "remportees", required = false) String remportees,
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "size", defaultValue = "6") int size,
+            HttpServletRequest request, // Ajouté pour récupérer l'URL actuelle
             Model model) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -307,15 +317,32 @@ public class EnchereController {
             }
         }
 
-        int totalPages = (int) Math.ceil((double) articlesFiltres.size() / size);
+        int totalItems = articlesFiltres.size();
+        int totalPages = totalItems > 0 ? (int) Math.ceil((double) totalItems / size) : 1;
+        // Calculer les indices de début et de fin pour la page courante
+        int startIndex = (page - 1) * size;
+        int endIndex = Math.min(startIndex + size, articlesFiltres.size());
+        // Extraire la sous-liste pour la page courante
+        List<ArticleVendu> Articles = articlesFiltres.subList(startIndex, endIndex);
+
 
         ajouterInfosEncheres(articlesFiltres, utilisateurConnecte, model);
-        model.addAttribute("articleVendus", articlesFiltres);
+        model.addAttribute("articleVendus", Articles);
         model.addAttribute("categories", categorieService.getAllCategories());
         model.addAttribute("activeFilter", "achats");
         model.addAttribute("currentUrl", "/enchere");
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
+
+        // Récupérer l'URL actuelle avec les paramètres pour la pagination
+        String currentUrl = request.getRequestURL().toString();
+        String queryParams = request.getQueryString();
+        if (queryParams != null) {
+            currentUrl += "?" + queryParams;
+        }
+        // Supprimer le paramètre "page" pour éviter les doublons
+        currentUrl = currentUrl.replaceAll("([&?])page=[^&]*", "");
+        model.addAttribute("currentUrl", currentUrl);
 
         return "enchere";
     }
