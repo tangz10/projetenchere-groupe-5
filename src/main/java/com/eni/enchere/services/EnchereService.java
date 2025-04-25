@@ -7,7 +7,9 @@ import com.eni.enchere.dao.ArticleVendu.ArticleVenduDAO;
 import com.eni.enchere.dao.Enchere.EnchereDAO;
 import com.eni.enchere.dao.Utilisateur.UtilisateurDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.context.MessageSource;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -24,6 +26,9 @@ public class EnchereService {
     @Autowired
     private ArticleVenduDAO articleDAO;
 
+    @Autowired
+    private MessageSource messageSource;
+
 
     public void ajouterEnchere(long noUtilisateur, long noArticle, long montant) {
         Utilisateur nouvelEncherisseur = utilisateurDAO.selectById(noUtilisateur);
@@ -34,13 +39,17 @@ public class EnchereService {
 
         // ✅ Vérifie que le montant proposé est suffisant
         if (ancienneMeilleure != null && montant <= ancienneMeilleure.getMontantEnchere()) {
-            throw new IllegalArgumentException("Votre offre doit être supérieure à la meilleure offre actuelle ("
-                    + ancienneMeilleure.getMontantEnchere() + " pts).");
+            String message = messageSource.getMessage("saleDetail.error.bidTooLow",
+                    new Object[]{ancienneMeilleure.getMontantEnchere()},
+                    LocaleContextHolder.getLocale());
+            throw new IllegalArgumentException(message);
         }
 
         if (ancienneMeilleure == null && montant < article.getPrixInitial()) {
-            throw new IllegalArgumentException("Votre offre doit être au moins égale à la mise à prix ("
-                    + article.getPrixInitial() + " pts).");
+            String message = messageSource.getMessage("saleDetail.error.bidTooLowInitial",
+                    new Object[]{article.getPrixInitial()},
+                    LocaleContextHolder.getLocale());
+            throw new IllegalArgumentException(message);
         }
 
         // 💸 Remboursement éventuel
@@ -54,7 +63,10 @@ public class EnchereService {
 
         // 🧮 Vérifie les crédits après remboursement éventuel
         if (nouvelEncherisseur.getCredit() < montant) {
-            throw new IllegalArgumentException("Crédits insuffisants pour miser.");
+            String message = messageSource.getMessage("saleDetail.error.notEnoughCredits",
+                    null,
+                    LocaleContextHolder.getLocale());
+            throw new IllegalArgumentException(message);
         }
 
         // 🔻 Déduire les crédits
