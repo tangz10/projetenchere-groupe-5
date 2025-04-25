@@ -117,87 +117,87 @@
     <form id="filterForm" method="get" class="p-4 space-y-6">
       <!-- Partie Achats -->
       <div class="flex items-start space-x-2">
-        <input class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+        <input class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500  focus:ring-2"
                type="radio"
                name="radioDefault"
                id="radioDefault2"
                onchange="window.location.href='/enchere/achats';"
                th:checked="${activeFilter == 'achats'}">
         <div class="text-sm">
-          <label for="radioDefault2" class="font-bold text-blue-500 dark:text-gray-300" th:text="#{itemDetail.buy}">Achats</label>
+          <label for="radioDefault2" class="font-bold text-blue-500" th:text="#{itemDetail.buy}">Achats</label>
         </div>
       </div>
 
       <ul class="space-y-2 pl-6">
         <li class="flex items-start space-x-2">
-          <input class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600"
+          <input class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                  type="checkbox"
                  id="checkDefault1"
                  name="ouvertes"
                  onchange="document.getElementById('filterForm').submit();"
                  th:checked="${param.ouvertes != null}">
-          <label for="checkDefault1" class="font-bold text-sm text-gray-700 dark:text-gray-300" th:text="#{itemDetail.buy.open}">enchères ouvertes</label>
+          <label for="checkDefault1" class="font-bold text-sm text-gray-700" th:text="#{itemDetail.buy.open}">enchères ouvertes</label>
         </li>
         <li class="flex items-start space-x-2">
-          <input class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600"
+          <input class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                  type="checkbox"
                  id="checkDefault2"
                  name="AenCours"
                  onchange="document.getElementById('filterForm').submit();"
                  th:checked="${param.AenCours != null}">
-          <label for="checkDefault2" class="font-bold text-sm text-gray-700 dark:text-gray-300" th:text="#{itemDetail.buy.live}">enchères en cours</label>
+          <label for="checkDefault2" class="font-bold text-sm text-gray-700" th:text="#{itemDetail.buy.live}">enchères en cours</label>
         </li>
         <li class="flex items-start space-x-2">
-          <input class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600"
+          <input class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                  type="checkbox"
                  id="checkDefault3"
                  name="remportees"
                  onchange="document.getElementById('filterForm').submit();"
                  th:checked="${param.remportees != null}">
-          <label for="checkDefault3" class="font-bold text-sm text-gray-700 dark:text-gray-300" th:text="#{itemDetail.buy.win}">enchères remportées</label>
+          <label for="checkDefault3" class="font-bold text-sm text-gray-700" th:text="#{itemDetail.buy.win}">enchères remportées</label>
         </li>
       </ul>
 
       <!-- Partie Ventes -->
       <div class="flex items-start space-x-2 mt-4">
-        <input class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600"
+        <input class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                type="radio"
                name="radioDefault"
                id="radioDefault1"
                onchange="window.location.href='/enchere/mes-ventes';"
                th:checked="${activeFilter != null && activeFilter == 'ventes'}">
         <div class="text-sm">
-          <label for="radioDefault1" class="font-bold text-blue-500 dark:text-gray-300" th:text="#{itemDetail.sell}">Mes ventes</label>
+          <label for="radioDefault1" class="font-bold text-blue-500" th:text="#{itemDetail.sell}">Mes ventes</label>
         </div>
       </div>
 
       <ul class="space-y-2 pl-6">
         <li class="flex items-start space-x-2">
-          <input class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600"
+          <input class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                  type="checkbox"
                  id="checkVente1"
                  name="enCours"
                  onchange="document.getElementById('filterForm').submit();"
                  th:checked="${param.enCours != null}">
-          <label for="checkVente1" class="text-sm font-bold text-gray-700 dark:text-gray-300" th:text="#{itemDetail.sell.live}">mes ventes en cours</label>
+          <label for="checkVente1" class="text-sm font-bold text-gray-700" th:text="#{itemDetail.sell.live}">mes ventes en cours</label>
         </li>
         <li class="flex items-start space-x-2">
-          <input class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600"
+          <input class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                  type="checkbox"
                  id="checkVente2"
                  name="nonDebutees"
                  onchange="document.getElementById('filterForm').submit();"
                  th:checked="${param.nonDebutees != null}">
-          <label for="checkVente2" class="text-sm font-bold text-gray-700 dark:text-gray-300" th:text="#{itemDetail.sell.nostart}">ventes non débutées</label>
+          <label for="checkVente2" class="text-sm font-bold text-gray-700" th:text="#{itemDetail.sell.nostart}">ventes non débutées</label>
         </li>
         <li class="flex items-start space-x-2">
-          <input class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600"
+          <input class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                  type="checkbox"
                  id="checkVente3"
                  name="terminees"
                  onchange="document.getElementById('filterForm').submit();"
                  th:checked="${param.terminees != null}">
-          <label for="checkVente3" class="text-sm font-bold text-gray-700 dark:text-gray-300" th:text="#{itemDetail.sell.close}">ventes terminées</label>
+          <label for="checkVente3" class="text-sm font-bold text-gray-700" th:text="#{itemDetail.sell.close}">ventes terminées</label>
         </li>
       </ul>
     </form>
@@ -208,14 +208,12 @@
       <!-- Colonne 1 : Select Catégories -->
       <div>
         <form th:action="@{/enchere/filtrerParCategorie}" method="get">
-          <label for="categories" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          <label for="categories" class="block mb-2 text-sm font-medium text-gray-900"
                  th:text="#{home.categories}">Catégories</label>
           <select id="categories"
                   name="categorie"
                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
-                             focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
-                             dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
-                             dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                             focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   onchange="this.form.submit()">
             <option th:value="0" th:text="#{home.allCategories}" th:selected="${categorieId == 0}">Toutes les catégories</option>
             <th:block th:each="categorie : ${categories}">
@@ -231,15 +229,13 @@
       <!-- Colonne 2 : Input recherche -->
       <form th:action="@{/enchere/recherche}" method="get" class="grid grid-cols-2 gap-4">
         <div>
-          <label for="searchQuery" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          <label for="searchQuery" class="block mb-2 text-sm font-medium text-gray-900"
                  th:text="#{home.searchPlaceholder}">Recherche une enchère</label>
           <input type="text"
                  id="searchQuery"
                  name="searchQuery"
                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
-                            focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
-                            dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
-                            dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                  th:placeholder="#{home.searchPlaceholder}">
         </div>
 
@@ -249,11 +245,10 @@
                   class="w-full relative inline-flex items-center justify-center p-0.5 overflow-hidden
                              text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br
                              from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500
-                             hover:text-white dark:text-white focus:ring-4 focus:outline-none
-                             focus:ring-cyan-200 dark:focus:ring-cyan-800">
+                             hover:text-white focus:ring-4 focus:outline-none
+                             focus:ring-cyan-200">
                   <span class="relative w-full px-5 py-2.5 transition-all ease-in duration-75
-                               bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent
-                               group-hover:dark:bg-transparent"
+                               bg-white rounded-md group-hover:bg-transparent"
                         th:text="#{home.searchButton}">Rechercher</span>
           </button>
         </div>
@@ -351,7 +346,7 @@
 
 <!--Language-->
 <form class="fixed bottom-4 right-4 max-w-sm mx-auto">
-  <select th:value="${#locale.language}" onchange="changeLanguage(this.value)" id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+  <select th:value="${#locale.language}" onchange="changeLanguage(this.value)" id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
     <option value="fr" th:selected="${#locale.language == 'fr'}" th:text="#{lang.fr}" selected>FR</option>
     <option value="en" th:selected="${#locale.language == 'en'}" th:text="#{lang.en}">UK</option>
   </select>

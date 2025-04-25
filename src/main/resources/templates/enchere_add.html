@@ -113,16 +113,16 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white rounded-xl py-4 px-4 border border-gray-300">
             <!-- Article -->
             <div>
-                <label for="nom_article" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" th:text="#{vente.add.article}">Article:</label>
+                <label for="nom_article" class="block mb-2 text-sm font-medium text-gray-900" th:text="#{vente.add.article}">Article:</label>
                 <input type="text" th:field="*{nom_article}" id="nom_article"
-                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
             </div>
 
             <!-- Catégorie -->
             <div>
-                <label for="categorie" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" th:text="#{vente.add.category}">Catégorie:</label>
+                <label for="categorie" class="block mb-2 text-sm font-medium text-gray-900" th:text="#{vente.add.category}">Catégorie:</label>
                 <select th:field="*{noCategorie.noCategorie}" id="categorie"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                     <th:block th:each="categorie : ${categories}">
                         <option th:value="${categorie.noCategorie}" th:text="${categorie.libelle}"></option>
                     </th:block>
@@ -131,56 +131,56 @@
 
             <!-- Description -->
             <div>
-                <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" th:text="#{vente.add.description}">Description:</label>
+                <label for="description" class="block mb-2 text-sm font-medium text-gray-900" th:text="#{vente.add.description}">Description:</label>
                 <input th:field="*{description}" id="description"
-                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></input>
+                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"></input>
             </div>
 
             <!-- Photo -->
             <div>
-                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input">Upload file</label>
-                <input name="photo" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input" type="file">
+                <label class="block mb-2 text-sm font-medium text-gray-900" for="file_input">Upload file</label>
+                <input name="photo" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" id="file_input" type="file">
             </div>
 
             <!-- Prix initial -->
             <div>
-                <label for="prixInitial" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" th:text="#{vente.add.price}">Prix initial:</label>
+                <label for="prixInitial" class="block mb-2 text-sm font-medium text-gray-900" th:text="#{vente.add.price}">Prix initial:</label>
                 <input type="number" th:field="*{prixInitial}" id="prixInitial"
-                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
             </div>
 
             <!-- Début de l'enchère -->
             <div>
-                <label for="debut_encheres" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" th:text="#{vente.add.start}">Début de l'enchère:</label>
+                <label for="debut_encheres" class="block mb-2 text-sm font-medium text-gray-900" th:text="#{vente.add.start}">Début de l'enchère:</label>
                 <input type="date" th:field="*{debut_encheres}" id="debut_encheres"
-                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
             </div>
 
             <!-- Fin de l'enchère -->
             <div>
-                <label for="fin_encheres" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" th:text="#{vente.add.end}">Fin de l'enchère:</label>
+                <label for="fin_encheres" class="block mb-2 text-sm font-medium text-gray-900" th:text="#{vente.add.end}">Fin de l'enchère:</label>
                 <input type="date" th:field="*{fin_encheres}" id="fin_encheres"
-                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
             </div>
 
             <!-- Retrait -->
             <div>
-                <label for="retrait" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" th:text="#{vente.add.pickup}">Retrait:</label>
+                <label for="retrait" class="block mb-2 text-sm font-medium text-gray-900" th:text="#{vente.add.pickup}">Retrait:</label>
                 <span th:text="${utilisateur.rue + ' ' + utilisateur.codePostal + ' ' + utilisateur.ville}"></span>
             </div>
 
             <div class="flex flex-row gap-2 mt-4">
                 <button type="submit"
-                        class="w-full relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
-              <span class="relative w-full px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent"
+                        class="w-full relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200">
+              <span class="relative w-full px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-transparent"
                     th:text="#{vente.add.save}">Enregistrer</span>
                 </button>
 
             </div>
 
             <div class="flex flex-row gap-2 mt-4">
-                <a th:href="@{/enchere}" class="w-full relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-blue-600 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
-      <span class="text-center relative w-full px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent"
+                <a th:href="@{/enchere}" class="w-full relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-blue-600 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200">
+      <span class="text-center relative w-full px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-transparent"
             th:text="#{vente.add.cancel}">Annuler</span>
                 </a>
             </div>
@@ -196,7 +196,7 @@
 
 <!--Language-->
 <form class="fixed bottom-4 right-4 max-w-sm mx-auto">
-    <select th:value="${#locale.language}" onchange="changeLanguage(this.value)" id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+    <select th:value="${#locale.language}" onchange="changeLanguage(this.value)" id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
         <option value="fr" th:selected="${#locale.language == 'fr'}" th:text="#{lang.fr}" selected>FR</option>
         <option value="en" th:selected="${#locale.language == 'en'}" th:text="#{lang.en}">UK</option>
     </select>

@@ -112,9 +112,9 @@
 
     <!-- Article -->
     <div>
-      <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nom de la catégorie:</label>
+      <label class="block mb-2 text-sm font-medium text-gray-900">Nom de la catégorie:</label>
       <input th:value="${categorie.getLibelle()}" name="libelle" type="text"
-             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
@@ -129,7 +129,7 @@
 </div>
 
 <form class="fixed bottom-4 right-4 max-w-sm mx-auto">
-  <select th:value="${#locale.language}" onchange="changeLanguage(this.value)" id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+  <select th:value="${#locale.language}" onchange="changeLanguage(this.value)" id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
     <option value="fr" th:selected="${#locale.language == 'fr'}" th:text="#{lang.fr}" selected>FR</option>
     <option value="en" th:selected="${#locale.language == 'en'}" th:text="#{lang.en}">UK</option>
   </select>
